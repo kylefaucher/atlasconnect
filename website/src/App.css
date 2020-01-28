@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
+
+html{
+  background: #060677;
+}
+
+.App {
+  text-align: center;
+}
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.main-container{
+	padding-top: 50px;
+  font-family: 'Poppins';
+  background: #060677;
+  height: 100vh;
+  color: white;
+}
+
+.content-container{
+  color: #212529;
+  background: white;
+  padding: 50px;
+  border-radius: 40px 40px 0 0;
+}
+
+.post {
+    width: 100%;
+    background: white;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.post span {
+    opacity: 0.2;
+    display: block;
+}
+
+.postsGrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 20px;
+}
+
+.main-nav {
+    display: grid;
+    grid-template-columns: 3fr 2fr 2fr 1fr;
+    grid-column-gap: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.main-nav .nav-link{
+  padding-top: 15px;
+}
+
+.main-nav .nav-link:hover{
+  color: inherit;
+}
+
+.nav-link{
+  color: white;
+  font-size: 1.6em;
+  text-align: center;
+  border-radius: 40px 40px 0 0;
+  font-weight: 700;
+}
+
+.nav-link.active{
+  background: white;
+  color: #060677;
+}
+
+.nav-link.active:hover{
+    color: #060677;
+}
+
+
+
