@@ -13,6 +13,9 @@ let Posts = new Schema({
     },
     include: {
         type: Boolean
+    },
+    tags: {
+    	type: Array
     }
 });
 
