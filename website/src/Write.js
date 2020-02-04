@@ -2,11 +2,19 @@ import React, { Component } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { FilePond, registerPlugin } from "react-filepond";
+import "filepond/dist/filepond.min.css";
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+
 import axios from 'axios';
 
 import Tag from './Tag.js';
 
 const colors = ['#CCEEEB', '#FEEFD8', '#FFDCDC', '#D5D6E9', '#ECCCDF'];
+
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 export default class Write extends Component {
 	constructor(props){
@@ -17,7 +25,8 @@ export default class Write extends Component {
 			title: '',
 			tags: [],
 			cur_tag_input: '',
-			cur_color_index: 0
+			cur_color_index: 0,
+			files: []
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
@@ -25,6 +34,7 @@ export default class Write extends Component {
 		this.onTitleChange = this.onTitleChange.bind(this);
 		this.onTagAdd = this.onTagAdd.bind(this);
 		this.onTagInputChange = this.onTagInputChange.bind(this);
+		this.handleInit = this.handleInit.bind(this);
 	}
 
 	onSubmit(e){
@@ -79,12 +89,16 @@ export default class Write extends Component {
 		this.setState({cur_color_index: this.state.cur_color_index + 1});
 	}
 
+	handleInit() {
+	    console.log("FilePond instance has initialised", this.pond);
+	}
+
     render() {
         return (
             <div className = 'content-container'>
                 <div >
                 <h4>New Project</h4>
-                <form onSubmit={this.onSubmit} style = {{"margin-bottom": "200px"}}>
+                <form onSubmit={this.onSubmit} style = {{"margin-bottom": "200px"}} enctype="multipart/form-data">
                 	<label style = {{'margin-top':'20px'}}> Title </label>
                 	<input type = "text" name = 'title' value = {this.state.title} onChange = {this.onTitleChange} className = "form-control" />
                 	<label style = {{'margin-top':'20px'}}> Description </label>
@@ -99,6 +113,21 @@ export default class Write extends Component {
 	                	 		return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
 	                	})}
                 	</div>
+
+                	<FilePond
+			          ref={ref => (this.pond = ref)}
+			          files={this.state.files}
+			          allowMultiple={true}
+			          maxFiles={3}
+			          server="http://localhost:4000/capstoneprototype/upload"
+			          oninit={() => this.handleInit()}
+			          onupdatefiles={fileItems => {
+			            // Set currently active file objects to this.state
+			            this.setState({
+			              files: fileItems.map(fileItem => fileItem.file)
+			            });
+			          }}
+			        />
 
                 	<button className = 'btn btn-primary' type = 'submit'>Post</button>
                 </form>

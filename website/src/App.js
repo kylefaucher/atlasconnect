@@ -20,7 +20,7 @@ class App extends Component{
       <Router>
         <div className="main-container">
           <nav className='main-nav'>
-            <h2><img src = {logo} style = {{'width': '100%'}} alt = "atlas connect logo"/></h2>
+            <h2><img src = {logo} style = {{'width': '100%', 'position':'relative','bottom':'-11px'}} alt = "atlas connect logo"/></h2>
             <NavLink to="/" activeClassName='active' className="nav-link" exact>Feed</NavLink>
             <NavLink to="/create" activeClassName='active' className="nav-link">+</NavLink>
           </nav>

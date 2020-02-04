@@ -48,6 +48,18 @@ postsRoutes.route('/add').post(function(req, res) {
         });
 });
 
+postsRoutes.route('/upload').post(function(req, res) {
+    console.log(req.files);
+    let posts = new Posts(req.body);
+    posts.save()
+        .then(post => {
+            res.status(200).json({'post': 'post added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('adding new post failed');
+        });
+});
+
 app.use('/capstoneprototype', postsRoutes);
 
 app.listen(PORT, function() {
