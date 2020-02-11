@@ -27,11 +27,13 @@ export default class ProjectDetails extends Component {
             <Modal
                 isOpen = {this.props.open}
                 onRequestClose = {this.props.closeModal}
-            >
+
+            >   <div className = 'details-modal'>
                 <h5> {this.props.postJSON.title} </h5>
                 <img src = {imgPlaceholder} alt = "placeholder" style = {{"width":"100%", "display":"block"}}/>
                 {this.props.postJSON.message}
                 <div>
+                </div>
                 </div>
             </Modal>
             </div>

@@ -19,7 +19,6 @@ html{
 }
 
 .main-container{
-	padding-top: 15px;
   font-family: 'Poppins';
   background: #060677;
   height: 100vh;
@@ -41,6 +40,7 @@ html{
     padding: 20px;
     border-radius: 5px;
     cursor: pointer;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
 }
 
 .post span {
@@ -54,12 +54,18 @@ html{
   grid-column-gap: 20px;
 }
 
+.profile-posts-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 20px;
+}
+
 .main-nav {
     display: grid;
-    grid-template-columns: 5fr 5fr 2fr 1fr;
+    grid-template-columns: 2fr 1fr 2fr 1fr;
     grid-column-gap: 50px;
     padding-left: 30px;
-    padding-right: 30px;
+    padding-right: 40px;
 }
 
 .main-nav .nav-link{
@@ -87,5 +93,43 @@ html{
     color: #060677;
 }
 
+.topbar{
+  text-align: right;
+  background: #060677;
+  z-index: 100;
+  width: 100%;
+}
+
+.topbar button img{
+  padding: 5px;
+  margin-right: 5px;
+  width: 30px;
+}
+
+.welcome-msg{
+  color: white;
+  font-size: 110%;
+  padding: 15px;
+}
+
+.details-modal{
+  padding: 50px;
+  text-align: center;
+}
+
+.details-modal img{
+  width: 50% !important;
+  margin: auto;
+}
+
+.post-user-name{
+  font-weight: 200;
+}
+
+.profile-container{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 20px;
+}
 
 

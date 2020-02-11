@@ -47,7 +47,9 @@ export default class Write extends Component {
 			title: this.state.title,
 			time: curTime,
 			include: true,
-			tags: this.state.tags
+			tags: this.state.tags,
+			user_display_name: this.props.currentUser.displayName,
+			user_id: this.props.currentUser.uid
 		};
 
 		axios.post('http://localhost:4000/capstoneprototype/add', newPost)

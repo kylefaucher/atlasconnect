@@ -22,6 +22,7 @@ export default class Post extends Component {
         return (
             <div className = "post" onClick = {this.props.handleClick}>
                 <h5> {this.props.postJSON.title} </h5>
+                <h6 className='post-user-name'> {this.props.postJSON.user_display_name} </h6>
                 <img src = {imgPlaceholder} alt = "placeholder" style = {{"width":"100%", "display":"block"}}/>
                 {this.props.postJSON.message}
                 <span className = "postTime"> {months[this.state.time.getMonth()]} {this.state.time.getDate()} {this.state.time.getFullYear()} </span>

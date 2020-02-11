@@ -16,6 +16,12 @@ let Posts = new Schema({
     },
     tags: {
     	type: Array
+    },
+    user_display_name: {
+        type: String
+    },
+    user_id: {
+        type: String
     }
 });
 

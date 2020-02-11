@@ -15,7 +15,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/capstoneprototype', { useNewUrlParse
 const connection = mongoose.connection;
 
 connection.once('open', function() {
-    console.log("MongoDB database connection established successfully");
+    console.log("MongoDB connection established");
 });
 
 postsRoutes.route('/').get(function(req, res) {
@@ -29,10 +29,16 @@ postsRoutes.route('/').get(function(req, res) {
     });
 });
 
-postsRoutes.route('/:id').get(function(req, res) {
-    let id = req.params.id;
-    Posts.findById(id, function(err, posts) {
-        res.json(posts);
+postsRoutes.route('/userposts/:user_id').get(function(req, res) {
+    let username = req.params.user_id;
+    Posts.find({'user_id': username}).exec(function(err,posts){
+        if (err){
+            console.log(err);
+        }
+        else{
+            console.log(posts);
+            res.json(posts);
+        }
     });
 });
 
@@ -48,17 +54,17 @@ postsRoutes.route('/add').post(function(req, res) {
         });
 });
 
-postsRoutes.route('/upload').post(function(req, res) {
-    console.log(req.files);
-    let posts = new Posts(req.body);
-    posts.save()
-        .then(post => {
-            res.status(200).json({'post': 'post added successfully'});
-        })
-        .catch(err => {
-            res.status(400).send('adding new post failed');
-        });
-});
+// postsRoutes.route('/upload').post(function(req, res) {
+//     console.log(req.files);
+//     let posts = new Posts(req.body);
+//     posts.save()
+//         .then(post => {
+//             res.status(200).json({'post': 'post added successfully'});
+//         })
+//         .catch(err => {
+//             res.status(400).send('adding new post failed');
+//         });
+// });
 
 app.use('/capstoneprototype', postsRoutes);
 

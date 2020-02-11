@@ -5,10 +5,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Post from './Post.js';
 import ProjectDetails from './ProjectDetails.js';
 
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-export default class Feed extends Component {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+
+export default class Profile extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -21,8 +23,9 @@ export default class Feed extends Component {
         this.closeModal = this.closeModal.bind(this);
 	}
 
-	componentDidMount() {
-        axios.get('http://localhost:4000/capstoneprototype/')
+    componentDidMount() {
+        let requestString = 'http://localhost:4000/capstoneprototype/userposts/' + this.props.currentUser.uid;
+        axios.get(requestString)
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
@@ -43,11 +46,19 @@ export default class Feed extends Component {
 
     render() {
         return (
-            <div className = 'content-container'>
-                <div className = 'postsGrid'>
-                	 {this.state.messages.map(item => {if(item.message && item.include == true && item.title){
-                	 	return <Post handleClick={() => this.openModal(item)} closeModal = {this.closeModal} key={item._id} postJSON = {item} />;
-                	 }})}
+            <div className = 'content-container profile-container'>
+                <div>
+                <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
+                <h1> {this.props.currentUser.displayName} </h1>
+                <p> {this.props.currentUser.email} </p>
+                </div>
+                <div>
+                <h2> Projects </h2>
+                <div className = 'profile-posts-container'>
+                    {this.state.messages.map(item => {if(item.message && item.include == true && item.title){
+                        return <Post handleClick={() => this.openModal(item)} closeModal = {this.closeModal} key={item._id} postJSON = {item} />;
+                     }})}
+                </div>
                 </div>
                 <ProjectDetails 
                     open = {this.state.modalIsOpen}
