@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
 
-html{
-  background: #060677;
+#root, body, html{
+  background: #f1f1f1;
 }
 
 .App {
@@ -15,14 +15,18 @@ html{
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  /*color: white;*/
+  color: black;
 }
 
 .main-container{
   font-family: 'Poppins';
-  background: #060677;
+  /*background: #060677;*/
+  background: transparent;
   height: 100vh;
-  color: white;
+  /*color: white;*/
+  color: black;
+  padding-top: 50px;
 }
 
 .content-container{
@@ -58,6 +62,13 @@ html{
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 20px;
+  height: 500px;
+  overflow-y: scroll;
+  border: solid 1px gainsboro;
+  border-radius: 10px;
+  padding: 15px;
+  background: #f8f8f8;
+  /*box-shadow: inset 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);*/
 }
 
 .main-nav {
@@ -73,31 +84,42 @@ html{
 }
 
 .main-nav .nav-link:hover{
-  color: inherit;
+  color: black;
+  opacity: 1 !important;
 }
 
 .nav-link{
-  color: white;
-  font-size: 1.6em;
+  /*color: white;*/
+  color:black;
+  font-size: 1.4em;
   text-align: center;
   border-radius: 40px 40px 0 0;
   font-weight: 700;
+  opacity: .2;
 }
 
 .nav-link.active{
   background: white;
-  color: #060677;
+  /*color: #060677;*/
+  color: black;
+  opacity: 1;
 }
 
 .nav-link.active:hover{
-    color: #060677;
+    /*color: #060677;*/
+    color: black;
+    opacity: 1 !important;
 }
 
 .topbar{
   text-align: right;
-  background: #060677;
+  /*background: #060677;*/
+  background: transparent;
   z-index: 100;
   width: 100%;
+  color: black !important;
+  position: absolute;
+  font-size: .75em;
 }
 
 .topbar button img{
@@ -107,7 +129,8 @@ html{
 }
 
 .welcome-msg{
-  color: white;
+  /*color: white;*/
+  color: black;
   font-size: 110%;
   padding: 15px;
 }
@@ -132,4 +155,47 @@ html{
   grid-column-gap: 20px;
 }
 
+.search-bar{
+  display: grid;
+  grid-template-columns: 1fr 12fr 2fr;
+}
 
+.searchIcon{
+  text-align: right;
+  font-size: 1.25em;
+  padding-right: 15px;
+  background: #f2f2f2;
+  border-radius: 10px 0 0 10px;
+}
+
+.searchIcon svg{
+  position: relative;
+  top: 5px;
+  left: -5px;
+}
+
+.search-bar input{
+  border: 0;
+  background: #f2f2f2;
+  padding: 5px;
+  border-radius: 0;
+}
+
+.search-bar input:focus, .search-bar input:active{
+  outline: none;
+  border: 0;
+  box-shadow: none;
+  background: #f2f2f2;
+}
+
+.search-bar button, .search-bar button:active, .search-bar button:focus{
+  background: black !important;
+  border: 0 !important;
+  border-radius: 0 5px 5px 0;
+  outline: none;
+  box-shadow: none;
+}
+
+.search-bar button:hover{
+  background: black;
+}

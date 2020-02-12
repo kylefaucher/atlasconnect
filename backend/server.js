@@ -42,6 +42,19 @@ postsRoutes.route('/userposts/:user_id').get(function(req, res) {
     });
 });
 
+postsRoutes.route('/search/:searchvalue').get(function(req, res) {
+    let searchvalue = req.params.searchvalue;
+    Posts.find({'tags.tag_id': searchvalue}).exec(function(err,posts){
+        if (err){
+            console.log(err);
+        }
+        else{
+            console.log(posts);
+            res.json(posts);
+        }
+    });
+});
+
 postsRoutes.route('/add').post(function(req, res) {
     let posts = new Posts(req.body);
     console.log(req.body);

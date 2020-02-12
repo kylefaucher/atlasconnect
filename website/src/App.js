@@ -5,7 +5,7 @@ import Feed from './Feed.js';
 import Write from './Write.js';
 import Profile from './Profile.js';
 
-import logo from './static/img/logo.png';
+import logo from './static/img/logo-black.png';
 
 import * as firebase from 'firebase';
 import firebaseConfig from './firebase.config';
@@ -43,6 +43,7 @@ class App extends Component{
       } else {
         thisObject.setState({isLoggedIn:false});
         thisObject.setState({currentUser:{}});
+        
       }
       });
   }
