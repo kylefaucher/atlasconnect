@@ -199,3 +199,13 @@
 .search-bar button:hover{
   background: black;
 }
+
+.uploadedImages{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 15px;
+}
+
+.uploadedImages img{
+  width: 100%;
+}

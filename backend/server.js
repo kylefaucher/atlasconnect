@@ -32,6 +32,18 @@ postsRoutes.route('/').get(function(req, res) {
     });
 });
 
+postsRoutes.route('/images').get(function(req, res) {
+    Img.find().exec(function(err, imgs) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(imgs);
+            res.json(imgs);
+        }
+    });
+});
+
+
 postsRoutes.route('/userposts/:user_id').get(function(req, res) {
     let username = req.params.user_id;
     Posts.find({'user_id': username}).exec(function(err,posts){
@@ -70,6 +82,7 @@ postsRoutes.route('/add').post(function(req, res) {
         });
 });
 
+//temp storage
 postsRoutes.route('/upload').post(function(req, res) {
     var storage = multer.diskStorage({
         destination: './uploads/'
@@ -87,11 +100,36 @@ postsRoutes.route('/upload').post(function(req, res) {
             req.files.forEach(function(item) {
                 console.log(item);
                 res.setHeader('content-type', 'text/plain');
-                res.send(item.filename);
+                res.send(item);
                 // move your file to destination
             });
         }
     });
+});
+
+postsRoutes.route('/save').post(function(req, res) {
+    var image = new Img();
+    let filePath = './uploads/' + req.body.filename;
+    image.img.data = fs.readFileSync(filePath);
+    image.img.contentType = req.body.mimetype;
+    image.save()
+        .then(post => {
+            res.status(200).json({'img': 'img added successfully'});
+                fs.unlink(filePath, function(err) {
+                    if(err && err.code == 'ENOENT') {
+                        // file doens't exist
+                        console.info("File doesn't exist, won't remove it.");
+                    } else if (err) {
+                        // other errors, e.g. maybe we don't have enough permission
+                        console.error("Error occurred while trying to remove file");
+                    } else {
+                        console.info(`removed`);
+                    }
+                });
+        })
+        .catch(err => {
+            res.status(400).send('adding new img failed');
+        });
 });
 
 postsRoutes.route('/upload').delete(function(req, res) {

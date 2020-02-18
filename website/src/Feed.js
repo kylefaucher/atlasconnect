@@ -18,7 +18,8 @@ export default class Feed extends Component {
             messages: [],
             modalIsOpen: false,
             currentOpenProject: '',
-            searchValue: ''
+            searchValue: '',
+            images: []
         };
 
         this.openModal = this.openModal.bind(this);
@@ -32,6 +33,15 @@ export default class Feed extends Component {
         axios.get('http://localhost:4000/capstoneprototype/')
             .then(response => {
                 this.setState({ messages: response.data });
+                console.log(response.data);
+            })
+            .catch(function (error){
+                console.log(error);
+         });
+
+        axios.get('http://localhost:4000/capstoneprototype/images')
+            .then(response => {
+                this.setState({ images: response.data });
                 console.log(response.data);
             })
             .catch(function (error){
@@ -90,6 +100,20 @@ export default class Feed extends Component {
                     closeModal = {this.closeModal}
                     postJSON = {this.state.currentOpenProject}
                 />
+                <h4> All Uploaded Images </h4>
+                <div className ="uploadedImages">
+                {this.state.images.map(item  => {
+
+                    let arrayBufferView = new Uint8Array( item.img.data.data );
+                    let blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                    let urlCreator = window.URL || window.webkitURL;
+                    let imageUrl = urlCreator.createObjectURL( blob );
+
+                    return <img src= {imageUrl} alt = "image"/>;
+
+                    })
+                }
+                </div>
             </div>
         )
     }

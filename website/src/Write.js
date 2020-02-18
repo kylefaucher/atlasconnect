@@ -14,6 +14,8 @@ import Tag from './Tag.js';
 
 const colors = ['#CCEEEB', '#FEEFD8', '#FFDCDC', '#D5D6E9', '#ECCCDF'];
 
+var curResponseId = "";
+
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const serverConfig = {
@@ -48,8 +50,9 @@ const serverConfig = {
             }
         }).then(response => {
             // passing the file id to FilePond
-            // console.log(response.data);
-            load(response.data);
+            console.log(response.data);
+            curResponseId = response.data;
+            load(response.data.filename);
         }).catch((thrown) => {
             if (axios.isCancel(thrown)) {
                 console.log('Request canceled', thrown.message);
@@ -97,6 +100,8 @@ export default class Write extends Component {
 		let curTime = new Date();
 		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
+		this.setState({fileUniqueId: 'curResponseId'});
+
 		const newPost = {
 			message: this.state.message,
 			title: this.state.title,
@@ -108,6 +113,9 @@ export default class Write extends Component {
 		};
 
 		axios.post('http://localhost:4000/capstoneprototype/add', newPost)
+            .then(res => console.log(res.data));
+
+        axios.post('http://localhost:4000/capstoneprototype/save', this.state.fileUniqueId)
             .then(res => console.log(res.data));
 
 	}
@@ -144,6 +152,10 @@ export default class Write extends Component {
 		});
 		this.setState({cur_tag_input: ''});
 		this.setState({cur_color_index: this.state.cur_color_index + 1});
+
+		this.setState({
+			              fileUniqueId: curResponseId
+		});
 	}
 
 	handleInit() {
@@ -181,9 +193,9 @@ export default class Write extends Component {
 			          onupdatefiles={fileItems => {
 			          	console.log(fileItems);
 			            // Set currently active file objects to this.state
-			            this.setState({
-			              fileUniqueId: 'idk'
-			            });
+                        this.setState({
+                                files: fileItems.map(fileItem => fileItem.file)
+                        });
 			          }}
 			        />
 
