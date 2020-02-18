@@ -16,6 +16,58 @@ const colors = ['#CCEEEB', '#FEEFD8', '#FFDCDC', '#D5D6E9', '#ECCCDF'];
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
+const serverConfig = {
+    timeout: 99999,
+    revert: (uniqueFileId, load, error) => {
+            
+            console.log(uniqueFileId);
+            
+            axios.delete('http://localhost:4000/capstoneprototype/upload', { data: { filename: uniqueFileId } } );
+
+            error('error');
+
+            load();
+    },
+    process: (fieldName, file, metadata, load, error, progress, abort) => {
+
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+
+        // aborting the request
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        axios({
+            method: 'POST',
+            url: 'http://localhost:4000/capstoneprototype/upload',
+            data: formData,
+            cancelToken: source.token,
+            onUploadProgress: (e) => {
+                // updating progress indicator
+                progress(e.lengthComputable, e.loaded, e.total)
+            }
+        }).then(response => {
+            // passing the file id to FilePond
+            // console.log(response.data);
+            load(response.data);
+        }).catch((thrown) => {
+            if (axios.isCancel(thrown)) {
+                console.log('Request canceled', thrown.message);
+            } else {
+                // handle error
+            }
+        })
+        // Setup abort interface
+        return {
+            abort: () => {
+                source.cancel('Operation canceled by the user.');
+                abort();
+            }
+        }
+    }
+
+};                 
+                   
 export default class Write extends Component {
 	constructor(props){
 		super(props);
@@ -26,7 +78,9 @@ export default class Write extends Component {
 			tags: [],
 			cur_tag_input: '',
 			cur_color_index: 0,
-			files: []
+			files: [
+			],
+			fileUniqueId:''
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
@@ -35,6 +89,7 @@ export default class Write extends Component {
 		this.onTagAdd = this.onTagAdd.bind(this);
 		this.onTagInputChange = this.onTagInputChange.bind(this);
 		this.handleInit = this.handleInit.bind(this);
+
 	}
 
 	onSubmit(e){
@@ -121,12 +176,13 @@ export default class Write extends Component {
 			          files={this.state.files}
 			          allowMultiple={true}
 			          maxFiles={3}
-			          server="http://localhost:4000/capstoneprototype/upload"
+			          server={serverConfig}
 			          oninit={() => this.handleInit()}
 			          onupdatefiles={fileItems => {
+			          	console.log(fileItems);
 			            // Set currently active file objects to this.state
 			            this.setState({
-			              files: fileItems.map(fileItem => fileItem.file)
+			              fileUniqueId: 'idk'
 			            });
 			          }}
 			        />
