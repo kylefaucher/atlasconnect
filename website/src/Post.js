@@ -41,16 +41,20 @@ export default class Post extends Component {
     render() {
         return (
             <div className = "post" onClick = {this.props.handleClick}>
-                <h5> {this.props.postJSON.title} </h5>
-                <h6 className='post-user-name'> {this.props.postJSON.user_display_name} </h6>
+                <div className = "post-head">
+                    <h5> {this.props.postJSON.title} </h5>
+                    <h6 className='post-user-name'> {this.props.postJSON.user_display_name} </h6>
+                </div>
                 <div className ="uploadedImages">
                     <img src= {this.state.imageURL} alt = "image"/>
                 </div>
-                {this.props.postJSON.message}
-                <span className = "postTime"> {months[this.state.time.getMonth()]} {this.state.time.getDate()} {this.state.time.getFullYear()} </span>
-                {this.props.postJSON.tags.map(item => {
-                    return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
-                })}
+                <div className = "post-foot">
+                    {this.props.postJSON.message}
+                    <span className = "postTime"> {months[this.state.time.getMonth()]} {this.state.time.getDate()} {this.state.time.getFullYear()} </span>
+                    {this.props.postJSON.tags.map(item => {
+                        return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
+                    })}
+                </div>
             </div>
         )
     }

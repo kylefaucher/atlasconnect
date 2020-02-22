@@ -41,7 +41,7 @@
     background: white;
     margin-top: 15px;
     margin-bottom: 15px;
-    padding: 20px;
+    /*padding: 20px;*/
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
@@ -208,4 +208,8 @@
 */
 .uploadedImages img{
   width: 100%;
+}
+
+.post-head, .post-foot{
+  padding: 20px;
 }

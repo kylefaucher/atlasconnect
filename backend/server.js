@@ -34,7 +34,7 @@ postsRoutes.route('/').get(function(req, res) {
 
 postsRoutes.route('/images/:project_id').get(function(req, res) {
     let projectID = req.params.project_id;
-    Img.find().exec(function(err, imgs) {
+    Img.find({'project_id':projectID}).exec(function(err, imgs) {
         if (err) {
             console.log(err);
         } else {
