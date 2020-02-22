@@ -8,7 +8,7 @@ import ProjectDetails from './ProjectDetails.js';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 export default class Feed extends Component {
@@ -18,8 +18,7 @@ export default class Feed extends Component {
             messages: [],
             modalIsOpen: false,
             currentOpenProject: '',
-            searchValue: '',
-            images: []
+            searchValue: ''
         };
 
         this.openModal = this.openModal.bind(this);
@@ -39,14 +38,14 @@ export default class Feed extends Component {
                 console.log(error);
          });
 
-        axios.get('http://localhost:4000/capstoneprototype/images')
-            .then(response => {
-                this.setState({ images: response.data });
-                console.log(response.data);
-            })
-            .catch(function (error){
-                console.log(error);
-         });
+        // axios.get('http://localhost:4000/capstoneprototype/images')
+        //     .then(response => {
+        //         this.setState({ images: response.data });
+        //         console.log(response.data);
+        //     })
+        //     .catch(function (error){
+        //         console.log(error);
+        //  });
     }
 
 	componentDidMount() {
@@ -100,20 +99,6 @@ export default class Feed extends Component {
                     closeModal = {this.closeModal}
                     postJSON = {this.state.currentOpenProject}
                 />
-                <h4> All Uploaded Images </h4>
-                <div className ="uploadedImages">
-                {this.state.images.map(item  => {
-
-                    let arrayBufferView = new Uint8Array( item.img.data.data );
-                    let blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
-                    let urlCreator = window.URL || window.webkitURL;
-                    let imageUrl = urlCreator.createObjectURL( blob );
-
-                    return <img src= {imageUrl} alt = "image"/>;
-
-                    })
-                }
-                </div>
             </div>
         )
     }

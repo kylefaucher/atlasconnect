@@ -103,20 +103,26 @@ export default class Write extends Component {
 		this.setState({fileUniqueId: 'curResponseId'});
 
 		const newPost = {
-			message: this.state.message,
-			title: this.state.title,
-			time: curTime,
-			include: true,
-			tags: this.state.tags,
-			user_display_name: this.props.currentUser.displayName,
-			user_id: this.props.currentUser.uid
+			post_data:{
+				message: this.state.message,
+				title: this.state.title,
+				time: curTime,
+				include: true,
+				tags: this.state.tags,
+				user_display_name: this.props.currentUser.displayName,
+				user_id: this.props.currentUser.uid
+			},
+			img_data:{
+				fileID: this.state.fileUniqueId
+			}
 		};
+
 
 		axios.post('http://localhost:4000/capstoneprototype/add', newPost)
             .then(res => console.log(res.data));
 
-        axios.post('http://localhost:4000/capstoneprototype/save', this.state.fileUniqueId)
-            .then(res => console.log(res.data));
+        // axios.post('http://localhost:4000/capstoneprototype/save', this.state.fileUniqueId)
+        //     .then(res => console.log(res.data));
 
 	}
 

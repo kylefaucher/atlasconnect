@@ -32,13 +32,15 @@ postsRoutes.route('/').get(function(req, res) {
     });
 });
 
-postsRoutes.route('/images').get(function(req, res) {
+postsRoutes.route('/images/:project_id').get(function(req, res) {
+    let projectID = req.params.project_id;
     Img.find().exec(function(err, imgs) {
         if (err) {
             console.log(err);
         } else {
+            // console.log(projectID);
             console.log(imgs);
-            res.json(imgs);
+            res.send(imgs);
         }
     });
 });
@@ -71,14 +73,42 @@ postsRoutes.route('/search/:searchvalue').get(function(req, res) {
 });
 
 postsRoutes.route('/add').post(function(req, res) {
-    let posts = new Posts(req.body);
+    let posts = new Posts(req.body.post_data);
+    let project_id = "";
     console.log(req.body);
     posts.save()
         .then(post => {
-            res.status(200).json({'post': 'post added successfully'});
+            let image = new Img();
+            console.log('HERE');
+            console.log(posts._id);
+            project_id = posts._id;
+            image.project_id = posts._id;
+            console.log(image.project_id);
+            // res.status(200).json({'post': 'post added successfully'});
+                let filePath = './uploads/' + req.body.img_data.fileID.filename;
+                image.img.data = fs.readFileSync(filePath);
+                image.img.contentType = req.body.mimetype;
+                image.save()
+                    .then(post => {
+                        res.status(200).send(image);
+                            fs.unlink(filePath, function(err) {
+                                if(err && err.code == 'ENOENT') {
+                                    // file doens't exist
+                                    console.info("File doesn't exist, won't remove it.");
+                                } else if (err) {
+                                    // other errors, e.g. maybe we don't have enough permission
+                                    console.error("Error occurred while trying to remove file");
+                                } else {
+                                    console.info(`removed`);
+                                }
+                            });
+                    })
+                    .catch(err => {
+                        res.status(400).send('adding new img failed');
+                    });
         })
         .catch(err => {
-            res.status(400).send('adding new post failed');
+            // res.status(400).send('adding new post failed');
         });
 });
 
@@ -107,30 +137,30 @@ postsRoutes.route('/upload').post(function(req, res) {
     });
 });
 
-postsRoutes.route('/save').post(function(req, res) {
-    var image = new Img();
-    let filePath = './uploads/' + req.body.filename;
-    image.img.data = fs.readFileSync(filePath);
-    image.img.contentType = req.body.mimetype;
-    image.save()
-        .then(post => {
-            res.status(200).json({'img': 'img added successfully'});
-                fs.unlink(filePath, function(err) {
-                    if(err && err.code == 'ENOENT') {
-                        // file doens't exist
-                        console.info("File doesn't exist, won't remove it.");
-                    } else if (err) {
-                        // other errors, e.g. maybe we don't have enough permission
-                        console.error("Error occurred while trying to remove file");
-                    } else {
-                        console.info(`removed`);
-                    }
-                });
-        })
-        .catch(err => {
-            res.status(400).send('adding new img failed');
-        });
-});
+// postsRoutes.route('/save').post(function(req, res) {
+//     var image = new Img();
+//     let filePath = './uploads/' + req.body.filename;
+//     image.img.data = fs.readFileSync(filePath);
+//     image.img.contentType = req.body.mimetype;
+//     image.save()
+//         .then(post => {
+//             res.status(200).json({'img': 'img added successfully'});
+//                 fs.unlink(filePath, function(err) {
+//                     if(err && err.code == 'ENOENT') {
+//                         // file doens't exist
+//                         console.info("File doesn't exist, won't remove it.");
+//                     } else if (err) {
+//                         // other errors, e.g. maybe we don't have enough permission
+//                         console.error("Error occurred while trying to remove file");
+//                     } else {
+//                         console.info(`removed`);
+//                     }
+//                 });
+//         })
+//         .catch(err => {
+//             res.status(400).send('adding new img failed');
+//         });
+// });
 
 postsRoutes.route('/upload').delete(function(req, res) {
     let pathName = './uploads/' + req.body.filename;

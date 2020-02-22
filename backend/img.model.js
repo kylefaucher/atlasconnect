@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let Img = new Schema(
-  { img: 
-      { data: Buffer, contentType: String }
+let Img = new Schema({ 
+	img: {
+		data: Buffer, 
+	 	contentType: String 
+	},
+    project_id:{
+    	type: String
+    }
   }
 ); 
 
