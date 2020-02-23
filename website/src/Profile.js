@@ -53,7 +53,7 @@ export default class Profile extends Component {
                 <p> {this.props.currentUser.email} </p>
                 </div>
                 <div>
-                <h2> Projects </h2>
+                <h2> all projects </h2>
                 <div className = 'profile-posts-container'>
                     {this.state.messages.map(item => {if(item.message && item.include == true && item.title){
                         return <Post handleClick={() => this.openModal(item)} closeModal = {this.closeModal} key={item._id} postJSON = {item} />;

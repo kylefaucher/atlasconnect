@@ -8,6 +8,8 @@ import ProjectDetails from './ProjectDetails.js';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import Loader from 'halogenium/lib/DotLoader';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,7 +20,8 @@ export default class Feed extends Component {
             messages: [],
             modalIsOpen: false,
             currentOpenProject: '',
-            searchValue: ''
+            searchValue: '',
+            loading: true
         };
 
         this.openModal = this.openModal.bind(this);
@@ -33,6 +36,7 @@ export default class Feed extends Component {
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
+                this.setState({loading:false});
             })
             .catch(function (error){
                 console.log(error);
@@ -84,7 +88,10 @@ export default class Feed extends Component {
     render() {
         return (
             <div className = 'content-container'>
-                <div className = "form-group search-bar">
+            {this.state.loading? 
+                <div className = "load-wrap"> <Loader color="#212529" size="72px" margin="4px" /> </div> :
+
+                <div> <div className = "form-group search-bar">
                     <div className = "searchIcon"> <FontAwesomeIcon icon={faSearch} /> </div>
                     <input onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" placeholder = "search" className="form-control" />
                     <button onClick = {this.search} className = "btn btn-primary form-control" type = "search"> Search </button>
@@ -98,7 +105,7 @@ export default class Feed extends Component {
                     open = {this.state.modalIsOpen}
                     closeModal = {this.closeModal}
                     postJSON = {this.state.currentOpenProject}
-                />
+                /> </div> }
             </div>
         )
     }

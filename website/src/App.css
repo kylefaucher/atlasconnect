@@ -40,16 +40,13 @@
     width: 100%;
     background: white;
     margin-top: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     /*padding: 20px;*/
     border-radius: 5px;
     cursor: pointer;
+    background-size: cover;
+    height: 300px;
     box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
-}
-
-.post span {
-    opacity: 0.2;
-    display: block;
 }
 
 .postsGrid{
@@ -147,6 +144,7 @@
 
 .post-user-name{
   font-weight: 200;
+  display: inline-block;
 }
 
 .profile-container{
@@ -208,8 +206,83 @@
 */
 .uploadedImages img{
   width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
 .post-head, .post-foot{
   padding: 20px;
+}
+
+.post-head{
+  margin-bottom: 0px;
+}
+
+.tags-list{
+  margin-bottom: 50px;
+  padding: 15px;
+  padding-top: 0;
+}
+
+.content-container .load-wrap{
+    height: 100vh;
+}
+
+.load-wrap{
+  width: 100%;
+  text-align: center;
+  height: 200px;
+  padding-top: 80px;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+.post h5{
+  color: white;
+  font-weight: 800;
+  font-size: 1.5em;
+}
+
+.post-user-name{
+  font-weight: 600;
+}
+
+.postTime{
+  /*font-weight: 200;*/
+  opacity: 0.3;
+  font-size: .7em;
+}
+
+.post-foot{
+  color: white;
+  position: relative;
+  top: 90%;
+  margin-bottom: 45px;
+}
+
+.imgOverlay{
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,0);
+  transition: 0.25s ease;
+}
+
+.imgOverlay-hov{
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.4);
+  transition: 0.25s ease;
+}
+
+.imgOverlay .post-foot{
+  transform: scale(0);
+  transition: 0.25s ease;
+}
+
+.imgOverlay-hov h5, .imgOverlay-hov .post-foot, .imgOverlay-hov .tags-list{
+  transform: scale(1);
+  transition: 0.25s ease;
 }
