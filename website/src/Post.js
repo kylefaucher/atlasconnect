@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+
 import Tag from './Tag.js';
+
+import Project from './Project.js';
 
 import { Link } from 'react-router-dom';
 
@@ -60,6 +64,7 @@ export default class Post extends Component {
     render() {
         return (
             <div>
+            <Link to={{pathname: "/project/" + this.props.postJSON._id, state: { prevPath: window.location.pathname }}}>
             <div className = "post" onMouseEnter = {this.handleHover} onMouseLeave = {this.handleUnhover} onClick = {this.props.handleClick} style = {{backgroundImage:'url('+this.state.imageURL+')'}}>
             <div className = {this.state.hovered ? 'imgOverlay-hov' : 'imgOverlay'}>
             { !this.state.loading ? <div>
@@ -84,6 +89,7 @@ export default class Post extends Component {
                 <span className = "postTime"> {months[this.state.time.getMonth()]} {this.state.time.getDate()} {this.state.time.getFullYear()} </span>
                 <div>
                 </div>
+            </Link>
             </div>
         )
     }

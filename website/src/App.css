@@ -116,7 +116,8 @@
   width: 100%;
   color: black !important;
   position: absolute;
-  font-size: .75em;
+  font-family: 'Lato';
+  font-size: .9em;
 }
 
 .topbar button img{
@@ -125,11 +126,20 @@
   width: 30px;
 }
 
+.topbar button{
+  color: black;
+  margin: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: 700;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
 .welcome-msg{
   /*color: white;*/
   color: black;
   font-size: 110%;
-  padding: 15px;
+  font-weight: 300;
 }
 
 .details-modal{
@@ -250,7 +260,7 @@
 
 .postTime{
   /*font-weight: 200;*/
-  opacity: 0.3;
+  opacity: 0;
   font-size: .7em;
 }
 
@@ -277,7 +287,7 @@
   transition: 0.25s ease;
 }
 
-.imgOverlay .post-foot{
+.imgOverlay .post-foot, .imgOverlay .tags-list{
   transform: scale(0);
   transition: 0.25s ease;
 }
@@ -286,3 +296,22 @@
   transform: scale(1);
   transition: 0.25s ease;
 }
+
+.project-container{
+  height: 100vh;
+}
+
+a{
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.back-link{
+  margin-bottom: 40px;
+}
+
+.project-image{
+  max-width: 400px;
+  border-radius: 5px;
+}
+

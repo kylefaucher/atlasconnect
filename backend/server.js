@@ -72,6 +72,32 @@ postsRoutes.route('/search/:searchvalue').get(function(req, res) {
     });
 });
 
+postsRoutes.route('/project/:projectId').get(function(req, res) {
+    let projectId = req.params.projectId;
+    Posts.find({'_id': projectId}).exec(function(err,posts){
+        if (err){
+            console.log(err);
+        }
+        else{
+            console.log(posts);
+            res.json(posts);
+        }
+    });
+});
+
+postsRoutes.route('/project/:projectid').get(function(req, res) {
+    let projectid = req.params.projectid;
+    Posts.find({'_id': projectid}).exec(function(err,posts){
+        if (err){
+            console.log(err);
+        }
+        else{
+            console.log(posts);
+            res.json(posts);
+        }
+    });
+});
+
 postsRoutes.route('/add').post(function(req, res) {
     let posts = new Posts(req.body.post_data);
     let project_id = "";
