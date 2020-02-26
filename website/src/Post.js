@@ -64,10 +64,11 @@ export default class Post extends Component {
     render() {
         return (
             <div>
-            <Link to={{pathname: "/project/" + this.props.postJSON._id, state: { prevPath: window.location.pathname }}}>
+            { !this.state.loading ?
+            <Link className = {this.state.loading ? "post-loading" : "post-loaded"} to={{pathname: "/project/" + this.props.postJSON._id, state: { prevPath: window.location.pathname }}}>
             <div className = "post" onMouseEnter = {this.handleHover} onMouseLeave = {this.handleUnhover} onClick = {this.props.handleClick} style = {{backgroundImage:'url('+this.state.imageURL+')'}}>
             <div className = {this.state.hovered ? 'imgOverlay-hov' : 'imgOverlay'}>
-            { !this.state.loading ? <div>
+            <div>
                 <div className = "post-head">
                     <h5> {this.props.postJSON.title} </h5>
                 </div>
@@ -79,9 +80,7 @@ export default class Post extends Component {
                         return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
                 })}
                 </div>
-                </div> :
-
-                <div className = "load-wrap"> <Loader color="#f2f2f2" size="72px" margin="4px" /> </div> }
+                </div>
             </div>
             </div>
                 <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faUserCircle} />
@@ -89,7 +88,8 @@ export default class Post extends Component {
                 <span className = "postTime"> {months[this.state.time.getMonth()]} {this.state.time.getDate()} {this.state.time.getFullYear()} </span>
                 <div>
                 </div>
-            </Link>
+            </Link> : 
+            <div className = "load-wrap"> <Loader color="#f2f2f2" size="72px" margin="4px" /> </div>}
             </div>
         )
     }

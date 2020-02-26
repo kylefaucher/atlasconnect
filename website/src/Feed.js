@@ -96,11 +96,13 @@ export default class Feed extends Component {
                     <input onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" placeholder = "search" className="form-control" />
                     <button onClick = {this.search} className = "btn btn-primary form-control" type = "search"> Search </button>
                 </div>
+                {this.state.messages.length ? 
                 <div className = 'postsGrid'>
-                	 {this.state.messages.map(item => {if(item.message && item.include == true && item.title){
+                	 {this.state.messages.map(item => {if(item.message && item.title){
                 	 	return <Post handleClick={() => this.openModal(item)} closeModal = {this.closeModal} key={item._id} postJSON = {item} />;
                 	 }})}
                 </div>
+                : <div> No projects match your search. </div> }
                 <ProjectDetails 
                     open = {this.state.modalIsOpen}
                     closeModal = {this.closeModal}

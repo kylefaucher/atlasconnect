@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { Redirect } from 'react-router-dom';
+
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
@@ -107,7 +109,7 @@ export default class Write extends Component {
 				message: this.state.message,
 				title: this.state.title,
 				time: curTime,
-				include: true,
+				public: true,
 				tags: this.state.tags,
 				user_display_name: this.props.currentUser.displayName,
 				user_id: this.props.currentUser.uid
@@ -170,13 +172,15 @@ export default class Write extends Component {
 
     render() {
         return (
+        	<div> 
+        	{this.props.isLoggedIn ?
             <div className = 'content-container'>
                 <div >
                 <h4>New Project</h4>
                 <form onSubmit={this.onSubmit} style = {{"margin-bottom": "200px"}} enctype="multipart/form-data">
                 	<label style = {{'margin-top':'20px'}}> Title </label>
                 	<input type = "text" name = 'title' value = {this.state.title} onChange = {this.onTitleChange} className = "form-control" />
-                	<label style = {{'margin-top':'20px'}}> Description </label>
+                	<label style = {{'margin-top':'20px'}}> Summary </label>
                 	<textarea name = 'message' value = {this.state.message} onChange = {this.onMessageChange} className = 'form-control' />
                 	<div style = {{'display':'flex', 'margin-bottom':'20px', 'margin-top':'20px'}}>
                 		<input value = {this.state.cur_tag_input} placeholder = 'Add Tags' type = "text" onChange = {this.onTagInputChange} name = 'tag_input' className = 'form-control'/>
@@ -208,6 +212,13 @@ export default class Write extends Component {
                 	<button className = 'btn btn-primary' type = 'submit'>Post</button>
                 </form>
                 </div>
+            </div> : 
+                <Redirect
+                    to={{
+                      pathname: "/"
+                    }}
+                />
+        	}
             </div>
         )
     }

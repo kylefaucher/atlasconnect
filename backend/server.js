@@ -48,7 +48,7 @@ postsRoutes.route('/images/:project_id').get(function(req, res) {
 
 postsRoutes.route('/userposts/:user_id').get(function(req, res) {
     let username = req.params.user_id;
-    Posts.find({'user_id': username}).exec(function(err,posts){
+    Posts.find({'user_id': username}).sort({time: -1}).exec(function(err,posts){
         if (err){
             console.log(err);
         }

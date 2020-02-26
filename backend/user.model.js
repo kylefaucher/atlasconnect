@@ -1,28 +1,25 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let Posts = new Schema({
-    message: {
+let User = new Schema({
+    first_name: {
         type: String
     },
-    title:{
+    last_name:{
     	type: String
     },
-    time: {
-        type: Date
+    display_name: {
+        type: String
     },
-    public: {
-        type: Boolean
+    bio: {
+        type: String
     },
     tags: {
     	type: Array
-    },
-    user_display_name: {
-        type: String
     },
     user_id: {
         type: String
     }
 });
 
-module.exports = mongoose.model('Posts', Posts);
+module.exports = mongoose.model('User', User);

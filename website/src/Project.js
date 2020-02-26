@@ -15,13 +15,15 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
+
 export default class Project extends Component {
 	constructor(props){
 		super(props);
         this.state = {
             loading: true,
             projectDetails: '',
-            imageURL:''
+            imageURL:'',
+            projectDate:''
         };
 	}
 
@@ -31,6 +33,7 @@ export default class Project extends Component {
         axios.get('http://localhost:4000/capstoneprototype/project/' + this.props.match.params.projectId)
             .then(response => {
                 this.setState({ projectDetails: response.data[0]});
+                this.setState({ projectDate: new Date(response.data[0].time)})
                 console.log(response.data);
             })
             .catch(function (error){
@@ -61,8 +64,15 @@ export default class Project extends Component {
                 <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faChevronLeft} /> Back </div> </Link>
                 {!this.state.loading ? <div>
                 <h1> {this.state.projectDetails.title} </h1>
-                <h5> {this.state.projectDetails.user_display_name} </h5>
+                <h5 style = {{'display': 'inline'}}> {this.state.projectDetails.user_display_name} </h5>
+                { this.state.projectDate ? 
+                <span className = "project-time"> {months[this.state.projectDate.getMonth()]} {this.state.projectDate.getDate()} {this.state.projectDate.getFullYear()} </span> : '' }
                 <img className = "project-image" src = {this.state.imageURL} alt = 'img' />
+                <div className = "tags-list">
+                {this.state.projectDetails.tags.map(item => {
+                        return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
+                })}
+                </div>
                 <p></p>
                 <p> {this.state.projectDetails.message} </p> </div> :
                 <Loader color="#282c34" size="72px" margin="4px" /> }

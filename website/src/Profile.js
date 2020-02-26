@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Redirect } from 'react-router-dom';
 
 import Post from './Post.js';
 import ProjectDetails from './ProjectDetails.js';
@@ -46,16 +47,22 @@ export default class Profile extends Component {
 
     render() {
         return (
+            <div>
+            {this.props.isLoggedIn ? 
             <div className = 'content-container profile-container'>
                 <div>
-                <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
-                <h1> {this.props.currentUser.displayName} </h1>
-                <p> {this.props.currentUser.email} </p>
+                    <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
+                    <h1> {this.props.currentUser.displayName} </h1>
+                    <p> {this.props.currentUser.email} </p>
+                    <p> Bio </p>
+                    <p> Interests </p>
                 </div>
                 <div>
+                <h2> featured project </h2>
+                <p> You have not chosen a featured project </p>
                 <h2> all projects </h2>
                 <div className = 'profile-posts-container'>
-                    {this.state.messages.map(item => {if(item.message && item.include == true && item.title){
+                    {this.state.messages.map(item => {if(item.message && item.title){
                         return <Post handleClick={() => this.openModal(item)} closeModal = {this.closeModal} key={item._id} postJSON = {item} />;
                      }})}
                 </div>
@@ -65,6 +72,13 @@ export default class Profile extends Component {
                     closeModal = {this.closeModal}
                     postJSON = {this.state.currentOpenProject}
                 />
+            </div> : 
+               <Redirect
+                    to={{
+                      pathname: "/"
+                    }}
+                />
+            }
             </div>
         )
     }
