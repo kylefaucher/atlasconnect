@@ -28,7 +28,8 @@ class App extends Component{
 
     this.state={
       isLoggedIn:false,
-      currentUser: ''
+      currentUser: '',
+      newUser: false
     };
 
     this.handleGoogleSignIn = this.handleGoogleSignIn.bind(this);
@@ -40,8 +41,13 @@ class App extends Component{
       let thisObject = this;
       firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
+        console.log('user is new?');
+        console.log(user);
         thisObject.setState({isLoggedIn:true});
         thisObject.setState({currentUser:firebase.auth().currentUser});
+        if (thisObject.state.newUser){
+          
+        }
       } else {
         thisObject.setState({isLoggedIn:false});
         thisObject.setState({currentUser:{}});
@@ -66,6 +72,7 @@ class App extends Component{
            if (result.user){
               thisObject.setState({isLoggedIn:true});
               thisObject.setState({currentUser:user});
+              thisObject.setState({newUser: user.metadata.lastSignInTime});
            }
          });
 

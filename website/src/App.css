@@ -26,7 +26,7 @@
   height: 100vh;
   /*color: white;*/
   color: black;
-  padding-top: 50px;
+  padding-top: 0;
 }
 
 .content-container{
@@ -114,7 +114,7 @@
   z-index: 100;
   width: 100%;
   color: black !important;
-  position: absolute;
+  /*position: absolute;*/
   font-family: 'Lato';
   font-size: .9em;
 }
