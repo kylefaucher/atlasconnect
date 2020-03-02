@@ -15,6 +15,7 @@ let User = require('./user.model.js');
 app.use(cors());
 app.use(bodyParser.json());
 
+// connect to cloud database
 const db = require('./config/keys.js').mongoURI;
 
 mongoose.connect(db, { useNewUrlParser: true });
