@@ -10,6 +10,7 @@ const PORT = 4000;
 
 let Posts = require('./data.model.js');
 let Img = require('./img.model.js');
+let User = require('./user.model.js');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -26,7 +27,7 @@ postsRoutes.route('/').get(function(req, res) {
         if (err) {
             console.log(err);
         } else {
-        	console.log(posts);
+        	// console.log(posts);
             res.json(posts);
         }
     });
@@ -39,7 +40,7 @@ postsRoutes.route('/images/:project_id').get(function(req, res) {
             console.log(err);
         } else {
             // console.log(projectID);
-            console.log(imgs);
+            // console.log(imgs);
             res.send(imgs);
         }
     });
@@ -53,7 +54,7 @@ postsRoutes.route('/userposts/:user_id').get(function(req, res) {
             console.log(err);
         }
         else{
-            console.log(posts);
+            // console.log(posts);
             res.json(posts);
         }
     });
@@ -66,7 +67,7 @@ postsRoutes.route('/search/:searchvalue').get(function(req, res) {
             console.log(err);
         }
         else{
-            console.log(posts);
+            // console.log(posts);
             res.json(posts);
         }
     });
@@ -79,7 +80,7 @@ postsRoutes.route('/project/:projectId').get(function(req, res) {
             console.log(err);
         }
         else{
-            console.log(posts);
+            // console.log(posts);
             res.json(posts);
         }
     });
@@ -92,10 +93,37 @@ postsRoutes.route('/project/:projectid').get(function(req, res) {
             console.log(err);
         }
         else{
-            console.log(posts);
+            // console.log(posts);
             res.json(posts);
         }
     });
+});
+
+postsRoutes.route('/user').post(function(req,res) {
+    User.find({'user_id':req.body.user_id}).exec()
+        .then( function(users){
+            if (users.length){
+                console.log('user already exists');
+                res.status(200).send('user already exists, not adding to db');
+            }
+            else{
+                let newUser = new User;
+                newUser.display_name = req.body.user_display_name;
+                newUser.email = req.body.user_email;
+                newUser.user_id = req.body.user_id;
+                newUser.save()
+                    .then(user => {
+                        res.status(200).send('new user added successfully');
+                        console.log(user);
+                    })
+                    .catch( err => {
+                        res.status(400).send(err);
+                    });
+            }
+        })
+        .catch(function(error){
+            console.log(error);
+        });
 });
 
 postsRoutes.route('/add').post(function(req, res) {
@@ -105,11 +133,11 @@ postsRoutes.route('/add').post(function(req, res) {
     posts.save()
         .then(post => {
             let image = new Img();
-            console.log('HERE');
-            console.log(posts._id);
+            // console.log('HERE');
+            // console.log(posts._id);
             project_id = posts._id;
             image.project_id = posts._id;
-            console.log(image.project_id);
+            // console.log(image.project_id);
             // res.status(200).json({'post': 'post added successfully'});
                 let filePath = './uploads/' + req.body.img_data.fileID.filename;
                 image.img.data = fs.readFileSync(filePath);
@@ -149,12 +177,12 @@ postsRoutes.route('/upload').post(function(req, res) {
 
     upload(req, res, function(err) {
         if (err) {
-            console.log(err);
+            // console.log(err);
             return res.end('Error');
         } else {
-            console.log(req.body);
+            // console.log(req.body);
             req.files.forEach(function(item) {
-                console.log(item);
+                // console.log(item);
                 res.setHeader('content-type', 'text/plain');
                 res.send(item);
                 // move your file to destination
@@ -201,7 +229,7 @@ postsRoutes.route('/upload').delete(function(req, res) {
             console.info(`removed`);
         }
     });
-    console.log(req);
+    // console.log(req);
     res.send('deleted');
 });
 

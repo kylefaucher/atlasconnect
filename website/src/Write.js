@@ -177,17 +177,17 @@ export default class Write extends Component {
             <div className = 'content-container'>
                 <div >
                 <h4>New Project</h4>
-                <form onSubmit={this.onSubmit} style = {{"margin-bottom": "200px"}} enctype="multipart/form-data">
-                	<label style = {{'margin-top':'20px'}}> Title </label>
+                <form onSubmit={this.onSubmit} style = {{"marginBottom": "200px"}} encType="multipart/form-data">
+                	<label style = {{'marginTop':'20px'}}> Title </label>
                 	<input type = "text" name = 'title' value = {this.state.title} onChange = {this.onTitleChange} className = "form-control" />
-                	<label style = {{'margin-top':'20px'}}> Summary </label>
+                	<label style = {{'marginTop':'20px'}}> Summary </label>
                 	<textarea name = 'message' value = {this.state.message} onChange = {this.onMessageChange} className = 'form-control' />
-                	<div style = {{'display':'flex', 'margin-bottom':'20px', 'margin-top':'20px'}}>
+                	<div style = {{'display':'flex', 'marginBottom':'20px', 'marginTop':'20px'}}>
                 		<input value = {this.state.cur_tag_input} placeholder = 'Add Tags' type = "text" onChange = {this.onTagInputChange} name = 'tag_input' className = 'form-control'/>
                 		<button className = 'btn btn-secondary' type = 'button' onClick = {this.onTagAdd}> + </button>
 
                 	</div>
-                	<div style = {{'margin-bottom':'30px'}}>
+                	<div style = {{'marginBottom':'30px'}}>
 	                	{this.state.tags.map(item => {
 	                	 		return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
 	                	})}

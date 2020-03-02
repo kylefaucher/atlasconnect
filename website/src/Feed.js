@@ -91,7 +91,11 @@ export default class Feed extends Component {
             {this.state.loading? 
                 <div className = "load-wrap"> <Loader color="#212529" size="72px" margin="4px" /> </div> :
 
-                <div> <div className = "form-group search-bar">
+                <div> 
+
+                    <div className = "feed-nav"> <div className = "feed-nav-list"> <a>Featured</a> <a>Latest</a> <a>Search</a> </div> <div className = "feed-nav-underline"> </div> </div>
+
+                <div className = "form-group search-bar">
                     <div className = "searchIcon"> <FontAwesomeIcon icon={faSearch} /> </div>
                     <input onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" placeholder = "search" className="form-control" />
                     <button onClick = {this.search} className = "btn btn-primary form-control" type = "search"> Search </button>

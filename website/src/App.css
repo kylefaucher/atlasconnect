@@ -2,6 +2,7 @@
 
 #root, body, html{
   background: #f1f1f1;
+  color: #212529;
 }
 
 .App {
@@ -16,7 +17,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   /*color: white;*/
-  color: black;
+  color: #212529;
 }
 
 .main-container{
@@ -25,7 +26,7 @@
   background: transparent;
   height: 100vh;
   /*color: white;*/
-  color: black;
+  color: #212529;
   padding-top: 0;
 }
 
@@ -65,8 +66,8 @@
 
 .main-nav {
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr 1fr;
-    grid-column-gap: 50px;
+    grid-template-columns: 10fr 1fr 10fr 1fr 10fr 1fr 10fr 1fr;
+    grid-column-gap: 0px;
     padding-left: 30px;
     padding-right: 40px;
 }
@@ -76,7 +77,7 @@
 }
 
 .main-nav .nav-link:hover{
-  color: black;
+  color: #212529;
   opacity: 1 !important;
   transition: 0.25s ease;
   background: #ffffff75;
@@ -84,7 +85,7 @@
 
 .nav-link{
   /*color: white;*/
-  color:black;
+  color:#212529;
   font-size: 1.4em;
   text-align: center;
   border-radius: 40px 40px 0 0;
@@ -96,13 +97,13 @@
 .nav-link.active{
   background: white;
   /*color: #060677;*/
-  color: black;
+  color: #212529;
   opacity: 1;
 }
 
 .nav-link.active:hover{
     /*color: #060677;*/
-    color: black;
+    color: #212529;
     opacity: 1 !important;
     background: white;
 }
@@ -113,7 +114,7 @@
   background: transparent;
   z-index: 100;
   width: 100%;
-  color: black !important;
+  /*color: black !important;*/
   /*position: absolute;*/
   font-family: 'Lato';
   font-size: .9em;
@@ -126,7 +127,7 @@
 }
 
 .topbar button{
-  color: black;
+  color: #212529;
   margin: 10px;
   border-radius: 5px;
   border: none;
@@ -136,7 +137,7 @@
 
 .welcome-msg{
   /*color: white;*/
-  color: black;
+  /*color: black;*/
   font-size: 110%;
   font-weight: 300;
 }
@@ -196,7 +197,7 @@
 }
 
 .search-bar button, .search-bar button:active, .search-bar button:focus{
-  background: black !important;
+  background: #212529 !important;
   border: 0 !important;
   border-radius: 0 5px 5px 0;
   outline: none;
@@ -204,7 +205,7 @@
 }
 
 .search-bar button:hover{
-  background: black;
+  background: #212529;
 }
 
 /*.uploadedImages{
@@ -332,4 +333,56 @@ a{
   transform: scale(1);
   transition: 1s ease;
 }*/
+
+.project-title{
+  font-weight: 900;
+}
+
+.feed-nav-underline {
+    width: 95px;
+    background: #202429;
+    height: 5px;
+    margin-top: 5px;
+}
+
+.feed-nav{
+  margin-bottom: 30px;
+}
+
+.feed-nav-list {
+    display: flex;
+    width: 275px;
+    justify-content: space-between;
+    font-size: 1.25em;
+    font-weight: 800;
+}
+
+.nav-spacer{
+  background: white;
+}
+
+.nav-spacer2 {
+    background: #f1f1f1;
+    width: 100%;
+    height: 100%;
+}
+ 
+.active + .nav-spacer>.nav-spacer2{
+  border-radius: 0 0 0 50px;
+  transition: 0.15s ease;
+  /*background: red !important;*/
+}
+
+svg{
+  user-select: none;
+}
+
+button[type='submit'], button[type='submit']:hover, button[type='submit']:active, button[type='submit']:focus{
+ background: #212529 !important;
+ border: 0;
+ outline: none;
+ box-shadow: none;
+}
+
+
 

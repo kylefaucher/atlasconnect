@@ -12,6 +12,8 @@ import Loader from 'halogenium/lib/DotLoader';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
@@ -63,7 +65,8 @@ export default class Project extends Component {
                 <div className = 'back-link'>
                 <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faChevronLeft} /> Back </div> </Link>
                 {!this.state.loading ? <div>
-                <h1> {this.state.projectDetails.title} </h1>
+                <h1 className = "project-title"> {this.state.projectDetails.title} </h1>
+                <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faUserCircle} />
                 <h5 style = {{'display': 'inline'}}> {this.state.projectDetails.user_display_name} </h5>
                 { this.state.projectDate ? 
                 <span className = "project-time"> {months[this.state.projectDate.getMonth()]} {this.state.projectDate.getDate()} {this.state.projectDate.getFullYear()} </span> : '' }

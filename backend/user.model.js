@@ -2,11 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let User = new Schema({
-    first_name: {
+    display_name: {
         type: String
-    },
-    last_name:{
-    	type: String
     },
     display_name: {
         type: String
@@ -14,8 +11,8 @@ let User = new Schema({
     bio: {
         type: String
     },
-    tags: {
-    	type: Array
+    email:{
+        type: String
     },
     user_id: {
         type: String

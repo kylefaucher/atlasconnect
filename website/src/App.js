@@ -7,16 +7,19 @@ import Write from './Write.js';
 import Profile from './Profile.js';
 import Project from './Project.js';
 
-import logo from './static/img/logo-black.png';
+import logo from './static/img/logo-grey.png';
 
 import * as firebase from 'firebase';
 import firebaseConfig from './firebase.config';
+
+import axios from 'axios';
 
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -29,12 +32,11 @@ class App extends Component{
     this.state={
       isLoggedIn:false,
       currentUser: '',
-      newUser: false
+      lastSignIn: ''
     };
 
     this.handleGoogleSignIn = this.handleGoogleSignIn.bind(this);
     this.handleGoogleSignOut = this.handleGoogleSignOut.bind(this);
-
   }
 
   componentDidMount(){
@@ -45,9 +47,17 @@ class App extends Component{
         console.log(user);
         thisObject.setState({isLoggedIn:true});
         thisObject.setState({currentUser:firebase.auth().currentUser});
-        if (thisObject.state.newUser){
-          
-        }
+        thisObject.setState({lastSignIn: user.metadata.lastSignInTime});
+
+        let userJSON = {
+          user_id: user.uid,
+          user_display_name: user.displayName,
+          user_email: user.email
+        };
+
+        axios.post('http://localhost:4000/capstoneprototype/user', userJSON)
+            .then(res => console.log(res.data));
+
       } else {
         thisObject.setState({isLoggedIn:false});
         thisObject.setState({currentUser:{}});
@@ -72,7 +82,7 @@ class App extends Component{
            if (result.user){
               thisObject.setState({isLoggedIn:true});
               thisObject.setState({currentUser:user});
-              thisObject.setState({newUser: user.metadata.lastSignInTime});
+              thisObject.setState({lastSignIn: user.metadata.lastSignInTime});
            }
          });
 
@@ -113,15 +123,17 @@ class App extends Component{
        </div>
           <div className="main-container">
             <nav className='main-nav'>
-              <h2><img src = {logo} style = {{'width': '100%', 'position':'relative','bottom':'-11px'}} alt = "atlas connect logo"/></h2>
-              <NavLink to="/" activeClassName='active' className="nav-link" exact>Discover</NavLink>
+              <h2><img src = {logo} style = {{'width': '100%', 'position':'relative','bottom':'-11px'}} alt = "atlas connect logo"/></h2><div className = "nav-spacer"><div className="nav-spacer2"></div> </div>
+              <NavLink to="/" activeClassName='active' className="nav-link" exact><FontAwesomeIcon style = {{fontSize:'1.5em'}} icon={faHome} /></NavLink> <div className = "nav-spacer"> <div className="nav-spacer2"></div> </div>
               {this.state.isLoggedIn &&
-                 <NavLink to="/create" activeClassName='active' className="nav-link">+</NavLink>
+                 <NavLink to="/create" activeClassName='active' className="nav-link">+</NavLink> 
               }
+              <div className = "nav-spacer"><div className="nav-spacer2"></div> </div>
 
               {this.state.isLoggedIn &&
                 <NavLink to="/profile" activeClassName='active' className="nav-link"><FontAwesomeIcon style = {{fontSize:'1.5em'}} icon={faUserCircle} /></NavLink>
               }
+              <div className = "nav-spacer"><div className="nav-spacer2"></div> </div>
 
              </nav>
 
