@@ -11,27 +11,21 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
 
-export default class Profile extends Component {
+export default class SelfProfile extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
             messages: [],
-            userJSON:''
+            modalIsOpen: false,
+            currentOpenProject: ''
         };
+
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
 	}
 
     componentDidMount() {
-        console.log('componentDidMount');
-        console.log(this.props);
-        axios.get('http://localhost:4000/capstoneprototype/user/' + this.props.match.params.userId)
-            .then(response => {
-                this.setState({ userJSON: response.data[0]});
-                console.log(response.data[0]);
-            })
-            .catch(function (error){
-                console.log(error);
-        });
-        let requestString = 'http://localhost:4000/capstoneprototype/userposts/' + this.props.match.params.userId;
+        let requestString = 'http://localhost:4000/capstoneprototype/userposts/' + this.props.currentUser.uid;
         axios.get(requestString)
             .then(response => {
                 this.setState({ messages: response.data });
@@ -42,14 +36,24 @@ export default class Profile extends Component {
             })
     }
 
+    openModal(postJSON){
+        this.setState({currentOpenProject:postJSON});
+        this.setState({modalIsOpen:true});
+    }
+
+    closeModal(){
+        this.setState({modalIsOpen:false});
+    }
+
     render() {
         return (
             <div>
+            {this.props.isLoggedIn ? 
             <div className = 'content-container profile-container'>
                 <div>
                     <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
-                    <h1 className = "profile-user-display-name"> {this.state.userJSON.display_name} </h1>
-                    <p> {this.state.userJSON.email} </p>
+                    <h1> {this.props.currentUser.displayName} </h1>
+                    <p> {this.props.currentUser.email} </p>
                     <p> Bio </p>
                     <p> Interests </p>
                 </div>
@@ -63,7 +67,18 @@ export default class Profile extends Component {
                      }})}
                 </div>
                 </div>
-            </div> 
+                <ProjectDetails 
+                    open = {this.state.modalIsOpen}
+                    closeModal = {this.closeModal}
+                    postJSON = {this.state.currentOpenProject}
+                />
+            </div> : 
+               <Redirect
+                    to={{
+                      pathname: "/"
+                    }}
+                />
+            }
             </div>
         )
     }

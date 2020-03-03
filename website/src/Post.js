@@ -8,6 +8,8 @@ import Tag from './Tag.js';
 
 import Project from './Project.js';
 
+import UserLink from './UserLink.js';
+
 import { Link } from 'react-router-dom';
 
 import axios from 'axios';
@@ -65,6 +67,7 @@ export default class Post extends Component {
         return (
             <div>
             { !this.state.loading ?
+            <div>
             <Link className = {this.state.loading ? "post-loading" : "post-loaded"} to={{pathname: "/project/" + this.props.postJSON._id, state: { prevPath: window.location.pathname }}}>
             <div className = "post" onMouseEnter = {this.handleHover} onMouseLeave = {this.handleUnhover} onClick = {this.props.handleClick} style = {{backgroundImage:'url('+this.state.imageURL+')'}}>
             <div className = {this.state.hovered ? 'imgOverlay-hov' : 'imgOverlay'}>
@@ -80,15 +83,15 @@ export default class Post extends Component {
                         return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
                 })}
                 </div>
-                </div>
             </div>
             </div>
-                <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faUserCircle} />
-                <h6 className='post-user-name'> {this.props.postJSON.user_display_name} </h6>
-                <span className = "postTime"> {months[this.state.time.getMonth()]} {this.state.time.getDate()} {this.state.time.getFullYear()} </span>
-                <div>
-                </div>
-            </Link> : 
+            </div>
+
+            </Link> 
+
+            <UserLink postJSON = {this.props.postJSON} />
+
+            </div> : 
             <div className = "load-wrap"> <Loader color="#f2f2f2" size="72px" margin="4px" /> </div>}
             </div>
         )

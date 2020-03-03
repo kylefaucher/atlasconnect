@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Feed from './Feed.js';
 import Write from './Write.js';
+import SelfProfile from './SelfProfile.js';
 import Profile from './Profile.js';
 import Project from './Project.js';
 
@@ -140,9 +141,10 @@ class App extends Component{
             <Route path="/" exact component={Feed} />
             <Route path="/create" render={(props)=> <Write currentUser = {this.state.currentUser} isLoggedIn = {this.state.isLoggedIn} />} />
             <Route path="/profile" 
-                   render={(props)=> <Profile isLoggedIn = {this.state.isLoggedIn} currentUser = {this.state.currentUser} />}
+                   render={(props)=> <SelfProfile isLoggedIn = {this.state.isLoggedIn} currentUser = {this.state.currentUser} />}
             />
             <Route path="/project/:projectId" component={Project} />
+            <Route path="/user/:userId" component={Profile} />
 
           </div>
         </Router>

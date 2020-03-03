@@ -5,7 +5,7 @@ const cors = require('cors');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const postsRoutes = express.Router();
+const router = express.Router();
 const PORT = 4000;
 
 let Posts = require('./data.model.js');
@@ -25,7 +25,7 @@ connection.once('open', function() {
     console.log("MongoDB connection established");
 });
 
-postsRoutes.route('/').get(function(req, res) {
+router.route('/').get(function(req, res) {
     Posts.find().sort({time: -1}).exec(function(err, posts) {
         if (err) {
             console.log(err);
@@ -36,7 +36,7 @@ postsRoutes.route('/').get(function(req, res) {
     });
 });
 
-postsRoutes.route('/images/:project_id').get(function(req, res) {
+router.route('/images/:project_id').get(function(req, res) {
     let projectID = req.params.project_id;
     Img.find({'project_id':projectID}).exec(function(err, imgs) {
         if (err) {
@@ -50,7 +50,7 @@ postsRoutes.route('/images/:project_id').get(function(req, res) {
 });
 
 
-postsRoutes.route('/userposts/:user_id').get(function(req, res) {
+router.route('/userposts/:user_id').get(function(req, res) {
     let username = req.params.user_id;
     Posts.find({'user_id': username}).sort({time: -1}).exec(function(err,posts){
         if (err){
@@ -63,7 +63,7 @@ postsRoutes.route('/userposts/:user_id').get(function(req, res) {
     });
 });
 
-postsRoutes.route('/search/:searchvalue').get(function(req, res) {
+router.route('/search/:searchvalue').get(function(req, res) {
     let searchvalue = req.params.searchvalue;
     Posts.find({'tags.tag_id': searchvalue}).exec(function(err,posts){
         if (err){
@@ -76,7 +76,7 @@ postsRoutes.route('/search/:searchvalue').get(function(req, res) {
     });
 });
 
-postsRoutes.route('/project/:projectId').get(function(req, res) {
+router.route('/project/:projectId').get(function(req, res) {
     let projectId = req.params.projectId;
     Posts.find({'_id': projectId}).exec(function(err,posts){
         if (err){
@@ -89,7 +89,7 @@ postsRoutes.route('/project/:projectId').get(function(req, res) {
     });
 });
 
-postsRoutes.route('/project/:projectid').get(function(req, res) {
+router.route('/project/:projectid').get(function(req, res) {
     let projectid = req.params.projectid;
     Posts.find({'_id': projectid}).exec(function(err,posts){
         if (err){
@@ -102,7 +102,20 @@ postsRoutes.route('/project/:projectid').get(function(req, res) {
     });
 });
 
-postsRoutes.route('/user').post(function(req,res) {
+router.route('/user/:userid').get(function(req,res) {
+    let userid = req.params.userid;
+    User.find({'user_id': userid}).exec(function(err,user){
+        if (err){
+            console.log(err);
+            res.status(400);
+        }
+        else{
+            res.status(200).json(user);
+        }
+    });
+});
+
+router.route('/user').post(function(req,res) {
     User.find({'user_id':req.body.user_id}).exec()
         .then( function(users){
             if (users.length){
@@ -129,7 +142,7 @@ postsRoutes.route('/user').post(function(req,res) {
         });
 });
 
-postsRoutes.route('/add').post(function(req, res) {
+router.route('/add').post(function(req, res) {
     let posts = new Posts(req.body.post_data);
     let project_id = "";
     console.log(req.body);
@@ -170,7 +183,7 @@ postsRoutes.route('/add').post(function(req, res) {
 });
 
 //temp storage
-postsRoutes.route('/upload').post(function(req, res) {
+router.route('/upload').post(function(req, res) {
     var storage = multer.diskStorage({
         destination: './uploads/'
     });
@@ -194,7 +207,7 @@ postsRoutes.route('/upload').post(function(req, res) {
     });
 });
 
-// postsRoutes.route('/save').post(function(req, res) {
+// router.route('/save').post(function(req, res) {
 //     var image = new Img();
 //     let filePath = './uploads/' + req.body.filename;
 //     image.img.data = fs.readFileSync(filePath);
@@ -219,7 +232,7 @@ postsRoutes.route('/upload').post(function(req, res) {
 //         });
 // });
 
-postsRoutes.route('/upload').delete(function(req, res) {
+router.route('/upload').delete(function(req, res) {
     let pathName = './uploads/' + req.body.filename;
     fs.unlink(pathName, function(err) {
         if(err && err.code == 'ENOENT') {
@@ -236,7 +249,7 @@ postsRoutes.route('/upload').delete(function(req, res) {
     res.send('deleted');
 });
 
-app.use('/capstoneprototype', postsRoutes);
+app.use('/capstoneprototype', router);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
