@@ -275,8 +275,10 @@
   height: 100%;
   width: 100%;
   border-radius: 5px;
-  background-color: rgba(0,0,0,0);
+  background: transparent;
+  /*background-image: linear-gradient(180deg, #3c3c3c36, transparent);*/
   transition: 0.25s ease;
+  -webkit-transition: background .25s ease;  
 }
 
 .imgOverlay-hov{
@@ -285,6 +287,7 @@
   border-radius: 5px;
   background-color: rgba(0,0,0,.4);
   transition: 0.25s ease;
+  -webkit-transition: background .25s ease-in;
 }
 
 .imgOverlay .post-foot, .imgOverlay .tags-list{
@@ -343,6 +346,23 @@ a{
     background: #202429;
     height: 5px;
     margin-top: 5px;
+    position: relative;
+    transition: 0.5s ease;
+}
+
+.feed-nav-underline.feed-nav-underline-Featured {
+    left: 0;
+    width: 95px;
+}
+
+.feed-nav-underline.feed-nav-underline-All {
+    left: 130px;
+    width: 35px;
+}
+
+.feed-nav-underline.feed-nav-underline-Search {
+    left: 200px;
+    width: 78px;
 }
 
 .feed-nav{
@@ -355,6 +375,10 @@ a{
     justify-content: space-between;
     font-size: 1.25em;
     font-weight: 800;
+}
+
+.feed-nav-list a{
+  cursor: pointer;
 }
 
 .nav-spacer{
@@ -382,6 +406,69 @@ button[type='submit'], button[type='submit']:hover, button[type='submit']:active
  border: 0;
  outline: none;
  box-shadow: none;
+}
+
+.add-title{
+  font-weight: 800;
+  margin-bottom: 30px;
+}
+
+form label{
+  font-weight: 800;
+}
+
+#addProjectForm input, #addProjectForm textarea{
+  border-radius: 50px;
+}
+
+#addProjectForm textarea{
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.form-group-one-line{
+  /*display: flex;*/
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.add-tag-button{
+  background: #212529 !important;
+  border-radius: 100px !important;
+  color: white !important;
+  margin-left: 10px;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+     border-color: #212529 !important; 
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.05) !important;
+}
+
+.form-flex{
+  display: flex;
+  justify-content: flex-start;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+label[for='forclass']{
+  cursor: pointer;
+  user-select: none;
+}
+
+.DraftEditor-root{
+    position: relative;
+    border: solid 1px #d6dbe0;
+    padding: 20px;
+    border-radius: 40px;
+    height: 300px !important;
 }
 
 

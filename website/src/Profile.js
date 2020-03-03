@@ -8,8 +8,12 @@ import ProjectDetails from './ProjectDetails.js';
 
 import axios from 'axios';
 
+import { Link } from 'react-router-dom';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+
 
 export default class Profile extends Component {
 	constructor(props){
@@ -47,6 +51,11 @@ export default class Profile extends Component {
             <div>
             <div className = 'content-container profile-container'>
                 <div>
+                    <Link to = {{pathname: this.props.location.state.prevPath, state: { prevPath: window.location.pathname }}}>
+                        <div className = 'back-link'>
+                        <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faChevronLeft} /> Back </div>
+                    </Link>
+
                     <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
                     <h1 className = "profile-user-display-name"> {this.state.userJSON.display_name} </h1>
                     <p> {this.state.userJSON.email} </p>

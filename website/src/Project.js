@@ -3,6 +3,7 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import Tag from './Tag.js';
+import UserLink from './UserLink.js';
 
 import axios from 'axios';
 
@@ -61,13 +62,12 @@ export default class Project extends Component {
     render() {
         return (
             <div className = 'content-container project-container'>
-                <Link to = {this.props.location.state.prevPath}>
+                <Link to = {{pathname: this.props.location.state.prevPath, state: { prevPath: window.location.pathname }}}>
                 <div className = 'back-link'>
                 <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faChevronLeft} /> Back </div> </Link>
                 {!this.state.loading ? <div>
                 <h1 className = "project-title"> {this.state.projectDetails.title} </h1>
-                <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faUserCircle} />
-                <h5 style = {{'display': 'inline'}}> {this.state.projectDetails.user_display_name} </h5>
+                <UserLink postJSON = {this.state.projectDetails} />
                 { this.state.projectDate ? 
                 <span className = "project-time"> {months[this.state.projectDate.getMonth()]} {this.state.projectDate.getDate()} {this.state.projectDate.getFullYear()} </span> : '' }
                 <img className = "project-image" src = {this.state.imageURL} alt = 'img' />

@@ -21,7 +21,8 @@ export default class Feed extends Component {
             modalIsOpen: false,
             currentOpenProject: '',
             searchValue: '',
-            loading: true
+            loading: true,
+            activeCategory: 'Featured'
         };
 
         this.openModal = this.openModal.bind(this);
@@ -29,10 +30,11 @@ export default class Feed extends Component {
         this.search = this.search.bind(this);
         this.handleSearchChange = this.handleSearchChange.bind(this);
         this.displayDefaultFeed = this.displayDefaultFeed.bind(this);
+        this.handleCategoryChange = this.handleCategoryChange.bind(this);
 	}
 
     displayDefaultFeed(){
-        axios.get('http://localhost:4000/capstoneprototype/')
+        axios.get('http://localhost:4000/capstoneprototype/featured')
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
@@ -50,6 +52,18 @@ export default class Feed extends Component {
         //     .catch(function (error){
         //         console.log(error);
         //  });
+    }
+
+    displayAllFeed(){
+        axios.get('http://localhost:4000/capstoneprototype/')
+            .then(response => {
+                this.setState({ messages: response.data });
+                console.log(response.data);
+                this.setState({loading:false});
+            })
+            .catch(function (error){
+                console.log(error);
+         });
     }
 
 	componentDidMount() {
@@ -81,6 +95,19 @@ export default class Feed extends Component {
             });
         }
         else{
+            this.displayAllFeed();
+        }
+    }
+
+    handleCategoryChange(e){
+        this.setState({activeCategory:e.target.textContent});
+        if (e.target.textContent == 'Search'){
+            this.setState({messages: ''});
+        }
+        else if (e.target.textContent == 'All'){
+            this.displayAllFeed();
+        }
+        else{
             this.displayDefaultFeed();
         }
     }
@@ -93,13 +120,16 @@ export default class Feed extends Component {
 
                 <div> 
 
-                    <div className = "feed-nav"> <div className = "feed-nav-list"> <a>Featured</a> <a>Latest</a> <a>Search</a> </div> <div className = "feed-nav-underline"> </div> </div>
-
-                <div className = "form-group search-bar">
-                    <div className = "searchIcon"> <FontAwesomeIcon icon={faSearch} /> </div>
-                    <input onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" placeholder = "search" className="form-control" />
-                    <button onClick = {this.search} className = "btn btn-primary form-control" type = "search"> Search </button>
-                </div>
+                    <div className = "feed-nav"> <div className = "feed-nav-list"> <a onClick = {this.handleCategoryChange}>Featured</a> <a onClick = {this.handleCategoryChange}>All</a> <a onClick = {this.handleCategoryChange}>Search</a> </div> 
+                    <div className = {"feed-nav-underline feed-nav-underline-" + this.state.activeCategory}> </div> 
+                    </div>
+                { this.state.activeCategory == 'Search' && 
+                    <div className = "form-group search-bar">
+                        <div className = "searchIcon"> <FontAwesomeIcon icon={faSearch} /> </div>
+                        <input onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" placeholder = "search" className="form-control" />
+                        <button onClick = {this.search} className = "btn btn-primary form-control" type = "search"> Search </button>
+                    </div>
+                }
                 {this.state.messages.length ? 
                 <div className = 'postsGrid'>
                 	 {this.state.messages.map(item => {if(item.message && item.title){

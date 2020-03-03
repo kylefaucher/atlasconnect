@@ -36,6 +36,17 @@ router.route('/').get(function(req, res) {
     });
 });
 
+router.route('/featured').get(function(req, res) {
+    Posts.find({'featured': true}).sort({time: -1}).exec(function(err, posts) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(posts);
+            res.json(posts);
+        }
+    });
+});
+
 router.route('/images/:project_id').get(function(req, res) {
     let projectID = req.params.project_id;
     Img.find({'project_id':projectID}).exec(function(err, imgs) {

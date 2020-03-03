@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'draft-js/dist/Draft.css';
 
 import { Redirect } from 'react-router-dom';
 
@@ -9,6 +10,13 @@ import "filepond/dist/filepond.min.css";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+
+import {EditorState, convertToRaw} from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import axios from 'axios';
 
@@ -85,7 +93,11 @@ export default class Write extends Component {
 			cur_color_index: 0,
 			files: [
 			],
-			fileUniqueId:''
+			fileUniqueId:'',
+			forClass:false,
+			classnum: '',
+			classdept: '',
+			editorState: EditorState.createEmpty()
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
@@ -94,6 +106,10 @@ export default class Write extends Component {
 		this.onTagAdd = this.onTagAdd.bind(this);
 		this.onTagInputChange = this.onTagInputChange.bind(this);
 		this.handleInit = this.handleInit.bind(this);
+		this.onForClassChange = this.onForClassChange.bind(this);
+		this.onClassDeptChange = this.onClassDeptChange.bind(this);
+		this.onClassNumChange = this.onClassNumChange.bind(this);
+		this.onEditorChange = this.onEditorChange.bind(this);
 
 	}
 
@@ -170,34 +186,74 @@ export default class Write extends Component {
 	    console.log("FilePond instance has initialised", this.pond);
 	}
 
+	onForClassChange(e){
+		console.log(e.target);
+		this.setState({forClass:e.target.checked});
+	}
+
+	onClassDeptChange(e){
+		console.log(e.target);
+		this.setState({classdept:e.target.value});
+	}
+	onClassNumChange(e){
+		console.log(e.target);
+		this.setState({classnum:e.target.value});
+	}
+
+	onEditorChange(editorState){
+		this.setState({editorState:editorState});
+	}
+
+
+
+
     render() {
         return (
         	<div> 
         	{this.props.isLoggedIn ?
             <div className = 'content-container'>
                 <div >
-                <h4>New Project</h4>
-                <form onSubmit={this.onSubmit} style = {{"marginBottom": "200px"}} encType="multipart/form-data">
-                	<label style = {{'marginTop':'20px'}}> Title </label>
-                	<input type = "text" name = 'title' value = {this.state.title} onChange = {this.onTitleChange} className = "form-control" />
-                	<label style = {{'marginTop':'20px'}}> Summary </label>
-                	<textarea name = 'message' value = {this.state.message} onChange = {this.onMessageChange} className = 'form-control' />
-                	<div style = {{'display':'flex', 'marginBottom':'20px', 'marginTop':'20px'}}>
-                		<input value = {this.state.cur_tag_input} placeholder = 'Add Tags' type = "text" onChange = {this.onTagInputChange} name = 'tag_input' className = 'form-control'/>
-                		<button className = 'btn btn-secondary' type = 'button' onClick = {this.onTagAdd}> + </button>
-
+                <h4 className = "add-title">Add a Project</h4>
+                <form onSubmit={this.onSubmit} id = "addProjectForm" style = {{"marginBottom": "200px"}} encType="multipart/form-data">
+                	<div class = "form-group-one-line">
+	                	<label> Title </label>
+	                	<input type = "text" name = 'title' value = {this.state.title} onChange = {this.onTitleChange} className = "form-control" />
+	                </div>
+	                <div class = "form-group-one-line">
+                		<label> Summary </label>
+                		<textarea name = 'message' maxlength="100" value = {this.state.message} onChange = {this.onMessageChange} className = 'form-control' />
+                	</div>
+               		<div class = "form-group-one-line form-flex">
+                		<input id = "forclass" type = "checkbox" name = 'forClass' checked = {this.state.forClass} onChange = {this.onForClassChange} />
+                		<label for = "forclass"> This project was for a class </label>
+                	</div>
+                	{this.state.forClass && 
+                		<div class = "form-group-one-line">
+	                		<label> Class </label>
+	                		<div style = {{"display": "flex", "width":"25%"}}>
+	                			<input type = "text" placeholder = "atls" name = 'class-dept' value = {this.state.classdept} onChange = {this.onClassDeptChange} class = "form-control"/>
+	                			<input type = "text" placeholder = "1000" name = 'class-number' value = {this.state.classnumber} onChange = {this.onClassNumChange} class = "form-control"/>
+	                		</div>
+	                	</div>
+	                }
+                	<div className = "form-group-one-line">
+                		<label> Tags </label>
+                		<div style = {{'display':'flex'}}>
+                			<input value = {this.state.cur_tag_input} placeholder = 'Add Tags' type = "text" onChange = {this.onTagInputChange} name = 'tag_input' className = 'form-control'/>
+                			<button className = 'btn add-tag-button' type = 'button' onClick = {this.onTagAdd}> + </button>
+                		</div>
                 	</div>
                 	<div style = {{'marginBottom':'30px'}}>
 	                	{this.state.tags.map(item => {
 	                	 		return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
 	                	})}
                 	</div>
-
+                	<label> Main Photo </label>
                 	<FilePond
 			          ref={ref => (this.pond = ref)}
 			          files={this.state.files}
-			          allowMultiple={true}
-			          maxFiles={3}
+			          allowMultiple={false}
+			          maxFiles={1}
 			          server={serverConfig}
 			          oninit={() => this.handleInit()}
 			          onupdatefiles={fileItems => {
@@ -209,7 +265,34 @@ export default class Write extends Component {
 			          }}
 			        />
 
-                	<button className = 'btn btn-primary' type = 'submit'>Post</button>
+			        <div class = "form-group-one-line">
+	                	<label> Project Description </label>
+	                </div>
+
+	                <Editor
+			          editorState={this.state.editorState}
+			          wrapperClassName="demo-wrapper"
+			          editorClassName="demo-editor"
+			          onEditorStateChange={this.onEditorChange}
+			        />
+
+	                <div class = "form-group-one-line form-flex">
+                		<input id = "forclass" type = "checkbox" name = 'forClass' checked = {this.state.forClass} onChange = {this.onForClassChange} />
+                		<label for = "forclass"> Submit this project for Atlas Expo consideration </label>
+                	</div>
+
+                	<div class = "form-group-one-line form-flex">
+                		<input id = "forclass" type = "checkbox" name = 'forClass' checked = {this.state.forClass} onChange = {this.onForClassChange} />
+                		<label for = "forclass"> I would like space in Atlas to exhibit this project </label>
+                	</div>
+
+	                <div class = "form-group-one-line form-flex">
+                		<input id = "forclass" type = "checkbox" name = 'forClass' checked = {this.state.forClass} onChange = {this.onForClassChange} />
+                		<label for = "forclass"> Make this project private </label>
+                	</div>
+
+                	<button className = 'btn btn-primary' type = 'submit'>Save</button>
+                	<button className = 'btn btn-primary' type = 'submit'>Save and Post</button>
                 </form>
                 </div>
             </div> : 
@@ -223,3 +306,6 @@ export default class Write extends Component {
         )
     }
 }
+
+// convert from editor content to html (will probably want to use later)
+// <textarea disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))}/>

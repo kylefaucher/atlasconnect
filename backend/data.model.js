@@ -14,6 +14,9 @@ let Posts = new Schema({
     public: {
         type: Boolean
     },
+    featured: {
+        type: Boolean
+    },
     tags: {
     	type: Array
     },

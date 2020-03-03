@@ -52,7 +52,7 @@ export default class SelfProfile extends Component {
             <div className = 'content-container profile-container'>
                 <div>
                     <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
-                    <h1> {this.props.currentUser.displayName} </h1>
+                    <h1 className = "profile-user-display-name"> {this.props.currentUser.displayName} </h1>
                     <p> {this.props.currentUser.email} </p>
                     <p> Bio </p>
                     <p> Interests </p>
