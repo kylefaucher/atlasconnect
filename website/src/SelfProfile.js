@@ -16,12 +16,8 @@ export default class SelfProfile extends Component {
 		super(props);
 		this.state = {
             messages: [],
-            modalIsOpen: false,
             currentOpenProject: ''
         };
-
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
 	}
 
     componentDidMount() {
@@ -34,15 +30,6 @@ export default class SelfProfile extends Component {
             .catch(function (error){
                 console.log(error);
             })
-    }
-
-    openModal(postJSON){
-        this.setState({currentOpenProject:postJSON});
-        this.setState({modalIsOpen:true});
-    }
-
-    closeModal(){
-        this.setState({modalIsOpen:false});
     }
 
     render() {
@@ -63,15 +50,10 @@ export default class SelfProfile extends Component {
                 <h2> all projects </h2>
                 <div className = 'profile-posts-container'>
                     {this.state.messages.map(item => {if(item.message && item.title){
-                        return <Post handleClick={() => this.openModal(item)} closeModal = {this.closeModal} key={item._id} postJSON = {item} />;
+                        return <Post key={item._id} postJSON = {item} />;
                      }})}
                 </div>
                 </div>
-                <ProjectDetails 
-                    open = {this.state.modalIsOpen}
-                    closeModal = {this.closeModal}
-                    postJSON = {this.state.currentOpenProject}
-                />
             </div> : 
                <Redirect
                     to={{

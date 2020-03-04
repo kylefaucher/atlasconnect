@@ -471,5 +471,36 @@ label[for='forclass']{
     height: 300px !important;
 }
 
+.rdw-editor-toolbar {
+    border: 0 !important;
+}
+
+.rdw-editor-main {
+    overflow: visible !important;
+}
+
+.rdw-option-wrapper {
+    border: 0 !important;
+}
+
+.rdw-dropdown-wrapper {
+    border-radius: 20px !important;
+}
+
+.rdw-dropdown-optionwrapper {
+    overflow-y: visible !important; 
+    border-radius: 20px !important;
+    overflow: show !important;
+}
+
+.rdw-dropdownoption-active {
+    background: #f5f5f5;
+    border-radius: 30px !important;
+}
+
+.rdw-dropdownoption-highlighted {
+    background: #f5f5f5;
+    border-radius: 30px !important;
+}
 
 
