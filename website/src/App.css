@@ -229,9 +229,9 @@
 }
 
 .tags-list{
-  margin-bottom: 50px;
+/*  margin-bottom: 50px;
   padding: 15px;
-  padding-top: 0;
+  padding-top: 0;*/
 }
 
 .content-container .load-wrap{
@@ -290,12 +290,16 @@
   -webkit-transition: background .25s ease-in;
 }
 
+.imgOverlay-hov .tags-list{
+  display: none !important;
+}
+
 .imgOverlay .post-foot, .imgOverlay .tags-list{
   transform: scale(0);
   transition: 0.25s ease;
 }
 
-.imgOverlay-hov h5, .imgOverlay-hov .post-foot, .imgOverlay-hov .tags-list{
+.imgOverlay-hov h5, .imgOverlay-hov .post-foot{
   transform: scale(1);
   transition: 0.25s ease;
 }
@@ -317,7 +321,6 @@ a{
   width: 100%;
   border-radius: 5px;
   display: block;
-  margin-top: 25px;
 }
 
 .project-time{
@@ -469,6 +472,7 @@ label[for='forclass']{
     padding: 20px;
     border-radius: 40px;
     height: 300px !important;
+    margin-bottom: 25px;
 }
 
 .rdw-editor-toolbar {
@@ -503,4 +507,20 @@ label[for='forclass']{
     border-radius: 30px !important;
 }
 
+.project-grid-container {
+    display: grid;
+    grid-column-gap: 30px;
+    grid-template-columns: 1fr 2fr;
+}
 
+.project-summary{
+  margin-top: 15px;
+}
+
+.project-body-writeup{
+  margin-top: 20px;
+}
+
+.project-body-writeup a{
+  color: dodgerblue !important;
+}

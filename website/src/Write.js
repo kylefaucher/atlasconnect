@@ -25,6 +25,8 @@ const colors = ['#CCEEEB', '#FEEFD8', '#FFDCDC', '#D5D6E9', '#ECCCDF'];
 
 var curResponseId = "";
 
+var reactObject = "";
+
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const serverConfig = {
@@ -60,7 +62,7 @@ const serverConfig = {
         }).then(response => {
             // passing the file id to FilePond
             console.log(response.data);
-            curResponseId = response.data;
+            reactObject.setState({fileUniqueId: response.data});
             load(response.data.filename);
         }).catch((thrown) => {
             if (axios.isCancel(thrown)) {
@@ -81,7 +83,7 @@ const serverConfig = {
 }; 
 
 const toolbar = {
-  options: ['inline', 'blockType', 'list', 'textAlign', 'link', 'embedded', 'emoji', 'history'],
+  options: ['embedded','inline', 'blockType', 'list', 'textAlign', 'link', 'emoji', 'history'],
   inline: {
     inDropdown: false,
     className: undefined,
@@ -208,7 +210,7 @@ export default class Write extends Component {
 		super(props);
 
 		this.state={
-			message: '',
+			summary: '',
 			title: '',
 			tags: [],
 			cur_tag_input: '',
@@ -219,23 +221,32 @@ export default class Write extends Component {
 			forClass:false,
 			forExpo:false,
 			forSpace:false,
+			public: true,
 			classnum: '',
 			classdept: '',
 			editorState: EditorState.createEmpty(),
-			editorHTML:''
+			editorHTML:'',
+			publish: true
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
-		this.onMessageChange = this.onMessageChange.bind(this);
+		this.onSummaryChange = this.onSummaryChange.bind(this);
 		this.onTitleChange = this.onTitleChange.bind(this);
 		this.onTagAdd = this.onTagAdd.bind(this);
 		this.onTagInputChange = this.onTagInputChange.bind(this);
 		this.handleInit = this.handleInit.bind(this);
 		this.onForClassChange = this.onForClassChange.bind(this);
+		this.onForExpoChange = this.onForExpoChange.bind(this);
+		this.onForSpaceChange = this.onForSpaceChange.bind(this);
+		this.onPrivateChange = this.onPrivateChange.bind(this);
 		this.onClassDeptChange = this.onClassDeptChange.bind(this);
 		this.onClassNumChange = this.onClassNumChange.bind(this);
 		this.onEditorChange = this.onEditorChange.bind(this);
 
+	}
+
+	componentDidMount(){
+		reactObject = this;
 	}
 
 	onSubmit(e){
@@ -243,18 +254,22 @@ export default class Write extends Component {
 		let curTime = new Date();
 		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-		this.setState({fileUniqueId: 'curResponseId'});
-
 		const newPost = {
 			post_data:{
-				message: this.state.message,
+				summary: this.state.summary,
 				title: this.state.title,
 				time: curTime,
-				public: true,
+				public: this.state.public,
+				publish:this.state.publish,
 				tags: this.state.tags,
 				user_display_name: this.props.currentUser.displayName,
 				user_id: this.props.currentUser.uid,
-				description: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+				for_class:this.state.forClass,
+				for_expo:this.state.forExpo,
+				for_space:this.state.forSpace,
+				classnum: '',
+				classdept: '',
+				editor_html:this.state.editorHTML
 			},
 			img_data:{
 				fileID: this.state.fileUniqueId
@@ -270,9 +285,9 @@ export default class Write extends Component {
 
 	}
 
-	onMessageChange(e){
+	onSummaryChange(e){
 		this.setState({
-			message: e.target.value
+			summary: e.target.value
 		});
 	}
 
@@ -303,9 +318,6 @@ export default class Write extends Component {
 		this.setState({cur_tag_input: ''});
 		this.setState({cur_color_index: this.state.cur_color_index + 1});
 
-		this.setState({
-			              fileUniqueId: curResponseId
-		});
 	}
 
 	handleInit() {
@@ -315,6 +327,10 @@ export default class Write extends Component {
 	onForClassChange(e){
 		console.log(e.target);
 		this.setState({forClass:e.target.checked});
+		if (!e.target.checked){
+			this.setState({classdept:''});
+			this.setState({classnum:''});
+		}
 	}
 
 	onClassDeptChange(e){
@@ -363,7 +379,7 @@ export default class Write extends Component {
 	                </div>
 	                <div class = "form-group-one-line">
                 		<label> Summary </label>
-                		<textarea name = 'message' maxlength="100" value = {this.state.message} onChange = {this.onMessageChange} className = 'form-control' />
+                		<textarea name = 'summary' maxlength="100" value = {this.state.summary} onChange = {this.onSummaryChange} className = 'form-control' />
                 	</div>
                		<div class = "form-group-one-line form-flex">
                 		<input id = "forclass" type = "checkbox" name = 'forClass' checked = {this.state.forClass} onChange = {this.onForClassChange} />
@@ -449,6 +465,3 @@ export default class Write extends Component {
         )
     }
 }
-
-// convert from editor content to html (will probably want to use later)
-// <textarea disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))}/>

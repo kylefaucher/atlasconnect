@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Posts = new Schema({
-    message: {
+    summary: {
         type: String
     },
     title:{
@@ -12,6 +12,9 @@ let Posts = new Schema({
         type: Date
     },
     public: {
+        type: Boolean
+    },
+    publish: {
         type: Boolean
     },
     featured: {
@@ -24,6 +27,24 @@ let Posts = new Schema({
         type: String
     },
     user_id: {
+        type: String
+    },
+    for_class: {
+        type: Boolean
+    },
+    for_expo: {
+        type: Boolean
+    },
+    for_space: {
+        type: Boolean
+    },
+    classnum: {
+        type: String
+    },
+    classdept: {
+        type: String
+    },
+    editor_html: {
         type: String
     }
 });

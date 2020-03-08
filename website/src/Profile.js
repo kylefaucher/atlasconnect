@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Redirect } from 'react-router-dom';
 
 import Post from './Post.js';
-import ProjectDetails from './ProjectDetails.js';
 
 import axios from 'axios';
 

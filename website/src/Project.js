@@ -59,25 +59,32 @@ export default class Project extends Component {
             });
     }
 
+
     render() {
         return (
             <div className = 'content-container project-container'>
                 <Link to = {{pathname: this.props.location.state.prevPath, state: { prevPath: window.location.pathname }}}>
                 <div className = 'back-link'>
                 <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faChevronLeft} /> Back </div> </Link>
-                {!this.state.loading ? <div>
-                <h1 className = "project-title"> {this.state.projectDetails.title} </h1>
-                <UserLink postJSON = {this.state.projectDetails} />
-                { this.state.projectDate ? 
-                <span className = "project-time"> {months[this.state.projectDate.getMonth()]} {this.state.projectDate.getDate()} {this.state.projectDate.getFullYear()} </span> : '' }
-                <img className = "project-image" src = {this.state.imageURL} alt = 'img' />
-                <div className = "tags-list">
-                {this.state.projectDetails.tags.map(item => {
-                        return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
-                })}
-                </div>
-                <p></p>
-                <p> {this.state.projectDetails.message} </p> </div> :
+                {!this.state.loading ? 
+                <div className = "project-grid-container">
+                    <div className = "project-sidebar">
+                        <h1 className = "project-title"> {this.state.projectDetails.title} </h1>
+                        <UserLink postJSON = {this.state.projectDetails} />
+                        { this.state.projectDate ? 
+                        <span className = "project-time"> {months[this.state.projectDate.getMonth()]} {this.state.projectDate.getDate()} {this.state.projectDate.getFullYear()} </span> : '' }
+                        <p className = "project-summary"> {this.state.projectDetails.summary} </p> 
+                        <div className = "tags-list">
+                        {this.state.projectDetails.tags.map(item => {
+                                return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
+                        })}
+                        </div>
+                    </div>
+                    <div className = "project-body">
+                        <img className = "project-image" src = {this.state.imageURL} alt = 'img' />
+                        <div className = "project-body-writeup" dangerouslySetInnerHTML={{__html: this.state.projectDetails.editor_html}}></div>
+                    </div>
+                </div> :
                 <Loader color="#282c34" size="72px" margin="4px" /> }
             </div>
         )

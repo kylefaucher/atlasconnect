@@ -76,7 +76,7 @@ export default class Post extends Component {
                     <h5> {this.props.postJSON.title} </h5>
                 </div>
                 <div className = "post-foot">
-                    {this.props.postJSON.message}
+                    {this.props.postJSON.message || this.props.postJSON.summary}
                 </div> 
                 <div className = "tags-list">
                 {this.props.postJSON.tags.map(item => {

@@ -3,7 +3,6 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Post from './Post.js';
-import ProjectDetails from './ProjectDetails.js';
 
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -18,15 +17,12 @@ export default class Feed extends Component {
 		super(props);
 		this.state = {
             messages: [],
-            modalIsOpen: false,
             currentOpenProject: '',
             searchValue: '',
             loading: true,
             activeCategory: 'Featured'
         };
 
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
         this.search = this.search.bind(this);
         this.handleSearchChange = this.handleSearchChange.bind(this);
         this.displayDefaultFeed = this.displayDefaultFeed.bind(this);
@@ -68,15 +64,6 @@ export default class Feed extends Component {
 
 	componentDidMount() {
         this.displayDefaultFeed();
-    }
-
-    openModal(postJSON){
-        this.setState({currentOpenProject:postJSON});
-        this.setState({modalIsOpen:true});
-    }
-
-    closeModal(){
-        this.setState({modalIsOpen:false});
     }
 
     handleSearchChange(e){
@@ -132,16 +119,14 @@ export default class Feed extends Component {
                 }
                 {this.state.messages.length ? 
                 <div className = 'postsGrid'>
-                	 {this.state.messages.map(item => {if(item.message && item.title){
-                	 	return <Post handleClick={() => this.openModal(item)} closeModal = {this.closeModal} key={item._id} postJSON = {item} />;
-                	 }})}
+                	 {this.state.messages.map(item => {
+                	 	return <Post key={item._id} postJSON = {item} />;
+                	 })}
                 </div>
                 : <div> No projects match your search. </div> }
-                <ProjectDetails 
-                    open = {this.state.modalIsOpen}
-                    closeModal = {this.closeModal}
-                    postJSON = {this.state.currentOpenProject}
-                /> </div> }
+
+                </div> 
+            }
             </div>
         )
     }
