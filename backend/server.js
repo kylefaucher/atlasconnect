@@ -1,11 +1,12 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const router = express.Router();
+// const router = express.Router();
 const PORT = 4000;
 
 let Posts = require('./data.model.js');
@@ -14,6 +15,8 @@ let User = require('./user.model.js');
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, '/../website/build')));
 
 // connect to cloud database
 const db = require('./config/keys.js').mongoURI;
@@ -25,7 +28,7 @@ connection.once('open', function() {
     console.log("MongoDB connection established");
 });
 
-router.route('/').get(function(req, res) {
+app.get('/api/', function (req, res) {
     Posts.find().sort({time: -1}).exec(function(err, posts) {
         if (err) {
             console.log(err);
@@ -36,7 +39,7 @@ router.route('/').get(function(req, res) {
     });
 });
 
-router.route('/featured').get(function(req, res) {
+app.get('/api/featured', function(req, res) {
     Posts.find({'featured': true}).sort({time: -1}).exec(function(err, posts) {
         if (err) {
             console.log(err);
@@ -47,7 +50,7 @@ router.route('/featured').get(function(req, res) {
     });
 });
 
-router.route('/images/:project_id').get(function(req, res) {
+app.get('/api/images/:project_id', function(req, res) {
     let projectID = req.params.project_id;
     Img.find({'project_id':projectID}).exec(function(err, imgs) {
         if (err) {
@@ -61,7 +64,7 @@ router.route('/images/:project_id').get(function(req, res) {
 });
 
 
-router.route('/userposts/:user_id').get(function(req, res) {
+app.get('/api/userposts/:user_id', function(req, res) {
     let username = req.params.user_id;
     Posts.find({'user_id': username}).sort({time: -1}).exec(function(err,posts){
         if (err){
@@ -74,7 +77,7 @@ router.route('/userposts/:user_id').get(function(req, res) {
     });
 });
 
-router.route('/search/:searchvalue').get(function(req, res) {
+app.get('/api/search/:searchvalue', function(req, res) {
     let searchvalue = req.params.searchvalue;
     Posts.find({'tags.tag_id': searchvalue}).exec(function(err,posts){
         if (err){
@@ -87,7 +90,7 @@ router.route('/search/:searchvalue').get(function(req, res) {
     });
 });
 
-router.route('/project/:projectId').get(function(req, res) {
+app.get('/api/project/:projectId', function(req, res) {
     let projectId = req.params.projectId;
     Posts.find({'_id': projectId}).exec(function(err,posts){
         if (err){
@@ -100,7 +103,7 @@ router.route('/project/:projectId').get(function(req, res) {
     });
 });
 
-router.route('/project/:projectid').get(function(req, res) {
+app.get('/api/project/:projectid', function(req, res) {
     let projectid = req.params.projectid;
     Posts.find({'_id': projectid}).exec(function(err,posts){
         if (err){
@@ -113,7 +116,7 @@ router.route('/project/:projectid').get(function(req, res) {
     });
 });
 
-router.route('/user/:userid').get(function(req,res) {
+app.get('/api/user/:userid', function(req,res) {
     let userid = req.params.userid;
     User.find({'user_id': userid}).exec(function(err,user){
         if (err){
@@ -126,7 +129,7 @@ router.route('/user/:userid').get(function(req,res) {
     });
 });
 
-router.route('/user').post(function(req,res) {
+app.post('/api/user', function(req,res) {
     User.find({'user_id':req.body.user_id}).exec()
         .then( function(users){
             if (users.length){
@@ -153,7 +156,7 @@ router.route('/user').post(function(req,res) {
         });
 });
 
-router.route('/add').post(function(req, res) {
+app.post('/api/add', function(req, res) {
     let posts = new Posts(req.body.post_data);
     let project_id = "";
     console.log(req.body);
@@ -194,7 +197,7 @@ router.route('/add').post(function(req, res) {
 });
 
 //temp storage
-router.route('/upload').post(function(req, res) {
+app.post('/api/upload', function(req, res) {
     var storage = multer.diskStorage({
         destination: './uploads/'
     });
@@ -243,7 +246,7 @@ router.route('/upload').post(function(req, res) {
 //         });
 // });
 
-router.route('/upload').delete(function(req, res) {
+app.delete('/api/upload', function(req, res) {
     let pathName = './uploads/' + req.body.filename;
     fs.unlink(pathName, function(err) {
         if(err && err.code == 'ENOENT') {
@@ -260,7 +263,11 @@ router.route('/upload').delete(function(req, res) {
     res.send('deleted');
 });
 
-app.use('/capstoneprototype', router);
+// app.use('/api/', router);
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, '/../website/build', 'index.html'));
+});
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);

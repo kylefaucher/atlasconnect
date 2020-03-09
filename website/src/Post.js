@@ -38,7 +38,7 @@ export default class Post extends Component {
 	}
 
     componentDidMount(){
-        let request = 'http://localhost:4000/capstoneprototype/images/' + this.props.postJSON._id;
+        let request = 'http://localhost:4000/api/images/' + this.props.postJSON._id;
         axios.get(request)
             .then(response => {
                 let item = response.data[0];

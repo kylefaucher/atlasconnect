@@ -20,7 +20,7 @@ export default class SelfProfile extends Component {
 	}
 
     componentDidMount() {
-        let requestString = 'http://localhost:4000/capstoneprototype/userposts/' + this.props.currentUser.uid;
+        let requestString = 'http://localhost:4000/api/userposts/' + this.props.currentUser.uid;
         axios.get(requestString)
             .then(response => {
                 this.setState({ messages: response.data });
@@ -48,9 +48,9 @@ export default class SelfProfile extends Component {
                 <p> You have not chosen a featured project </p>
                 <h2> all projects </h2>
                 <div className = 'profile-posts-container'>
-                    {this.state.messages.map(item => {if(item.message && item.title){
+                    {this.state.messages.map(item => {
                         return <Post key={item._id} postJSON = {item} />;
-                     }})}
+                     })}
                 </div>
                 </div>
             </div> : 

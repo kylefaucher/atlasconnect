@@ -33,7 +33,7 @@ export default class Project extends Component {
     componentDidMount(){
         console.log('componentDidMount');
         console.log(this.props.match.params);
-        axios.get('http://localhost:4000/capstoneprototype/project/' + this.props.match.params.projectId)
+        axios.get('http://localhost:4000/api/project/' + this.props.match.params.projectId)
             .then(response => {
                 this.setState({ projectDetails: response.data[0]});
                 this.setState({ projectDate: new Date(response.data[0].time)})
@@ -42,7 +42,7 @@ export default class Project extends Component {
             .catch(function (error){
                 console.log(error);
         });
-        let request = 'http://localhost:4000/capstoneprototype/images/' + this.props.match.params.projectId;
+        let request = 'http://localhost:4000/api/images/' + this.props.match.params.projectId;
         axios.get(request)
             .then(response => {
                 let item = response.data[0];
@@ -63,9 +63,11 @@ export default class Project extends Component {
     render() {
         return (
             <div className = 'content-container project-container'>
+            {this.props.location.state && 
                 <Link to = {{pathname: this.props.location.state.prevPath, state: { prevPath: window.location.pathname }}}>
                 <div className = 'back-link'>
                 <FontAwesomeIcon style = {{fontSize:'1em', 'marginRight':'10px'}} icon={faChevronLeft} /> Back </div> </Link>
+            }
                 {!this.state.loading ? 
                 <div className = "project-grid-container">
                     <div className = "project-sidebar">

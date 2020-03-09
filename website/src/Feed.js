@@ -30,7 +30,7 @@ export default class Feed extends Component {
 	}
 
     displayDefaultFeed(){
-        axios.get('http://localhost:4000/capstoneprototype/featured')
+        axios.get('http://localhost:4000/api/featured')
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
@@ -39,19 +39,10 @@ export default class Feed extends Component {
             .catch(function (error){
                 console.log(error);
          });
-
-        // axios.get('http://localhost:4000/capstoneprototype/images')
-        //     .then(response => {
-        //         this.setState({ images: response.data });
-        //         console.log(response.data);
-        //     })
-        //     .catch(function (error){
-        //         console.log(error);
-        //  });
     }
 
     displayAllFeed(){
-        axios.get('http://localhost:4000/capstoneprototype/')
+        axios.get('http://localhost:4000/api')
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
@@ -72,7 +63,7 @@ export default class Feed extends Component {
 
     search(){
         if (this.state.searchValue.length){
-        axios.get('http://localhost:4000/capstoneprototype/search/'+this.state.searchValue)
+        axios.get('http://localhost:4000/api/'+this.state.searchValue)
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
