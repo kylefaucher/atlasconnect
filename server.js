@@ -9,6 +9,8 @@ const multer = require('multer');
 // const router = express.Router();
 const PORT = 4000;
 
+require("dotenv").config();
+
 let Posts = require('./data.model.js');
 let Img = require('./img.model.js');
 let User = require('./user.model.js');
