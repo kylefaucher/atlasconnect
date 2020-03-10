@@ -30,7 +30,7 @@ export default class Feed extends Component {
 	}
 
     displayDefaultFeed(){
-        axios.get('http://localhost:4000/api/featured')
+        axios.get('/api/featured')
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
@@ -42,7 +42,7 @@ export default class Feed extends Component {
     }
 
     displayAllFeed(){
-        axios.get('http://localhost:4000/api')
+        axios.get('/api')
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
@@ -63,7 +63,7 @@ export default class Feed extends Component {
 
     search(){
         if (this.state.searchValue.length){
-        axios.get('http://localhost:4000/api/'+this.state.searchValue)
+        axios.get('/api/'+this.state.searchValue)
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);

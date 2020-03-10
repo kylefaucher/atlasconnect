@@ -56,7 +56,7 @@ class App extends Component{
           user_email: user.email
         };
 
-        axios.post('http://localhost:4000/api/user', userJSON)
+        axios.post('/api/user', userJSON)
             .then(res => console.log(res.data));
 
       } else {
