@@ -63,7 +63,7 @@ export default class Feed extends Component {
 
     search(){
         if (this.state.searchValue.length){
-        axios.get('/api/'+this.state.searchValue)
+        axios.get('/api/search/'+this.state.searchValue)
             .then(response => {
                 this.setState({ messages: response.data });
                 console.log(response.data);
