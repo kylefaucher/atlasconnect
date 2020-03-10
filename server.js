@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/client/build')));
 
 // connect to cloud database
-const db = process.env.DBKEY;
+const db = JSON.stringify(process.env.DBKEY);
 
 console.log(db);
 
