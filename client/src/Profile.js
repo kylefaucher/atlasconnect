@@ -26,7 +26,7 @@ export default class Profile extends Component {
     componentDidMount() {
         console.log('componentDidMount');
         console.log(this.props);
-        axios.get('http://localhost:4000/api/user/' + this.props.match.params.userId)
+        axios.get('/api/user/' + this.props.match.params.userId)
             .then(response => {
                 this.setState({ userJSON: response.data[0]});
                 console.log(response.data[0]);
@@ -34,7 +34,7 @@ export default class Profile extends Component {
             .catch(function (error){
                 console.log(error);
         });
-        let requestString = 'http://localhost:4000/api/userposts/' + this.props.match.params.userId;
+        let requestString = '/api/userposts/' + this.props.match.params.userId;
         axios.get(requestString)
             .then(response => {
                 this.setState({ messages: response.data });

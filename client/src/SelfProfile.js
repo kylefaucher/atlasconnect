@@ -20,7 +20,7 @@ export default class SelfProfile extends Component {
 	}
 
     componentDidMount() {
-        let requestString = 'http://localhost:4000/api/userposts/' + this.props.currentUser.uid;
+        let requestString = '/api/userposts/' + this.props.currentUser.uid;
         axios.get(requestString)
             .then(response => {
                 this.setState({ messages: response.data });

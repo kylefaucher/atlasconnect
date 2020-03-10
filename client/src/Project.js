@@ -33,7 +33,7 @@ export default class Project extends Component {
     componentDidMount(){
         console.log('componentDidMount');
         console.log(this.props.match.params);
-        axios.get('http://localhost:4000/api/project/' + this.props.match.params.projectId)
+        axios.get('/api/project/' + this.props.match.params.projectId)
             .then(response => {
                 this.setState({ projectDetails: response.data[0]});
                 this.setState({ projectDate: new Date(response.data[0].time)})
@@ -42,7 +42,7 @@ export default class Project extends Component {
             .catch(function (error){
                 console.log(error);
         });
-        let request = 'http://localhost:4000/api/images/' + this.props.match.params.projectId;
+        let request = '/api/images/' + this.props.match.params.projectId;
         axios.get(request)
             .then(response => {
                 let item = response.data[0];

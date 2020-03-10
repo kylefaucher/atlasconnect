@@ -35,7 +35,7 @@ const serverConfig = {
             
             console.log(uniqueFileId);
             
-            axios.delete('http://localhost:4000/api/upload', { data: { filename: uniqueFileId } } );
+            axios.delete('/api/upload', { data: { filename: uniqueFileId } } );
 
             error('error');
 
@@ -52,7 +52,7 @@ const serverConfig = {
 
         axios({
             method: 'POST',
-            url: 'http://localhost:4000/api/upload',
+            url: '/api/upload',
             data: formData,
             cancelToken: source.token,
             onUploadProgress: (e) => {
@@ -277,7 +277,7 @@ export default class Write extends Component {
 		};
 
 
-		axios.post('http://localhost:4000/api/add', newPost)
+		axios.post('/api/add', newPost)
             .then(res => console.log(res.data));
 
         // axios.post('http://localhost:4000/capstoneprototype/save', this.state.fileUniqueId)
