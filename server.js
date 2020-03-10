@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const admin = require('firebase-admin');
 const multer = require('multer');
 // const router = express.Router();
 const PORT = 4000;
@@ -22,6 +23,9 @@ app.use(express.static(path.join(__dirname, '/build')));
 
 // connect to cloud database
 const db = process.env.DBKEY || require('./config/keys.js').mongoURI;
+const fb = process.env.FIREBASECONFIG || require('./config/fbconfig.js');
+
+admin.initializeApp(fb);
 
 mongoose.connect(db, { useNewUrlParser: true });
 const connection = mongoose.connection;
