@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/client/build')));
 
 // connect to cloud database
-const db = process.env.DBKEY || require('./config/keys.js').mongoURI;
+const db = process.env.DBKEY;
 
 mongoose.connect(db, { useNewUrlParser: true });
 const connection = mongoose.connection;
