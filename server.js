@@ -19,7 +19,7 @@ let User = require('./user.model.js');
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, '/build')));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 // connect to cloud database
 const db = process.env.DBKEY || require('./config/keys.js').mongoURI;
@@ -272,7 +272,7 @@ app.delete('/api/upload', function(req, res) {
 // app.use('/api/', router);
 
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, '/build', 'index.html'));
+    res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
 
 app.listen(PORT, function() {
