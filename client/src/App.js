@@ -11,7 +11,7 @@ import Project from './Project.js';
 import logo from './static/img/logo-grey.png';
 
 import * as firebase from 'firebase';
-// import firebaseConfig from './firebase.config';
+import firebaseConfig from './firebase.config';
 
 import axios from 'axios';
 
@@ -22,7 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
-// firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 export const AuthContext = React.createContext(null);
 
