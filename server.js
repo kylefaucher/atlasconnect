@@ -6,10 +6,9 @@ const cors = require('cors');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const multer = require('multer');
-// const router = express.Router();
-const PORT = 4000;
-
 require("dotenv").config();
+// const router = express.Router();
+const PORT = process.env.PORT || 4000;
 
 let Posts = require('./data.model.js');
 let Img = require('./img.model.js');
