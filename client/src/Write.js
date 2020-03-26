@@ -110,11 +110,9 @@ const toolbar = {
     className: undefined,
     component: undefined,
     dropdownClassName: undefined,
-    options: ['unordered', 'ordered', 'indent', 'outdent'],
+    options: ['unordered', 'ordered'],
     unordered: { className: undefined },
-    ordered: { className: undefined },
-    indent: {className: undefined },
-    outdent: {className: undefined },
+    ordered: { className: undefined }
   },
   textAlign: {
     inDropdown: false,
@@ -173,8 +171,8 @@ const toolbar = {
     popupClassName: undefined,
     embedCallback: undefined,
     defaultSize: {
-      height: 'auto',
-      width: 'auto',
+      height: '315',
+      width: '560',
     },
   },
   image: {

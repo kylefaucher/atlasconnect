@@ -47,8 +47,13 @@
     border-radius: 5px;
     cursor: pointer;
     background-size: cover;
+    background-position: center;
     height: 300px;
     box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
+.profile-container h2 {
+    font-weight: 700;
 }
 
 .postsGrid{
@@ -471,7 +476,7 @@ label[for='forclass']{
     border: solid 1px #d6dbe0;
     padding: 20px;
     border-radius: 40px;
-    height: 300px !important;
+    min-height: 300px !important;
     margin-bottom: 25px;
 }
 
@@ -523,4 +528,67 @@ label[for='forclass']{
 
 .project-body-writeup a{
   color: dodgerblue !important;
+}
+
+.rdw-emoji-modal{
+      background: #f1f1f1;
+      border-radius: 10px;
+
+}
+
+.rdw-embedded-modal, .rdw-link-modal {
+    position: absolute;
+    top: 35px;
+    left: 5px;
+    display: flex;
+    flex-direction: column;
+    width: 235px;
+    height: fit-content;
+    border: 0;
+    padding: 15px;
+    border-radius: 2px;
+    z-index: 100;
+    background: #f1f1f1;
+    justify-content: space-between;
+    border-radius: 10px;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+
+}
+
+
+.rdw-embedded-modal-btn, .rdw-link-modal-btn{
+    border-radius: 10px;
+}
+
+.rdw-embedded-modal-btn:hover, .rdw-link-modal-btn:hover{
+  box-shadow: none;
+}
+
+.rdw-option-wrapper:hover {
+    box-shadow: none;
+}
+
+.rdw-embedded-modal-link-input {
+    width: 100%;
+    padding: 20px;
+}
+
+input[type="checkbox"]:focus{
+  outline: none;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    border: solid 1px #212529;
+    height: 16px;
+    width: 15px;
+    border-radius: 4px !important;
+}
+
+input[type="checkbox"]:checked:after {
+    content: "✓";
+    position: relative;
+    top: -12px;
+    left: 1px;
+    font-size: 1.4em;
 }

@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/client/build')));
 
 // connect to cloud database
-const db = process.env.DBKEY;
+const db = process.env.DBKEY || require('./config/keys.js').mongoURI;
 
 console.log(db);
 
@@ -106,18 +106,18 @@ app.get('/api/project/:projectId', function(req, res) {
     });
 });
 
-app.get('/api/project/:projectid', function(req, res) {
-    let projectid = req.params.projectid;
-    Posts.find({'_id': projectid}).exec(function(err,posts){
-        if (err){
-            console.log(err);
-        }
-        else{
-            // console.log(posts);
-            res.json(posts);
-        }
-    });
-});
+// app.get('/api/project/:projectid', function(req, res) {
+//     let projectid = req.params.projectid;
+//     Posts.find({'_id': projectid}).exec(function(err,posts){
+//         if (err){
+//             console.log(err);
+//         }
+//         else{
+//             // console.log(posts);
+//             res.json(posts);
+//         }
+//     });
+// });
 
 app.get('/api/user/:userid', function(req,res) {
     let userid = req.params.userid;
