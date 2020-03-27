@@ -24,7 +24,6 @@ export default class Profile extends Component {
 	}
 
     componentDidMount() {
-        console.log('componentDidMount');
         console.log(this.props);
         axios.get('/api/user/' + this.props.match.params.userId)
             .then(response => {

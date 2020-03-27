@@ -31,7 +31,6 @@ export default class Project extends Component {
 	}
 
     componentDidMount(){
-        console.log('componentDidMount');
         console.log(this.props.match.params);
         axios.get('/api/project/' + this.props.match.params.projectId)
             .then(response => {

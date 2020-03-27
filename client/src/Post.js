@@ -68,7 +68,12 @@ export default class Post extends Component {
             <div>
             { !this.state.loading ?
             <div>
-            <Link className = {this.state.loading ? "post-loading" : "post-loaded"} to={{pathname: "/project/" + this.props.postJSON._id, state: { prevPath: window.location.pathname }}}>
+            <Link className = {this.state.loading ? "post-loading" : "post-loaded"} to={{
+                pathname: "/project/" + this.props.postJSON._id, 
+                state: { 
+                    prevPath: window.location.pathname 
+                }
+            }}>
             <div className = "post" onMouseEnter = {this.handleHover} onMouseLeave = {this.handleUnhover} onClick = {this.props.handleClick} style = {{backgroundImage:'url('+this.state.imageURL+')'}}>
             <div className = {this.state.hovered ? 'imgOverlay-hov' : 'imgOverlay'}>
             <div>

@@ -71,42 +71,54 @@
 
 .main-nav {
     display: grid;
-    grid-template-columns: 10fr 1fr 10fr 1fr 10fr 1fr 10fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-column-gap: 0px;
     padding-left: 30px;
     padding-right: 40px;
 }
 
-.main-nav .nav-link{
-  padding-top: 15px;
-}
-
-.main-nav .nav-link:hover{
+.main-nav .nav-link .center-link:hover{
   color: #212529;
   opacity: 1 !important;
   transition: 0.25s ease;
   background: #ffffff75;
 }
 
-.nav-link{
+.nav-link .center-link{
   /*color: white;*/
   color:#212529;
   font-size: 1.4em;
   text-align: center;
   border-radius: 40px 40px 0 0;
   font-weight: 700;
+  padding: 15px;
   opacity: .3;
   transition: 0.25s ease;
+  width: 100%;
 }
 
-.nav-link.active{
+/*
+.center-link {
+    background: white;
+    width: 100%;
+    padding: 15px;
+    border-radius: 50px 50px 0 0;
+}*/
+
+a.nav-link.active .center-link{
   background: white;
   /*color: #060677;*/
   color: #212529;
   opacity: 1;
+  font-size: 1.9em;
+  transition: 0.25s ease;
 }
 
-.nav-link.active:hover{
+a.nav-link.active .nav-spacer {
+    background: white;
+}
+
+a.nav-link.active .center-link:hover{
     /*color: #060677;*/
     color: #212529;
     opacity: 1 !important;
@@ -389,8 +401,11 @@ a{
   cursor: pointer;
 }
 
-.nav-spacer{
-  background: white;
+.nav-spacer {
+    background: #fff;
+    width: 50px;
+    height: auto;
+
 }
 
 .nav-spacer2 {
@@ -398,12 +413,25 @@ a{
     width: 100%;
     height: 100%;
 }
+
+a.nav-link.active .nav-spacer:nth-child(1) .nav-spacer2 {
+    border-radius: 0 0 50px 0;
+    background: #f1f1f1;
+    height: 100%;
+    transition: 0.25s ease;
+}
+
+a.nav-link.active .nav-spacer:nth-child(3) .nav-spacer2 {
+    border-radius: 0 0 0 50px;
+    background: #f1f1f1;
+    height: 100%;
+    transition: 0.25s ease;
+}
  
-.active + .nav-spacer>.nav-spacer2{
+/*.active + .nav-spacer>.nav-spacer2{
   border-radius: 0 0 0 50px;
   transition: 0.15s ease;
-  /*background: red !important;*/
-}
+}*/
 
 svg{
   user-select: none;
@@ -591,4 +619,10 @@ input[type="checkbox"]:checked:after {
     top: -12px;
     left: 1px;
     font-size: 1.4em;
+}
+
+a.nav-link {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
 }

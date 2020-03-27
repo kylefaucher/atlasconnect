@@ -38,6 +38,7 @@ class App extends Component{
 
     this.handleGoogleSignIn = this.handleGoogleSignIn.bind(this);
     this.handleGoogleSignOut = this.handleGoogleSignOut.bind(this);
+    this.updateCurrentTab = this.updateCurrentTab.bind(this);
   }
 
   componentDidMount(){
@@ -65,6 +66,10 @@ class App extends Component{
         
       }
       });
+  }
+
+  updateCurrentTab(tab){
+    this.setState({currentTab:tab});
   }
 
   handleGoogleSignIn(){
@@ -101,7 +106,6 @@ class App extends Component{
   }
 
   render(){
-
     return(
       <AuthContext.Provider value = {this.state.isLoggedIn}>
 
@@ -124,24 +128,24 @@ class App extends Component{
        </div>
           <div className="main-container">
             <nav className='main-nav'>
-              <h2><img src = {logo} style = {{'width': '100%', 'position':'relative','bottom':'-11px'}} alt = "atlas connect logo"/></h2><div className = "nav-spacer"><div className="nav-spacer2"></div> </div>
-              <NavLink to="/" activeClassName='active' className="nav-link" exact><FontAwesomeIcon style = {{fontSize:'1.5em'}} icon={faHome} /></NavLink> <div className = "nav-spacer"> <div className="nav-spacer2"></div> </div>
+              <h2><img src = {logo} style = {{'width': '100%', 'position':'relative','bottom':'-11px'}} alt = "atlas connect logo"/></h2>
+              <NavLink to="/" activeClassName='active' className="nav-link" exact><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link"><FontAwesomeIcon  style = {{fontSize:'1.5em'}} icon={faHome} /></div><div className = "nav-spacer"> <div className="nav-spacer2"></div> </div></NavLink> 
               {this.state.isLoggedIn &&
-                 <NavLink to="/create" activeClassName='active' className="nav-link">+</NavLink> 
+                 <NavLink to="/create" activeClassName='active' className="nav-link"><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link">+</div><div className = "nav-spacer"><div className="nav-spacer2"></div> </div></NavLink> 
               }
-              <div className = "nav-spacer"><div className="nav-spacer2"></div> </div>
+             
 
               {this.state.isLoggedIn &&
-                <NavLink to="/profile" activeClassName='active' className="nav-link"><FontAwesomeIcon style = {{fontSize:'1.5em'}} icon={faUserCircle} /></NavLink>
+                <NavLink to="/profile" activeClassName='active' className="nav-link"><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link"><FontAwesomeIcon  style = {{fontSize:'1.5em'}} icon={faUserCircle} /></div><div className = "nav-spacer"><div className="nav-spacer2"></div> </div></NavLink>
               }
-              <div className = "nav-spacer"><div className="nav-spacer2"></div> </div>
+              
 
              </nav>
 
-            <Route path="/" exact component={Feed} />
-            <Route path="/create" render={(props)=> <Write currentUser = {this.state.currentUser} isLoggedIn = {this.state.isLoggedIn} />} />
+            <Route path="/" exact render={(props)=> <Feed updateCurrentTab = {this.updateCurrentTab} />} />
+            <Route path="/create" render={(props)=> <Write updateCurrentTab = {this.updateCurrentTab} currentUser = {this.state.currentUser} isLoggedIn = {this.state.isLoggedIn} />} />
             <Route path="/profile" 
-                   render={(props)=> <SelfProfile isLoggedIn = {this.state.isLoggedIn} currentUser = {this.state.currentUser} />}
+                   render={(props)=> <SelfProfile updateCurrentTab = {this.updateCurrentTab} isLoggedIn = {this.state.isLoggedIn} currentUser = {this.state.currentUser} />}
             />
             <Route path="/project/:projectId" component={Project} />
             <Route path="/user/:userId" component={Profile} />

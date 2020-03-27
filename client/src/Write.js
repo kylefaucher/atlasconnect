@@ -245,6 +245,7 @@ export default class Write extends Component {
 
 	componentDidMount(){
 		reactObject = this;
+        this.props.updateCurrentTab('write');
 	}
 
 	onSubmit(e){

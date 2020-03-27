@@ -22,6 +22,7 @@ export default class SelfProfile extends Component {
 	}
 
     componentDidMount() {
+        this.props.updateCurrentTab('profile');
         let requestString = '/api/userposts/' + this.props.currentUser.uid;
         axios.get(requestString)
             .then(response => {

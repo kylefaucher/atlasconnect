@@ -55,6 +55,7 @@ export default class Feed extends Component {
 
 	componentDidMount() {
         this.displayDefaultFeed();
+        this.props.updateCurrentTab('feed');
     }
 
     handleSearchChange(e){
