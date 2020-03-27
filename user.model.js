@@ -16,6 +16,9 @@ let User = new Schema({
     },
     user_id: {
         type: String
+    },
+    featured_project: {
+        type: String
     }
 });
 

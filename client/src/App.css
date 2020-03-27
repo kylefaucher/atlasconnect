@@ -627,6 +627,68 @@ a.nav-link {
     padding: 0;
 }
 
-.edit-profile-button{
+.profile-edit-button{
   cursor: pointer;
+  opacity: 0.3;
+  transition: 0.25s ease;
+}
+
+.profile-edit-button:hover{
+  opacity: 1;
+  transition: 0.25s ease;
+}
+
+.edit-profile-input {
+    display: grid;
+    grid-template-columns: 60px auto;
+    margin-bottom: 20px;
+}
+
+.edit-profile-input input, .edit-profile-input textarea {
+    -webkit-appearance: none;
+    border: 0;
+    border-bottom: solid 1px #f1f1f1;
+}
+
+button.profile-cancel {
+    padding: 10px;
+    margin: 5px;
+    font-weight: 800;
+    border-radius: 10px;
+    border: solid 2px tomato;
+    color: tomato;
+    transition: 0.25s ease;
+}
+
+button.profile-cancel:hover{
+  color: white;
+  background: tomato;
+  transition: 0.25s ease;
+}
+
+button.profile-save {
+    padding: 10px;
+    margin: 5px;
+    font-weight: 800;
+    border-radius: 10px;
+    border: solid 2px #212529;
+    color: #212529;
+    transition: 0.25s ease;
+}
+
+button.profile-save:hover{
+  color: white;
+  background: #212529;
+  transition: 0.25s ease;
+}
+
+.edit-profile-input label {
+    font-weight: 700;
+}
+
+.user-profile-info a {
+    color: #1e90ff !important;
+    display: block;
+    margin-bottom: 15px;
+    margin-top: 25px;
 }

@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 // connect to cloud database
 const db = process.env.DBKEY || require('./config/keys.js').mongoURI;
 
-console.log(db);
+// console.log(db);
 
 mongoose.connect(db, { useNewUrlParser: true });
 const connection = mongoose.connection;
@@ -155,6 +155,20 @@ app.post('/api/user', function(req,res) {
             }
         })
         .catch(function(error){
+            console.log(error);
+        });
+});
+
+app.put('/api/user', function(req,res) {
+    User.updateOne({ user_id: req.body.user_id}, req.body ).exec()
+        .then( function (response) {
+            res.status(200).send('successfully updated user profile');
+            console.log('update response');
+            console.log(response);
+        })
+        .catch(function(error){
+            res.status(400).send('error updating user profile');
+            console.log('update error');
             console.log(error);
         });
 });
