@@ -34,18 +34,34 @@ export default class SelfProfile extends Component {
             })
     }
 
+    toggleEdit(){
+        this.setState({edit:!this.state.edit});
+    }
+
     render() {
         return (
             <div>
             {this.props.isLoggedIn ? 
             <div className = 'content-container profile-container'>
                 <div>
-                    <FontAwesomeIcon icon={faPen} />
                     <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
                     <h1 className = "profile-user-display-name"> {this.props.currentUser.displayName} </h1>
-                    <p> {this.props.currentUser.email} </p>
-                    <p> Bio </p>
-                    <p> Interests </p>
+                    {this.state.edit ? 
+                        <div>
+                            <div class = "form-group-one-line">
+                                <label> Title </label>
+                                <input type = "text" name = 'title' value = {this.state.title} onChange = {this.onTitleChange} className = "form-control" />
+                            </div>
+                            
+                        </div> :
+                        <div>
+                            <p> {this.props.currentUser.email} </p>
+                            <p> Bio </p>
+                            <p> Interests </p>
+                        </div>
+                    }
+
+                    <div className = "profile-edit-button" onClick = {this.toggleEdit}> <FontAwesomeIcon icon={faPen} /> Edit Profile </div>
                 </div>
                 <div>
                 <h2> featured project </h2>

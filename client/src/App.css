@@ -626,3 +626,7 @@ a.nav-link {
     justify-content: space-between;
     padding: 0;
 }
+
+.edit-profile-button{
+  cursor: pointer;
+}
