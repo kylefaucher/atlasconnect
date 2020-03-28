@@ -20,7 +20,8 @@ export default class Profile extends Component {
 		this.state = {
             messages: [],
             public_profile:'',
-            featured_project:''
+            featured_project:'',
+            profile_img:''
         };
 	}
 
@@ -51,6 +52,24 @@ export default class Profile extends Component {
                     .catch(function (error){
                         console.log(error);
                     })
+
+                //get user's profile picture
+                let profileImgRequest = '/api/profileimg/' + this.props.match.params.userId;
+                axios.get(profileImgRequest)
+                .then(response => {
+                    if (response.data[0]){
+                        let item = response.data[0];
+                        let arrayBufferView = new Uint8Array( item.img.data.data );
+                        let blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                        let urlCreator = window.URL || window.webkitURL;
+                        let imageUrl = urlCreator.createObjectURL( blob );
+                        this.setState({profile_img:imageUrl});
+                    }
+                })
+                .catch(function (error){
+                    console.log('there was error');
+                    console.log(error);
+                })
             })
             .catch(function (error){
                 console.log(error);
@@ -69,7 +88,11 @@ export default class Profile extends Component {
                     </Link>
                 }
 
-                    <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
+                {this.state.profile_img ? 
+                    <div className = "profile-image" style = {{backgroundImage: 'url(' + this.state.profile_img + ')'}} ></div>
+                    :
+                    <FontAwesomeIcon style = {{fontSize:'250px', marginBottom:'50px'}} icon={faUserCircle} />
+                }
                     <div className = "user-profile-info">
                         <h1 className = "profile-user-display-name"> {this.state.public_profile.display_name} </h1>
                         <a href={"mailto:" + this.state.public_profile.email}> {this.state.public_profile.email} </a>

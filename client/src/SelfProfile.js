@@ -16,6 +16,71 @@ import { faStar as outlineStar } from '@fortawesome/free-regular-svg-icons';
 
 import Loader from 'halogenium/lib/DotLoader';
 
+import { FilePond, registerPlugin } from "react-filepond";
+import "filepond/dist/filepond.min.css";
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+
+var reactObject = "";
+
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+
+const serverConfig = {
+    timeout: 99999,
+    revert: (uniqueFileId, load, error) => {
+            
+            console.log(uniqueFileId);
+            
+            axios.delete('/api/upload', { data: { filename: uniqueFileId } } );
+
+            reactObject.setState({fileUniqueId:''});
+
+            error('error');
+
+            load();
+    },
+    process: (fieldName, file, metadata, load, error, progress, abort) => {
+
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+
+        // aborting the request
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        axios({
+            method: 'POST',
+            url: '/api/upload',
+            data: formData,
+            cancelToken: source.token,
+            onUploadProgress: (e) => {
+                // updating progress indicator
+                progress(e.lengthComputable, e.loaded, e.total)
+            }
+        }).then(response => {
+            // passing the file id to FilePond
+            console.log(response.data);
+            reactObject.setState({fileUniqueId: response.data});
+            load(response.data.filename);
+        }).catch((thrown) => {
+            if (axios.isCancel(thrown)) {
+                console.log('Request canceled', thrown.message);
+            } else {
+                // handle error
+            }
+        })
+        // Setup abort interface
+        return {
+            abort: () => {
+                source.cancel('Operation canceled by the user.');
+                abort();
+            }
+        }
+    }
+
+}; 
+
 export default class SelfProfile extends Component {
 	constructor(props){
 		super(props);
@@ -25,7 +90,10 @@ export default class SelfProfile extends Component {
             edit: false,
             public_profile:'',
             loading: false,
-            featured_project: ''
+            featured_project: '',
+            fileUniqueId: '',
+            files: [],
+            profile_img: ''
         };
 
         this.updateProfile = this.updateProfile.bind(this);
@@ -35,6 +103,8 @@ export default class SelfProfile extends Component {
         this.onNameChange = this.onNameChange.bind(this);
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onChooseFeatured = this.onChooseFeatured.bind(this);
+        this.handleInit = this.handleInit.bind(this);
+
 	}
 
     updateProfile(){
@@ -64,6 +134,25 @@ export default class SelfProfile extends Component {
                     .catch(function (error){
                         console.log(error);
                     })
+
+                //get user's profile picture
+                let profileImgRequest = '/api/profileimg/' + this.props.currentUser.uid;
+                axios.get(profileImgRequest)
+                .then(response => {
+                    if (response.data[0]){
+                        let item = response.data[0];
+                        let arrayBufferView = new Uint8Array( item.img.data.data );
+                        let blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                        let urlCreator = window.URL || window.webkitURL;
+                        let imageUrl = urlCreator.createObjectURL( blob );
+                        this.setState({profile_img:imageUrl});
+                    }
+                })
+                .catch(function (error){
+                    console.log('there was error');
+                    console.log(error);
+                })
+
             })
             .catch(function (error){
                 console.log(error);
@@ -71,6 +160,7 @@ export default class SelfProfile extends Component {
     }
 
     componentDidMount() {
+        reactObject = this;
         this.props.updateCurrentTab('profile');
         this.updateProfile();
     }
@@ -114,12 +204,20 @@ export default class SelfProfile extends Component {
     saveProfileChanges(){
         this.setState({loading:true});
         let thisObject = this;
-        axios.put('/api/user/', this.state.public_profile)
+        let requestJSON = {
+            public_profile: this.state.public_profile,
+            profile_img: this.state.fileUniqueId
+        };
+        axios.put('/api/user/', requestJSON)
             .then(function(res){
                 console.log(res.data);
                 thisObject.setState({loading:false});
                 thisObject.toggleEdit();
             });
+    }
+
+    handleInit() {
+        console.log("FilePond instance has initialised", this.pond);
     }
 
     render() {
@@ -128,9 +226,24 @@ export default class SelfProfile extends Component {
             {this.props.isLoggedIn ? 
             <div className = 'content-container profile-container'>
                 <div>
-                    <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
                     {this.state.edit ? 
                         <div>
+                            <label style = {{fontWeight:'700'}}> Profile Picture </label>
+                            <FilePond
+                              ref={ref => (this.pond = ref)}
+                              files={this.state.files}
+                              allowMultiple={false}
+                              maxFiles={1}
+                              server={serverConfig}
+                              oninit={() => this.handleInit()}
+                              onupdatefiles={fileItems => {
+                                console.log(fileItems);
+                                // Set currently active file objects to this.state
+                                this.setState({
+                                        files: fileItems.map(fileItem => fileItem.file)
+                                });
+                              }}
+                            />
 
                             <div class = "edit-profile-input">
                                 <label> Name </label>
@@ -152,6 +265,11 @@ export default class SelfProfile extends Component {
                             
                         </div> :
                         <div className = "user-profile-info">
+                            {this.state.profile_img ? 
+                                <div className = "profile-image" style = {{backgroundImage: 'url(' + this.state.profile_img + ')'}} ></div>
+                                :
+                                <FontAwesomeIcon style = {{fontSize:'250px', marginBottom:'50px'}} icon={faUserCircle} />
+                            }
                             <h1 className = "profile-user-display-name"> {this.state.public_profile.display_name} </h1>
                             <a href={"mailto:" + this.state.public_profile.email}> {this.state.public_profile.email} </a>
                             <p> {this.state.public_profile.bio} </p>

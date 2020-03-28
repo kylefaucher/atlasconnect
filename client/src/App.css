@@ -273,6 +273,7 @@ a.nav-link.active .center-link:hover{
 
 .post-user-name{
   font-weight: 600;
+  margin-top: 4px;
 }
 
 .postTime{
@@ -712,4 +713,34 @@ button.profile-save:hover{
 
 .featured-wrapper.featured{
   background: #2125291f;
+}
+
+.profile-image {
+    width: 250px;
+    height: 250px;
+    background-position: center;
+    background-size: contain;
+    border-radius: 500px;
+    margin-bottom: 20px;
+    background-repeat: no-repeat;
+}
+
+.profile-image-small {
+    width: 1.5em;
+    height: 1.5em;
+    background-position: center;
+    background-size: cover;
+    border-radius: 500px;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+}
+
+.profile-image-nav {
+    margin: auto;
+    width: 1.5em;
+    height: 1.5em;
+    background-position: center;
+    background-size: cover;
+    border-radius: 500px;
+    background-repeat: no-repeat;
 }

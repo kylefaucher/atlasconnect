@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 4000;
 
 let Posts = require('./data.model.js');
 let Img = require('./img.model.js');
+let Profileimg = require('./profileimg.model.js');
 let User = require('./user.model.js');
 
 app.use(cors());
@@ -62,6 +63,19 @@ app.get('/api/images/:project_id', function(req, res) {
             // console.log(projectID);
             // console.log(imgs);
             res.send(imgs);
+        }
+    });
+});
+
+app.get('/api/profileimg/:user_id', function(req, res) {
+    let userID = req.params.user_id;
+    Profileimg.find({'user_id':userID}).exec(function(err, img) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(projectID);
+            // console.log(imgs);
+            res.send(img);
         }
     });
 });
@@ -160,7 +174,7 @@ app.post('/api/user', function(req,res) {
 });
 
 app.put('/api/user', function(req,res) {
-    User.updateOne({ user_id: req.body.user_id}, req.body ).exec()
+    User.updateOne({ user_id: req.body.public_profile.user_id}, req.body.public_profile ).exec()
         .then( function (response) {
             res.status(200).send('successfully updated user profile');
             console.log('update response');
@@ -171,6 +185,34 @@ app.put('/api/user', function(req,res) {
             console.log('update error');
             console.log(error);
         });
+    if (req.body.profile_img){
+            //delete existing profile image if it exists
+            Profileimg.find({ 'user_id': req.body.public_profile.user_id }).remove().exec();
+            
+            let image = new Profileimg();
+            image.user_id = req.body.public_profile.user_id;
+                let filePath = './uploads/' + req.body.profile_img.filename;
+                image.img.data = fs.readFileSync(filePath);
+                image.img.contentType = req.body.profile_img.mimetype;
+                image.save()
+                    .then(post => {
+                        res.status(200).send(image);
+                            fs.unlink(filePath, function(err) {
+                                if(err && err.code == 'ENOENT') {
+                                    // file doens't exist
+                                    console.info("File doesn't exist, won't remove it.");
+                                } else if (err) {
+                                    // other errors, e.g. maybe we don't have enough permission
+                                    console.error("Error occurred while trying to remove file");
+                                } else {
+                                    console.info(`removed`);
+                                }
+                            });
+                    })
+                    .catch(err => {
+                        res.status(400).send('adding new img failed');
+                    });
+    }
 });
 
 app.post('/api/add', function(req, res) {

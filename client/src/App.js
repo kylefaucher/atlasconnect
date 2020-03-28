@@ -33,7 +33,8 @@ class App extends Component{
     this.state={
       isLoggedIn:false,
       currentUser: '',
-      lastSignIn: ''
+      lastSignIn: '',
+      profile_img:''
     };
 
     this.handleGoogleSignIn = this.handleGoogleSignIn.bind(this);
@@ -59,6 +60,24 @@ class App extends Component{
 
         axios.post('/api/user', userJSON)
             .then(res => console.log(res.data));
+
+        //get user's profile picture
+                let profileImgRequest = '/api/profileimg/' + user.uid;
+                axios.get(profileImgRequest)
+                .then(response => {
+                    if (response.data[0]){
+                        let item = response.data[0];
+                        let arrayBufferView = new Uint8Array( item.img.data.data );
+                        let blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                        let urlCreator = window.URL || window.webkitURL;
+                        let imageUrl = urlCreator.createObjectURL( blob );
+                        thisObject.setState({profile_img:imageUrl});
+                    }
+                })
+                .catch(function (error){
+                    console.log('there was error');
+                    console.log(error);
+                })
 
       } else {
         thisObject.setState({isLoggedIn:false});
@@ -136,7 +155,16 @@ class App extends Component{
              
 
               {this.state.isLoggedIn &&
-                <NavLink to="/profile" activeClassName='active' className="nav-link"><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link"><FontAwesomeIcon  style = {{fontSize:'1.5em'}} icon={faUserCircle} /></div><div className = "nav-spacer"><div className="nav-spacer2"></div> </div></NavLink>
+                <NavLink to="/profile" activeClassName='active' className="nav-link"><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link">
+
+                {this.state.profile_img ? 
+                        <div className = "profile-image-nav" style = {{backgroundImage: 'url(' + this.state.profile_img + ')'}} ></div>
+                        :
+                        <FontAwesomeIcon style = {{fontSize:'1.5em', marginRight:'10px'}} icon={faUserCircle} />
+                }
+
+                </div><div className = "nav-spacer"><div className="nav-spacer2"></div> </div>
+                </NavLink>
               }
               
 
