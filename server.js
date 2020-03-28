@@ -37,7 +37,6 @@ app.get('/api/', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-        	// console.log(posts);
             res.json(posts);
         }
     });
@@ -48,8 +47,17 @@ app.get('/api/featured', function(req, res) {
         if (err) {
             console.log(err);
         } else {
-            // console.log(posts);
             res.json(posts);
+        }
+    });
+});
+
+app.get('/api/user', function(req, res) {
+    User.find().exec(function(err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
         }
     });
 });
@@ -188,7 +196,7 @@ app.put('/api/user', function(req,res) {
     if (req.body.profile_img){
             //delete existing profile image if it exists
             Profileimg.find({ 'user_id': req.body.public_profile.user_id }).remove().exec();
-            
+
             let image = new Profileimg();
             image.user_id = req.body.public_profile.user_id;
                 let filePath = './uploads/' + req.body.profile_img.filename;
@@ -280,30 +288,6 @@ app.post('/api/upload', function(req, res) {
     });
 });
 
-// router.route('/save').post(function(req, res) {
-//     var image = new Img();
-//     let filePath = './uploads/' + req.body.filename;
-//     image.img.data = fs.readFileSync(filePath);
-//     image.img.contentType = req.body.mimetype;
-//     image.save()
-//         .then(post => {
-//             res.status(200).json({'img': 'img added successfully'});
-//                 fs.unlink(filePath, function(err) {
-//                     if(err && err.code == 'ENOENT') {
-//                         // file doens't exist
-//                         console.info("File doesn't exist, won't remove it.");
-//                     } else if (err) {
-//                         // other errors, e.g. maybe we don't have enough permission
-//                         console.error("Error occurred while trying to remove file");
-//                     } else {
-//                         console.info(`removed`);
-//                     }
-//                 });
-//         })
-//         .catch(err => {
-//             res.status(400).send('adding new img failed');
-//         });
-// });
 
 app.delete('/api/upload', function(req, res) {
     let pathName = './uploads/' + req.body.filename;

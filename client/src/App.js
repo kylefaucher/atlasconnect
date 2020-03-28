@@ -119,6 +119,7 @@ class App extends Component{
     firebase.auth().signOut().then(function() {
         thisObject.setState({isLoggedIn:false});
         thisObject.setState({currentUser:{}});
+        thisObject.setState({profile_img:''});
     }).catch(function(error) {
        console.log(error);
     });
@@ -138,7 +139,7 @@ class App extends Component{
 
           {this.state.isLoggedIn &&
             <div>
-              <span className = "welcome-msg"> Welcome, {this.state.currentUser.displayName} </span>
+  
              <Link to = '/'> <button onClick = {this.handleGoogleSignOut} >
              Logout
              </button> </Link>

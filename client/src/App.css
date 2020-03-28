@@ -62,6 +62,12 @@
   grid-column-gap: 20px;
 }
 
+.peopleGrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 20px;
+}
+
 .profile-posts-container{
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -149,7 +155,6 @@ a.nav-link.active .center-link:hover{
   border-radius: 5px;
   border: none;
   font-weight: 700;
-  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
 }
 
 .welcome-msg{
@@ -177,7 +182,7 @@ a.nav-link.active .center-link:hover{
 .profile-container{
   display: grid;
   grid-template-columns: 1fr 2fr;
-  grid-column-gap: 20px;
+  grid-column-gap: 60px;
 }
 
 .search-bar{
@@ -377,13 +382,18 @@ a{
 }
 
 .feed-nav-underline.feed-nav-underline-All {
-    left: 130px;
+    left: 119px;
     width: 35px;
 }
 
+.feed-nav-underline.feed-nav-underline-People {
+    left: 176px;
+    width: 76px;
+}
+
 .feed-nav-underline.feed-nav-underline-Search {
-    left: 200px;
-    width: 78px;
+    left: 274px;
+    width: 79px;
 }
 
 .feed-nav{
@@ -392,7 +402,7 @@ a{
 
 .feed-nav-list {
     display: flex;
-    width: 275px;
+    width: 350px;
     justify-content: space-between;
     font-size: 1.25em;
     font-weight: 800;
@@ -719,7 +729,7 @@ button.profile-save:hover{
     width: 250px;
     height: 250px;
     background-position: center;
-    background-size: contain;
+    background-size: cover;
     border-radius: 500px;
     margin-bottom: 20px;
     background-repeat: no-repeat;
@@ -735,6 +745,15 @@ button.profile-save:hover{
     margin-right: 10px;
 }
 
+.profile-image-medium {
+    width: 7em;
+    height: 7em;
+    background-position: center;
+    background-size: cover;
+    border-radius: 500px;
+    background-repeat: no-repeat;
+}
+
 .profile-image-nav {
     margin: auto;
     width: 1.5em;
@@ -743,4 +762,22 @@ button.profile-save:hover{
     background-size: cover;
     border-radius: 500px;
     background-repeat: no-repeat;
+}
+
+.user-card {
+    text-align: center;
+    background: #f1f1f1;
+    padding: 35px;
+    border-radius: 5px;
+    height: 100%;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
+.user-card-wrapper{
+  margin-bottom: 15px;
+}
+
+.user-card .profile-image-medium{
+  margin: auto;
+  margin-bottom: 25px;
 }

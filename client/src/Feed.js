@@ -3,6 +3,7 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Post from './Post.js';
+import UserCard from './UserCard.js';
 
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -17,6 +18,7 @@ export default class Feed extends Component {
 		super(props);
 		this.state = {
             messages: [],
+            people: [],
             currentOpenProject: '',
             searchValue: '',
             loading: true,
@@ -26,6 +28,7 @@ export default class Feed extends Component {
         this.search = this.search.bind(this);
         this.handleSearchChange = this.handleSearchChange.bind(this);
         this.displayDefaultFeed = this.displayDefaultFeed.bind(this);
+        this.displayPeopleFeed = this.displayPeopleFeed.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
 	}
 
@@ -33,6 +36,7 @@ export default class Feed extends Component {
         axios.get('/api/featured')
             .then(response => {
                 this.setState({ messages: response.data });
+                this.setState({ people: [] });
                 console.log(response.data);
                 this.setState({loading:false});
             })
@@ -45,6 +49,20 @@ export default class Feed extends Component {
         axios.get('/api')
             .then(response => {
                 this.setState({ messages: response.data });
+                this.setState({ people: [] });
+                console.log(response.data);
+                this.setState({loading:false});
+            })
+            .catch(function (error){
+                console.log(error);
+         });
+    }
+
+    displayPeopleFeed(){
+        axios.get('/api/user')
+            .then(response => {
+                this.setState({ messages: [] });
+                this.setState({ people: response.data });
                 console.log(response.data);
                 this.setState({loading:false});
             })
@@ -86,6 +104,9 @@ export default class Feed extends Component {
         else if (e.target.textContent == 'All'){
             this.displayAllFeed();
         }
+        else if (e.target.textContent == 'People'){
+            this.displayPeopleFeed();
+        }
         else{
             this.displayDefaultFeed();
         }
@@ -99,7 +120,7 @@ export default class Feed extends Component {
 
                 <div> 
 
-                    <div className = "feed-nav"> <div className = "feed-nav-list"> <a onClick = {this.handleCategoryChange}>Featured</a> <a onClick = {this.handleCategoryChange}>All</a> <a onClick = {this.handleCategoryChange}>Search</a> </div> 
+                    <div className = "feed-nav"> <div className = "feed-nav-list"> <a onClick = {this.handleCategoryChange}>Featured</a> <a onClick = {this.handleCategoryChange}>All</a> <a onClick = {this.handleCategoryChange}>People</a> <a onClick = {this.handleCategoryChange}>Search</a> </div> 
                     <div className = {"feed-nav-underline feed-nav-underline-" + this.state.activeCategory}> </div> 
                     </div>
                 { this.state.activeCategory == 'Search' && 
@@ -109,13 +130,22 @@ export default class Feed extends Component {
                         <button onClick = {this.search} className = "btn btn-primary form-control" type = "search"> Search </button>
                     </div>
                 }
-                {this.state.messages.length ? 
-                <div className = 'postsGrid'>
-                	 {this.state.messages.map(item => {
-                	 	return <Post key={item._id} postJSON = {item} />;
-                	 })}
-                </div>
-                : <div> No projects match your search. </div> }
+
+                {this.state.people.length > 0 && 
+                    <div className = 'peopleGrid'>
+                         {this.state.people.map(item => {
+                            return <UserCard key={item.user_id} uid = {item.user_id} />;
+                         })}
+                    </div>
+                }
+
+                {this.state.messages.length > 0 && 
+                    <div className = 'postsGrid'>
+                    	 {this.state.messages.map(item => {
+                    	 	return <Post key={item._id} postJSON = {item} />;
+                    	 })}
+                    </div>
+                }
 
                 </div> 
             }
