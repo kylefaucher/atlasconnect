@@ -77,7 +77,7 @@
 
 .main-nav {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 3fr 2fr 2fr 1fr;
     grid-column-gap: 0px;
     padding-left: 30px;
     padding-right: 40px;
@@ -117,6 +117,15 @@ a.nav-link.active .center-link{
   color: #212529;
   opacity: 1;
   font-size: 1.9em;
+  transition: 0.25s ease;
+}
+
+a.nav-link.active .center-link.add{
+  background: white;
+  /*color: #060677;*/
+  color: #212529;
+  opacity: 1;
+  font-size: 3em !important;
   transition: 0.25s ease;
 }
 

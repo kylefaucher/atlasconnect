@@ -148,10 +148,9 @@ class App extends Component{
        </div>
           <div className="main-container">
             <nav className='main-nav'>
-              <h2><img src = {logo} style = {{'width': '100%', 'position':'relative','bottom':'-11px'}} alt = "atlas connect logo"/></h2>
-              <NavLink to="/" activeClassName='active' className="nav-link" exact><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link"><FontAwesomeIcon  style = {{fontSize:'1.5em'}} icon={faHome} /></div><div className = "nav-spacer"> <div className="nav-spacer2"></div> </div></NavLink> 
+              <NavLink to="/" activeClassName='active' className="nav-link" exact><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link"><img src = {logo} style = {{'width': '9em', 'position':'relative','bottom':'-11px'}} alt = "atlas connect logo"/></div><div className = "nav-spacer"> <div className="nav-spacer2"></div> </div></NavLink> 
               {this.state.isLoggedIn &&
-                 <NavLink to="/create" activeClassName='active' className="nav-link"><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link">+</div><div className = "nav-spacer"><div className="nav-spacer2"></div> </div></NavLink> 
+                 <NavLink to="/create" activeClassName='active' className="nav-link"><div className = "nav-spacer"><div className="nav-spacer2"></div> </div><div className = "center-link add" style = {{fontSize:'2em', paddingTop:'5px'}}>+</div><div className = "nav-spacer"><div className="nav-spacer2"></div> </div></NavLink> 
               }
              
 
