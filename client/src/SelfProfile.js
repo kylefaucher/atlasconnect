@@ -11,6 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as outlineStar } from '@fortawesome/free-regular-svg-icons';
+
 import Loader from 'halogenium/lib/DotLoader';
 
 export default class SelfProfile extends Component {
@@ -21,7 +24,8 @@ export default class SelfProfile extends Component {
             currentOpenProject: '',
             edit: false,
             public_profile:'',
-            loading: false
+            loading: false,
+            featured_project: ''
         };
 
         this.updateProfile = this.updateProfile.bind(this);
@@ -30,6 +34,7 @@ export default class SelfProfile extends Component {
         this.onBioChange = this.onBioChange.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.onEmailChange = this.onEmailChange.bind(this);
+        this.onChooseFeatured = this.onChooseFeatured.bind(this);
 	}
 
     updateProfile(){
@@ -38,21 +43,31 @@ export default class SelfProfile extends Component {
             .then(response => {
                 this.setState({ public_profile: response.data[0]});
                 console.log(response.data[0]);
+
+                //get user posts
+                let requestString = '/api/userposts/' + this.props.currentUser.uid;
+                axios.get(requestString)
+                    .then(response => {
+                        this.setState({ messages: response.data });
+                        console.log(response.data);
+                        if (this.state.public_profile.featured_project){
+                        //get featured project
+                        axios.get('/api/project/'+this.state.public_profile.featured_project)
+                            .then(response => {
+                                this.setState({featured_project:response.data[0]});
+                            })
+                            .catch(function(error){
+                                console.log(error);
+                            })
+                        }
+                    })
+                    .catch(function (error){
+                        console.log(error);
+                    })
             })
             .catch(function (error){
                 console.log(error);
         });
-
-        //get user posts
-        let requestString = '/api/userposts/' + this.props.currentUser.uid;
-        axios.get(requestString)
-            .then(response => {
-                this.setState({ messages: response.data });
-                console.log(response.data);
-            })
-            .catch(function (error){
-                console.log(error);
-            })
     }
 
     componentDidMount() {
@@ -87,6 +102,12 @@ export default class SelfProfile extends Component {
     onEmailChange(e){
         let profile_edit_copy = this.state.public_profile;
         profile_edit_copy.email = e.target.value;
+        this.setState({public_profile:profile_edit_copy});
+    }
+
+    onChooseFeatured(featured_id){
+        let profile_edit_copy = this.state.public_profile;
+        profile_edit_copy.featured_project = featured_id;
         this.setState({public_profile:profile_edit_copy});
     }
 
@@ -138,17 +159,32 @@ export default class SelfProfile extends Component {
                         </div>
                     }
                     {this.state.loading && 
-                        <Loader color="#212529" size="36px" margin="4px" />
+                       <div style = {{display:'flex', width:'100%', justifyContent:'center', marginTop:'25px'}}>  <Loader color="#212529" size="36px" margin="4px" />  </div>
                     }
                 </div>
                 <div>
                 <h2> featured project </h2>
-                <p> You have not chosen a featured project </p>
-                <h2> all projects </h2>
+                {this.state.public_profile.featured_project ? 
+                    <Post key={this.state.featured_project._id} postJSON = {this.state.featured_project} /> 
+                    : 
+                    <p> You have not chosen a featured project </p>
+                }
+                <h2 style = {{marginTop:'30px'}}> all projects </h2>
                 <div className = 'profile-posts-container'>
-                    {this.state.messages.map(item => {
-                        return <Post key={item._id} postJSON = {item} />;
-                     })}
+
+                    {this.state.edit ? 
+
+                        (this.state.messages.map(item => {
+                            return <div onClick={() => this.onChooseFeatured(item._id)} className = {item._id == this.state.public_profile.featured_project ? "featured-wrapper featured" : "featured-wrapper"} > {item._id == this.state.public_profile.featured_project ? <FontAwesomeIcon icon={solidStar} /> : <FontAwesomeIcon icon={outlineStar} />}<Post key={item._id} postJSON = {item} /> </div>;
+                         }))
+
+                        : 
+
+                        (this.state.messages.map(item => {
+                            return <Post key={item._id} postJSON = {item} />;
+                         }))
+                    }
+
                 </div>
                 </div>
             </div> : 

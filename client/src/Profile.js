@@ -19,29 +19,42 @@ export default class Profile extends Component {
 		super(props);
 		this.state = {
             messages: [],
-            userJSON:''
+            public_profile:'',
+            featured_project:''
         };
 	}
 
     componentDidMount() {
-        console.log(this.props);
+        //get user public profile data
         axios.get('/api/user/' + this.props.match.params.userId)
             .then(response => {
-                this.setState({ userJSON: response.data[0]});
+                this.setState({ public_profile: response.data[0]});
                 console.log(response.data[0]);
+
+                //get user posts
+                let requestString = '/api/userposts/' + this.props.match.params.userId;
+                axios.get(requestString)
+                    .then(response => {
+                        this.setState({ messages: response.data });
+                        console.log(response.data);
+                        if (this.state.public_profile.featured_project){
+                        //get featured project
+                        axios.get('/api/project/'+this.state.public_profile.featured_project)
+                            .then(response => {
+                                this.setState({featured_project:response.data[0]});
+                            })
+                            .catch(function(error){
+                                console.log(error);
+                            })
+                        }
+                    })
+                    .catch(function (error){
+                        console.log(error);
+                    })
             })
             .catch(function (error){
                 console.log(error);
         });
-        let requestString = '/api/userposts/' + this.props.match.params.userId;
-        axios.get(requestString)
-            .then(response => {
-                this.setState({ messages: response.data });
-                console.log(response.data);
-            })
-            .catch(function (error){
-                console.log(error);
-            })
     }
 
     render() {
@@ -57,14 +70,19 @@ export default class Profile extends Component {
                 }
 
                     <FontAwesomeIcon style = {{fontSize:'10em', marginBottom:'50px'}} icon={faUserCircle} />
-                    <h1 className = "profile-user-display-name"> {this.state.userJSON.display_name} </h1>
-                    <p> {this.state.userJSON.email} </p>
-                    <p> Bio </p>
-                    <p> Interests </p>
+                    <div className = "user-profile-info">
+                        <h1 className = "profile-user-display-name"> {this.state.public_profile.display_name} </h1>
+                        <a href={"mailto:" + this.state.public_profile.email}> {this.state.public_profile.email} </a>
+                        <p> {this.state.public_profile.bio} </p>
+                    </div>
                 </div>
                 <div>
-                <h2> featured project </h2>
-                <p> You have not chosen a featured project </p>
+                {this.state.featured_project && 
+                    <div style = {{marginBottom:'30px'}}>
+                        <h2> featured project </h2>
+                        <Post key={this.state.featured_project._id} postJSON = {this.state.featured_project} /> 
+                    </div>
+                }
                 <h2> all projects </h2>
                 <div className = 'profile-posts-container'>
                     {this.state.messages.map(item => {

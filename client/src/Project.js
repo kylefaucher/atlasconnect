@@ -71,7 +71,7 @@ export default class Project extends Component {
                 <div className = "project-grid-container">
                     <div className = "project-sidebar">
                         <h1 className = "project-title"> {this.state.projectDetails.title} </h1>
-                        <UserLink postJSON = {this.state.projectDetails} />
+                        <UserLink uid = {this.state.projectDetails.user_id} />
                         { this.state.projectDate ? 
                         <span className = "project-time"> {months[this.state.projectDate.getMonth()]} {this.state.projectDate.getDate()} {this.state.projectDate.getFullYear()} </span> : '' }
                         <p className = "project-summary"> {this.state.projectDetails.summary} </p> 

@@ -94,7 +94,7 @@ export default class Post extends Component {
 
             </Link> 
 
-            <UserLink postJSON = {this.props.postJSON} />
+            <UserLink uid = {this.props.postJSON.user_id} />
 
             </div> : 
             <div className = "load-wrap"> <Loader color="#f2f2f2" size="72px" margin="4px" /> </div>}

@@ -641,13 +641,7 @@ a.nav-link {
 .edit-profile-input {
     display: grid;
     grid-template-columns: 60px auto;
-    margin-bottom: 20px;
-}
-
-.edit-profile-input input, .edit-profile-input textarea {
-    -webkit-appearance: none;
-    border: 0;
-    border-bottom: solid 1px #f1f1f1;
+    margin-bottom: 0;
 }
 
 button.profile-cancel {
@@ -684,6 +678,7 @@ button.profile-save:hover{
 
 .edit-profile-input label {
     font-weight: 700;
+    padding-top: 10px;
 }
 
 .user-profile-info a {
@@ -691,4 +686,30 @@ button.profile-save:hover{
     display: block;
     margin-bottom: 15px;
     margin-top: 25px;
+}
+
+.edit-profile-input input, .edit-profile-input textarea {
+    -webkit-appearance: none;
+    border: 0;
+    border-top: 1px solid #f1f1f1;
+    padding-bottom: 25px;
+    padding-top: 10px;
+}
+
+.edit-profile-input input:focus, .edit-profile-input textarea:focus{
+  outline: none;
+}
+
+.featured-wrapper {
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.featured-wrapper:hover{
+    background: #2125291f;
+}
+
+.featured-wrapper.featured{
+  background: #2125291f;
 }
