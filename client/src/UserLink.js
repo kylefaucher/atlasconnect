@@ -35,7 +35,7 @@ export default class Post extends Component {
                     if (response.data[0]){
                         let item = response.data[0];
                         let arrayBufferView = new Uint8Array( item.img.data.data );
-                        let blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                        let blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
                         let urlCreator = window.URL || window.webkitURL;
                         let imageUrl = urlCreator.createObjectURL( blob );
                         this.setState({profile_img:imageUrl});

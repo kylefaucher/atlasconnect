@@ -99,7 +99,8 @@ export default class Feed extends Component {
     handleCategoryChange(e){
         this.setState({activeCategory:e.target.textContent});
         if (e.target.textContent == 'Search'){
-            this.setState({messages: ''});
+            this.setState({ messages:'' });
+            this.setState({ people: '' });
         }
         else if (e.target.textContent == 'All'){
             this.displayAllFeed();

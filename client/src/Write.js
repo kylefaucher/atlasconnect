@@ -17,6 +17,10 @@ import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
+import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+import FilePondPluginImageResize from 'filepond-plugin-image-resize';
+import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+
 import axios from 'axios';
 
 import Tag from './Tag.js';
@@ -27,7 +31,7 @@ var curResponseId = "";
 
 var reactObject = "";
 
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginImageTransform, FilePondPluginImageCrop, FilePondPluginImageResize);
 
 const serverConfig = {
     timeout: 99999,
@@ -410,6 +414,14 @@ export default class Write extends Component {
 			          ref={ref => (this.pond = ref)}
 			          files={this.state.files}
 			          allowMultiple={false}
+                      allowImageCrop={true}
+                      allowImageTransform={true}
+                      allowImageResize={true}
+                      imageResizeTargetWidth= {1000}
+                      imageResizeMode= {'contain'}
+                      imageTransformOutputMimeType = {'image/jpeg'}
+                      imageTransformOutputQuality= {80}
+                      imageResizeUpscale={false}
 			          maxFiles={1}
 			          server={serverConfig}
 			          oninit={() => this.handleInit()}

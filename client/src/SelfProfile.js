@@ -22,9 +22,13 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
+import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+import FilePondPluginImageResize from 'filepond-plugin-image-resize';
+import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+
 var reactObject = "";
 
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginImageTransform, FilePondPluginImageCrop, FilePondPluginImageResize);
 
 const serverConfig = {
     timeout: 99999,
@@ -142,7 +146,7 @@ export default class SelfProfile extends Component {
                     if (response.data[0]){
                         let item = response.data[0];
                         let arrayBufferView = new Uint8Array( item.img.data.data );
-                        let blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                        let blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
                         let urlCreator = window.URL || window.webkitURL;
                         let imageUrl = urlCreator.createObjectURL( blob );
                         this.setState({profile_img:imageUrl});
@@ -169,6 +173,7 @@ export default class SelfProfile extends Component {
         if (this.state.edit){
             console.log("turning off edit");
             this.setState({edit:!this.state.edit});
+            this.setState({files:[]});
             this.updateProfile();
         }
         else{
@@ -233,6 +238,16 @@ export default class SelfProfile extends Component {
                               ref={ref => (this.pond = ref)}
                               files={this.state.files}
                               allowMultiple={false}
+                              allowImageCrop={true}
+                              allowImageTransform={true}
+                              allowImageResize={true}
+                              imageCropAspectRatio= {'1:1'}
+                              imageResizeTargetWidth= {300}
+                              imageResizeTargetHeight= {300}
+                              imageResizeMode= {'cover'}
+                              imageTransformOutputMimeType = {'image/jpeg'}
+                              imageTransformOutputQuality= {50}
+                              imageResizeUpscale={false}
                               maxFiles={1}
                               server={serverConfig}
                               oninit={() => this.handleInit()}

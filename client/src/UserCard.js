@@ -18,7 +18,8 @@ export default class Post extends Component {
 		super(props);
         this.state = {
             public_profile: '',
-            profile_img:''
+            profile_img:'',
+            loaded: false
         }
 	}
 
@@ -26,6 +27,7 @@ export default class Post extends Component {
         axios.get('/api/user/' + this.props.uid)
             .then(response => {
                 this.setState({ public_profile: response.data[0]});
+                this.setState({ loaded: true});
                 console.log(response.data[0]);
 
                 //get user's profile picture
@@ -56,7 +58,7 @@ export default class Post extends Component {
             <div className = "user-card-wrapper">
 
             <Link to={{pathname: "/user/" + this.state.public_profile.user_id, state: { prevPath: window.location.pathname }}}>
-                <div className = "user-card">
+                <div style = {this.state.loaded? {transform:'scale(1)'} : {}} className = "user-card">
                     {this.state.profile_img ? 
                         <div className = "profile-image-medium" style = {{backgroundImage: 'url(' + this.state.profile_img + ')'}} ></div>
                         :

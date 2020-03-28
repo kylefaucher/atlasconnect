@@ -30,7 +30,8 @@ export default class Post extends Component {
             time: new Date(this.props.postJSON.time),
             imageURL: '',
             loading: true,
-            hovered: false
+            hovered: false,
+            loaded: false
         }
         this.handleHover = this.handleHover.bind(this);
         this.handleUnhover = this.handleUnhover.bind(this);
@@ -43,11 +44,13 @@ export default class Post extends Component {
             .then(response => {
                 let item = response.data[0];
                 let arrayBufferView = new Uint8Array( item.img.data.data );
-                let blob = new Blob( [ arrayBufferView ], { type: "image/png" } );
+                let blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
                 let urlCreator = window.URL || window.webkitURL;
                 let imageUrl = urlCreator.createObjectURL( blob );
                 this.setState({imageURL:imageUrl});
                 this.setState({loading:false});
+                this.setState({ loaded: true});
+
             })
             .catch(function (error){
                 console.log('there was error');
@@ -67,7 +70,7 @@ export default class Post extends Component {
         return (
             <div>
             { !this.state.loading ?
-            <div>
+            <div className = "post-wrap-scale" style = {this.state.loaded ? {transform:'scale(1)', transition:'0.8s ease'} : {transform:'scale(0)', transition:'0.8s ease'} }>
             <Link className = {this.state.loading ? "post-loading" : "post-loaded"} to={{
                 pathname: "/project/" + this.props.postJSON._id, 
                 state: { 

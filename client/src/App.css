@@ -52,6 +52,11 @@
     box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
 }
 
+.post-wrap-scale{
+  transform: scale(0);
+  transition: 0.8s ease;
+}
+
 .profile-container h2 {
     font-weight: 700;
 }
@@ -125,7 +130,7 @@ a.nav-link.active .center-link.add{
   /*color: #060677;*/
   color: #212529;
   opacity: 1;
-  font-size: 3em !important;
+  font-size: 2.5em !important;
   transition: 0.25s ease;
 }
 
@@ -159,6 +164,7 @@ a.nav-link.active .center-link:hover{
 }
 
 .topbar button{
+  background: white;
   color: #212529;
   margin: 10px;
   border-radius: 5px;
@@ -774,6 +780,8 @@ button.profile-save:hover{
 }
 
 .user-card {
+    transform: scale(0);
+    transition: 0.5s ease;
     text-align: center;
     background: #f1f1f1;
     padding: 35px;
