@@ -86,6 +86,112 @@ const serverConfig = {
 
 }; 
 
+const serverConfig_2 = {
+    timeout: 99999,
+    revert: (uniqueFileId, load, error) => {
+            
+            console.log(uniqueFileId);
+            
+            axios.delete('/api/upload', { data: { filename: uniqueFileId } } );
+
+            error('error');
+
+            load();
+    },
+    process: (fieldName, file, metadata, load, error, progress, abort) => {
+
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+
+        // aborting the request
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        axios({
+            method: 'POST',
+            url: '/api/upload',
+            data: formData,
+            cancelToken: source.token,
+            onUploadProgress: (e) => {
+                // updating progress indicator
+                progress(e.lengthComputable, e.loaded, e.total)
+            }
+        }).then(response => {
+            // passing the file id to FilePond
+            console.log(response.data);
+            reactObject.setState({fileUniqueId2: response.data});
+            load(response.data.filename);
+        }).catch((thrown) => {
+            if (axios.isCancel(thrown)) {
+                console.log('Request canceled', thrown.message);
+            } else {
+                // handle error
+            }
+        })
+        // Setup abort interface
+        return {
+            abort: () => {
+                source.cancel('Operation canceled by the user.');
+                abort();
+            }
+        }
+    }
+
+};
+
+const serverConfig_3 = {
+    timeout: 99999,
+    revert: (uniqueFileId, load, error) => {
+            
+            console.log(uniqueFileId);
+            
+            axios.delete('/api/upload', { data: { filename: uniqueFileId } } );
+
+            error('error');
+
+            load();
+    },
+    process: (fieldName, file, metadata, load, error, progress, abort) => {
+
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+
+        // aborting the request
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        axios({
+            method: 'POST',
+            url: '/api/upload',
+            data: formData,
+            cancelToken: source.token,
+            onUploadProgress: (e) => {
+                // updating progress indicator
+                progress(e.lengthComputable, e.loaded, e.total)
+            }
+        }).then(response => {
+            // passing the file id to FilePond
+            console.log(response.data);
+            reactObject.setState({fileUniqueId3: response.data});
+            load(response.data.filename);
+        }).catch((thrown) => {
+            if (axios.isCancel(thrown)) {
+                console.log('Request canceled', thrown.message);
+            } else {
+                // handle error
+            }
+        })
+        // Setup abort interface
+        return {
+            abort: () => {
+                source.cancel('Operation canceled by the user.');
+                abort();
+            }
+        }
+    }
+
+};  
+
 const toolbar = {
   options: ['embedded','inline', 'blockType', 'list', 'textAlign', 'link', 'emoji', 'history'],
   inline: {
@@ -217,9 +323,12 @@ export default class Write extends Component {
 			tags: [],
 			cur_tag_input: '',
 			cur_color_index: 0,
-			files: [
-			],
+			files: [],
+      files2: [],
+      files3: [],
 			fileUniqueId:'',
+      fileUniqueId2:'',
+      fileUniqueId3:'',
 			forClass:false,
 			forExpo:false,
 			forSpace:false,
@@ -275,7 +384,9 @@ export default class Write extends Component {
 				editor_html:this.state.editorHTML
 			},
 			img_data:{
-				fileID: this.state.fileUniqueId
+				fileID: this.state.fileUniqueId,
+        fileID2: this.state.fileUniqueId2,
+        fileID3: this.state.fileUniqueId3
 			}
 		};
 
@@ -376,93 +487,153 @@ export default class Write extends Component {
                 <div >
                 <h4 className = "add-title">Add a Project</h4>
                 <form onSubmit={this.onSubmit} id = "addProjectForm" style = {{"marginBottom": "200px"}} encType="multipart/form-data">
-                	<div class = "form-group-one-line">
+                	<div class = "form-title form-group-one-line">
 	                	<label> Title </label>
 	                	<input type = "text" name = 'title' value = {this.state.title} onChange = {this.onTitleChange} className = "form-control" />
 	                </div>
-	                <div class = "form-group-one-line">
+	                <div class = "form-summary form-group-one-line">
                 		<label> Summary </label>
                 		<textarea name = 'summary' maxlength="100" value = {this.state.summary} onChange = {this.onSummaryChange} className = 'form-control' />
                 	</div>
-               		<div class = "form-group-one-line form-flex">
-                		<input id = "forclass" type = "checkbox" name = 'forClass' checked = {this.state.forClass} onChange = {this.onForClassChange} />
-                		<label for = "forclass"> This project was for a class </label>
-                	</div>
-                	{this.state.forClass && 
-                		<div class = "form-group-one-line">
-	                		<label> Class </label>
-	                		<div style = {{"display": "flex", "width":"25%"}}>
-	                			<input type = "text" placeholder = "atls" name = 'class-dept' value = {this.state.classdept} onChange = {this.onClassDeptChange} class = "form-control"/>
-	                			<input type = "text" placeholder = "1000" name = 'class-number' value = {this.state.classnumber} onChange = {this.onClassNumChange} class = "form-control"/>
-	                		</div>
-	                	</div>
-	                }
-                	<div className = "form-group-one-line">
+                  <div class = "form-main-photo">
+                    <label> Main Photo </label>
+                    <FilePond
+                        ref={ref => (this.pond = ref)}
+                        files={this.state.files}
+                        allowMultiple={false}
+                        allowImageCrop={true}
+                        allowImageTransform={true}
+                        allowImageResize={true}
+                        imageResizeTargetWidth= {1000}
+                        imageResizeMode= {'contain'}
+                        imageTransformOutputMimeType = {'image/jpeg'}
+                        imageTransformOutputQuality= {80}
+                        imageResizeUpscale={false}
+                        maxFiles={1}
+                        server={serverConfig}
+                        oninit={() => this.handleInit()}
+                        onupdatefiles={fileItems => {
+                          console.log(fileItems);
+                          // Set currently active file objects to this.state
+                                this.setState({
+                                        files: fileItems.map(fileItem => fileItem.file)
+                                });
+                        }}
+                      />
+                    <label> Additional Photos (Max 2) </label>
+                    <div style = {{display:'grid', gridTemplateColumns: '1fr 1fr', gridColumnGap:'15px'}}>
+                      <FilePond
+                          ref={ref => (this.pond = ref)}
+                          files={this.state.files2}
+                          allowMultiple={false}
+                          allowImageCrop={true}
+                          allowImageTransform={true}
+                          allowImageResize={true}
+                          imageResizeTargetWidth= {1000}
+                          imageResizeMode= {'contain'}
+                          imageTransformOutputMimeType = {'image/jpeg'}
+                          imageTransformOutputQuality= {80}
+                          imageResizeUpscale={false}
+                          maxFiles={1}
+                          server={serverConfig_2}
+                          oninit={() => this.handleInit()}
+                          onupdatefiles={fileItems => {
+                            console.log(fileItems);
+                            // Set currently active file objects to this.state
+                                  this.setState({
+                                          files2: fileItems.map(fileItem => fileItem.file)
+                                  });
+                          }}
+                        />
+                      <FilePond
+                          ref={ref => (this.pond = ref)}
+                          files={this.state.files3}
+                          allowMultiple={false}
+                          allowImageCrop={true}
+                          allowImageTransform={true}
+                          allowImageResize={true}
+                          imageResizeTargetWidth= {1000}
+                          imageResizeMode= {'contain'}
+                          imageTransformOutputMimeType = {'image/jpeg'}
+                          imageTransformOutputQuality= {80}
+                          imageResizeUpscale={false}
+                          maxFiles={1}
+                          server={serverConfig_3}
+                          oninit={() => this.handleInit()}
+                          onupdatefiles={fileItems => {
+                            console.log(fileItems);
+                            // Set currently active file objects to this.state
+                                  this.setState({
+                                          files3: fileItems.map(fileItem => fileItem.file)
+                                  });
+                          }}
+                        />
+                      </div>
+                  </div>
+               
+                	<div className = "form-tags form-group-one-line">
                 		<label> Tags </label>
                 		<div style = {{'display':'flex'}}>
                 			<input value = {this.state.cur_tag_input} placeholder = 'Add Tags' type = "text" onChange = {this.onTagInputChange} name = 'tag_input' className = 'form-control'/>
                 			<button className = 'btn add-tag-button' type = 'button' onClick = {this.onTagAdd}> + </button>
                 		</div>
                 	</div>
-                	<div style = {{'marginBottom':'30px'}}>
+                	<div class = "form-tags-list" style = {{'marginBottom':'30px'}}>
 	                	{this.state.tags.map(item => {
 	                	 		return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
 	                	})}
                 	</div>
-                	<label> Main Photo </label>
-                	<FilePond
-			          ref={ref => (this.pond = ref)}
-			          files={this.state.files}
-			          allowMultiple={false}
-                      allowImageCrop={true}
-                      allowImageTransform={true}
-                      allowImageResize={true}
-                      imageResizeTargetWidth= {1000}
-                      imageResizeMode= {'contain'}
-                      imageTransformOutputMimeType = {'image/jpeg'}
-                      imageTransformOutputQuality= {80}
-                      imageResizeUpscale={false}
-			          maxFiles={1}
-			          server={serverConfig}
-			          oninit={() => this.handleInit()}
-			          onupdatefiles={fileItems => {
-			          	console.log(fileItems);
-			            // Set currently active file objects to this.state
-                        this.setState({
-                                files: fileItems.map(fileItem => fileItem.file)
-                        });
-			          }}
-			        />
+                	
 
-			        <div class = "form-group-one-line">
-	                	<label> Project Description </label>
-	                </div>
-
+			        <div class = "form-description form-group-one-line">
+	                <label> Project Description </label>
+	             
 	                <Editor
 	                  toolbar = {toolbar}
-			          editorState={this.state.editorState}
-			          wrapperClassName="demo-wrapper"
-			          editorClassName="demo-editor"
-			          onEditorStateChange={this.onEditorChange}
-			        />
+    			          editorState={this.state.editorState}
+    			          wrapperClassName="demo-wrapper"
+    			          editorClassName="demo-editor"
+    			          onEditorStateChange={this.onEditorChange}
+    			        />
 
-	                <div class = "form-group-one-line form-flex">
+              </div>
+
+              <div class = "form-class" >
+                <div class = "form-group-one-line form-flex">
+                      <input id = "forclass" type = "checkbox" name = 'forClass' checked = {this.state.forClass} onChange = {this.onForClassChange} />
+                      <label for = "forclass"> This project was for a class </label>
+                </div>
+                    {this.state.forClass && 
+                      <div class = "form-chooseclass form-group-one-line">
+                        <label> Class </label>
+                        <div style = {{"display": "flex", "width":"100%"}}>
+                          <input type = "text" placeholder = "atls" name = 'class-dept' value = {this.state.classdept} onChange = {this.onClassDeptChange} class = "form-control"/>
+                          <input type = "text" placeholder = "1000" name = 'class-number' value = {this.state.classnumber} onChange = {this.onClassNumChange} class = "form-control"/>
+                        </div>
+                      </div>
+                    }
+              </div>
+
+              <div className = 'form-checkboxes'>
+	                <div class = "form-forexpo form-group-one-line form-flex">
                 		<input id = "forexpo" type = "checkbox" name = 'forExpo' checked = {this.state.forExpo} onChange = {this.onForExpoChange} />
                 		<label for = "forexpo"> Submit this project for Atlas Expo consideration </label>
                 	</div>
 
-                	<div class = "form-group-one-line form-flex">
+                	<div class = "form-forspace form-group-one-line form-flex">
                 		<input id = "forspace" type = "checkbox" name = 'forSpace' checked = {this.state.forSpace} onChange = {this.onForSpaceChange} />
                 		<label for = "forspace"> I would like space in Atlas to exhibit this project </label>
                 	</div>
 
-	                <div class = "form-group-one-line form-flex">
+	                <div class = "form-private form-group-one-line form-flex">
                 		<input id = "private" type = "checkbox" name = 'private' checked = {!this.state.public} onChange = {this.onPrivateChange} />
                 		<label for = "private"> Make this project private </label>
                 	</div>
 
-                	<button className = 'btn btn-primary' type = 'submit'>Save</button>
-                	<button className = 'btn btn-primary' type = 'submit'>Save and Post</button>
+              </div>
+
+                	<button className = 'btn form-save' type = 'submit'>Save</button>
+                	<button className = 'btn form-post' type = 'submit'>Save and Post</button>
                 </form>
                 </div>
             </div> : 

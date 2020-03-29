@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 4000;
 
 let Posts = require('./data.model.js');
 let Img = require('./img.model.js');
+let AdditionalImg = require('./additionalimg.model.js');
 let Profileimg = require('./profileimg.model.js');
 let User = require('./user.model.js');
 
@@ -65,6 +66,19 @@ app.get('/api/user', function(req, res) {
 app.get('/api/images/:project_id', function(req, res) {
     let projectID = req.params.project_id;
     Img.find({'project_id':projectID}).exec(function(err, imgs) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(projectID);
+            // console.log(imgs);
+            res.send(imgs);
+        }
+    });
+});
+
+app.get('/api/additionalimages/:project_id', function(req, res) {
+    let projectID = req.params.project_id;
+    AdditionalImg.find({'project_id':projectID}).exec(function(err, imgs) {
         if (err) {
             console.log(err);
         } else {
@@ -223,6 +237,7 @@ app.put('/api/user', function(req,res) {
     }
 });
 
+//add new project to database and upload images
 app.post('/api/add', function(req, res) {
     let posts = new Posts(req.body.post_data);
     let project_id = "";
@@ -255,8 +270,62 @@ app.post('/api/add', function(req, res) {
                             });
                     })
                     .catch(err => {
-                        res.status(400).send('adding new img failed');
+                        // res.status(400).send('adding new img failed');
                     });
+
+            //upload second picture if user uploaded one
+            if (req.body.img_data.fileID2){
+                let image2 = new AdditionalImg();
+                image2.project_id = posts._id;
+                let filePath2 = './uploads/' + req.body.img_data.fileID2.filename;
+                image2.img.data = fs.readFileSync(filePath2);
+                image2.img.contentType = req.body.mimetype;
+                image2.save()
+                    .then(post => {
+                        // res.status(200).send(image);
+                            fs.unlink(filePath2, function(err) {
+                                if(err && err.code == 'ENOENT') {
+                                    // file doens't exist
+                                    console.info("File doesn't exist, won't remove it.");
+                                } else if (err) {
+                                    // other errors, e.g. maybe we don't have enough permission
+                                    console.error("Error occurred while trying to remove file");
+                                } else {
+                                    console.info(`removed`);
+                                }
+                            });
+                    })
+                    .catch(err => {
+                        // res.status(400).send('adding new additional img failed');
+                    });
+
+            }
+            //upload third picture if user uploaded one
+            if (req.body.img_data.fileID3){
+                let image3 = new AdditionalImg();
+                image3.project_id = posts._id;
+                let filePath3 = './uploads/' + req.body.img_data.fileID3.filename;
+                image3.img.data = fs.readFileSync(filePath3);
+                image3.img.contentType = req.body.mimetype;
+                image3.save()
+                    .then(post => {
+                        // res.status(200).send(image);
+                            fs.unlink(filePath3, function(err) {
+                                if(err && err.code == 'ENOENT') {
+                                    // file doens't exist
+                                    console.info("File doesn't exist, won't remove it.");
+                                } else if (err) {
+                                    // other errors, e.g. maybe we don't have enough permission
+                                    console.error("Error occurred while trying to remove file");
+                                } else {
+                                    console.info(`removed`);
+                                }
+                            });
+                    })
+                    .catch(err => {
+                        // res.status(400).send('adding new additional img failed');
+                    });
+            }
         })
         .catch(err => {
             // res.status(400).send('adding new post failed');

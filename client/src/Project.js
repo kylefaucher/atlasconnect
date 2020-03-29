@@ -26,8 +26,13 @@ export default class Project extends Component {
             loading: true,
             projectDetails: '',
             imageURL:'',
+            imageURL2:'',
+            imageURL3:'',
+            largeImageURL:'',
             projectDate:''
         };
+
+        this.enlargeImage = this.enlargeImage.bind(this);
 	}
 
     componentDidMount(){
@@ -50,7 +55,35 @@ export default class Project extends Component {
                 let urlCreator = window.URL || window.webkitURL;
                 let imageUrl = urlCreator.createObjectURL( blob );
                 this.setState({imageURL:imageUrl});
+                this.setState({largeImageURL:imageUrl});
                 this.setState({loading:false});
+            })
+            .catch(function (error){
+                console.log('there was error');
+                console.log(error);
+            });
+        let request2 = '/api/additionalimages/' + this.props.match.params.projectId;
+        axios.get(request2)
+            .then(response => {
+                if (response.data[0]){
+                    let item = response.data[0];
+                    let arrayBufferView = new Uint8Array( item.img.data.data );
+                    let blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
+                    let urlCreator = window.URL || window.webkitURL;
+                    let imageUrl = urlCreator.createObjectURL( blob );
+                    this.setState({imageURL2:imageUrl});
+                    this.setState({loading:false});
+                }
+
+                if (response.data[1]){
+                    let item = response.data[1];
+                    let arrayBufferView = new Uint8Array( item.img.data.data );
+                    let blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
+                    let urlCreator = window.URL || window.webkitURL;
+                    let imageUrl = urlCreator.createObjectURL( blob );
+                    this.setState({imageURL3:imageUrl});
+                    this.setState({loading:false});
+                }
             })
             .catch(function (error){
                 console.log('there was error');
@@ -58,6 +91,9 @@ export default class Project extends Component {
             });
     }
 
+    enlargeImage(imgURL){
+        this.setState({largeImageURL:imgURL});
+    }
 
     render() {
         return (
@@ -82,7 +118,14 @@ export default class Project extends Component {
                         </div>
                     </div>
                     <div className = "project-body">
-                        <img className = "project-image" src = {this.state.imageURL} alt = 'img' />
+                        <div class = "img-gallery">
+                            <img className = "project-image" src = {this.state.largeImageURL} alt = 'img' />
+                            <div className = "thumbnails">
+                                <img onClick={() => this.enlargeImage(this.state.imageURL)} className = "project-image-thumbnail" src = {this.state.imageURL} alt = 'img' />
+                                {this.state.imageURL2 && <img onClick={() => this.enlargeImage(this.state.imageURL2)} className = "project-image-thumbnail" src = {this.state.imageURL2} alt = 'img' />}
+                                {this.state.imageURL3 && <img onClick={() => this.enlargeImage(this.state.imageURL3)} className = "project-image-thumbnail" src = {this.state.imageURL3} alt = 'img' />}
+                            </div>
+                        </div>
                         <div className = "project-body-writeup" dangerouslySetInnerHTML={{__html: this.state.projectDetails.editor_html}}></div>
                     </div>
                 </div> :
