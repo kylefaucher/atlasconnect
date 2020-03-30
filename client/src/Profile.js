@@ -88,12 +88,12 @@ export default class Profile extends Component {
                     </Link>
                 }
 
-                {this.state.profile_img ? 
-                    <div className = "profile-image" style = {{backgroundImage: 'url(' + this.state.profile_img + ')'}} ></div>
-                    :
-                    <FontAwesomeIcon style = {{fontSize:'250px', marginBottom:'50px'}} icon={faUserCircle} />
-                }
                     <div className = "user-profile-info">
+                        {this.state.profile_img ? 
+                            <div className = "profile-image" style = {{backgroundImage: 'url(' + this.state.profile_img + ')'}} ></div>
+                            :
+                            <FontAwesomeIcon style = {{fontSize:'250px', marginBottom:'50px'}} icon={faUserCircle} />
+                        }
                         <h1 className = "profile-user-display-name"> {this.state.public_profile.display_name} </h1>
                         <a href={"mailto:" + this.state.public_profile.email}> {this.state.public_profile.email} </a>
                         <p> {this.state.public_profile.bio} </p>

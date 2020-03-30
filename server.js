@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 4000;
 
 let Posts = require('./data.model.js');
 let Img = require('./img.model.js');
+let Tag = require('./tag.model.js');
 let AdditionalImg = require('./additionalimg.model.js');
 let Profileimg = require('./profileimg.model.js');
 let User = require('./user.model.js');
@@ -164,6 +165,33 @@ app.get('/api/user/:userid', function(req,res) {
         }
         else{
             res.status(200).json(user);
+        }
+    });
+});
+
+app.post('/api/tag', function(req, res) {
+    let tag = new Tag;
+    tag.tag_id = req.body.tag_id;
+    tag.tag_color = req.body.tag_color;
+    tag.save()
+        .then( tag =>{
+            res.status(200).send("successfully added new tag");
+            console.log(tag);
+        })
+        .catch (err => {
+            res.status(400).send(err); 
+        })
+});
+
+app.get('/api/tag/:tagid', function(req, res) {
+    let tag_id = req.params.tagid;
+    Tag.find({'tag_id': tag_id}).exec(function(err,tag){
+        if (err){
+            console.log(err);
+            res.status(400);
+        }
+        else{
+            res.status(200).json(tag);
         }
     });
 });

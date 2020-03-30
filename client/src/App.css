@@ -700,6 +700,11 @@ button.profile-save:hover{
     padding-top: 10px;
 }
 
+.user-profile-info {
+    position: sticky;
+    top: 25px;
+}
+
 .user-profile-info a {
     color: #1e90ff !important;
     display: block;
@@ -839,7 +844,7 @@ form#addProjectForm {
     grid-column: 1/3;
 }
 
-.form-tags {
+.form-tag-container {
     grid-column: 1/3;
 }
 
@@ -854,5 +859,33 @@ img.project-image-thumbnail {
     display: block;
     border-radius: 5px;
     margin-bottom: 5px;
+    cursor: pointer;
+}
+
+label.required:after {
+    content: '*';
+    font-weight: 400;
+    color: tomato;
+}
+
+.form-tags-list {
+    border: solid 2px #f1f1f1;
+    padding: 15px;
+    border-radius: 500px;
+    height: fit-content;
+}
+
+.tag-delete {
+    display: inline-flex;
+    justify-content: center;
+    /* height: 20px; */
+    /* width: 20px; */
+    width: 18px;
+    margin-left: 10px;
+    background: rgba(255, 255, 255, 0.74);
+    border-radius: 20px;
+    text-align: center;
+    /* padding: 3px; */
+    margin: 3px;
     cursor: pointer;
 }

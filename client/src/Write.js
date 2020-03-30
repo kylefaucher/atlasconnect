@@ -24,8 +24,7 @@ import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
 import axios from 'axios';
 
 import Tag from './Tag.js';
-
-const colors = ['#CCEEEB', '#FEEFD8', '#FFDCDC', '#D5D6E9', '#ECCCDF'];
+import TagSearch from './TagSearch.js';
 
 var curResponseId = "";
 
@@ -321,8 +320,6 @@ export default class Write extends Component {
 			summary: '',
 			title: '',
 			tags: [],
-			cur_tag_input: '',
-			cur_color_index: 0,
 			files: [],
       files2: [],
       files3: [],
@@ -344,6 +341,7 @@ export default class Write extends Component {
 		this.onSummaryChange = this.onSummaryChange.bind(this);
 		this.onTitleChange = this.onTitleChange.bind(this);
 		this.onTagAdd = this.onTagAdd.bind(this);
+        this.onTagDelete = this.onTagDelete.bind(this);
 		this.onTagInputChange = this.onTagInputChange.bind(this);
 		this.handleInit = this.handleInit.bind(this);
 		this.onForClassChange = this.onForClassChange.bind(this);
@@ -362,6 +360,7 @@ export default class Write extends Component {
 	}
 
 	onSubmit(e){
+        //** add step to check if user has filled out required fields (ie title state, etc are not null)**
 		e.preventDefault();
 		let curTime = new Date();
 		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -417,22 +416,28 @@ export default class Write extends Component {
 		});
 	}
 
-	onTagAdd(e){
-		e.preventDefault();
-		let tagArray = this.state.tags;
-		tagArray.push(
-			{
-				tag_id: this.state.cur_tag_input,
-				tag_color: colors[this.state.cur_color_index]
-			}
-		);
-		this.setState({ 
-			tags: tagArray 
-		});
-		this.setState({cur_tag_input: ''});
-		this.setState({cur_color_index: this.state.cur_color_index + 1});
-
+	onTagAdd(tagid,tagcolor){
+        let tagJSON = {
+            tag_id: tagid,
+            tag_color: tagcolor
+        };
+        axios.post('/api/tag', tagJSON)
+            .then( response => {
+                console.log(response);
+                let tagArray = this.state.tags;
+                tagArray.push( tagid );
+                this.setState({ 
+                    tags: tagArray 
+                });
+            });
 	}
+
+    onTagDelete(tagid){
+        let tagIndex = this.state.tags.indexOf(tagid);
+        let tags_copy = this.state.tags;
+        tags_copy.splice(tagIndex, 1);
+        this.setState({tags:tags_copy});
+    }
 
 	handleInit() {
 	    console.log("FilePond instance has initialised", this.pond);
@@ -488,15 +493,15 @@ export default class Write extends Component {
                 <h4 className = "add-title">Add a Project</h4>
                 <form onSubmit={this.onSubmit} id = "addProjectForm" style = {{"marginBottom": "200px"}} encType="multipart/form-data">
                 	<div class = "form-title form-group-one-line">
-	                	<label> Title </label>
+	                	<label className= "required"> Title </label>
 	                	<input type = "text" name = 'title' value = {this.state.title} onChange = {this.onTitleChange} className = "form-control" />
 	                </div>
 	                <div class = "form-summary form-group-one-line">
-                		<label> Summary </label>
+                		<label className= "required"> Summary </label>
                 		<textarea name = 'summary' maxlength="100" value = {this.state.summary} onChange = {this.onSummaryChange} className = 'form-control' />
                 	</div>
                   <div class = "form-main-photo">
-                    <label> Main Photo </label>
+                    <label className= "required"> Main Photo </label>
                     <FilePond
                         ref={ref => (this.pond = ref)}
                         files={this.state.files}
@@ -570,19 +575,17 @@ export default class Write extends Component {
                         />
                       </div>
                   </div>
-               
-                	<div className = "form-tags form-group-one-line">
-                		<label> Tags </label>
-                		<div style = {{'display':'flex'}}>
-                			<input value = {this.state.cur_tag_input} placeholder = 'Add Tags' type = "text" onChange = {this.onTagInputChange} name = 'tag_input' className = 'form-control'/>
-                			<button className = 'btn add-tag-button' type = 'button' onClick = {this.onTagAdd}> + </button>
-                		</div>
-                	</div>
+
+                  <div className = 'form-tag-container'>
+
+                	<TagSearch onTagAdd = {this.onTagAdd} />
+
                 	<div class = "form-tags-list" style = {{'marginBottom':'30px'}}>
 	                	{this.state.tags.map(item => {
-	                	 		return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
+	                	 		return <Tag key={item} tag_id = {item} removable = {true} onTagDelete = {this.onTagDelete} />;
 	                	})}
                 	</div>
+                  </div>
                 	
 
 			        <div class = "form-description form-group-one-line">

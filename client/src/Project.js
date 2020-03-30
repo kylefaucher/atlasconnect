@@ -113,7 +113,7 @@ export default class Project extends Component {
                         <p className = "project-summary"> {this.state.projectDetails.summary} </p> 
                         <div className = "tags-list">
                         {this.state.projectDetails.tags.map(item => {
-                                return <Tag key={item.tag_id} tag_id = {item.tag_id} tag_color = {item.tag_color} />;
+                                return <Tag key={item} tag_id = {item} />;
                         })}
                         </div>
                     </div>

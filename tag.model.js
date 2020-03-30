@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let Posts = new Schema({
+let Tag = new Schema({
     tag_id: {
         type: String
     },
     tag_color: {
-        type: Date
+        type: String
     }
 }); 
 
