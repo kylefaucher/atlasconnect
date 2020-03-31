@@ -334,6 +334,7 @@ export default class Write extends Component {
 			classdept: '',
 			editorState: EditorState.createEmpty(),
 			editorHTML:'',
+            validForm: true,
 			publish: true
 		};
 
@@ -362,39 +363,51 @@ export default class Write extends Component {
 	onSubmit(e){
         //** add step to check if user has filled out required fields (ie title state, etc are not null)**
 		e.preventDefault();
-		let curTime = new Date();
-		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-		const newPost = {
-			post_data:{
-				summary: this.state.summary,
-				title: this.state.title,
-				time: curTime,
-				public: this.state.public,
-				publish:this.state.publish,
-				tags: this.state.tags,
-				user_display_name: this.props.currentUser.displayName,
-				user_id: this.props.currentUser.uid,
-				for_class:this.state.forClass,
-				for_expo:this.state.forExpo,
-				for_space:this.state.forSpace,
-				classnum: '',
-				classdept: '',
-				editor_html:this.state.editorHTML
-			},
-			img_data:{
-				fileID: this.state.fileUniqueId,
-        fileID2: this.state.fileUniqueId2,
-        fileID3: this.state.fileUniqueId3
-			}
-		};
+        if (this.state.summary && this.state.title && this.state.tags.length > 0 && this.state.fileUniqueId){
+
+        		let curTime = new Date();
+        		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+        		const newPost = {
+        			post_data:{
+        				summary: this.state.summary,
+        				title: this.state.title,
+        				time: curTime,
+        				public: this.state.public,
+        				publish:this.state.publish,
+        				tags: this.state.tags,
+        				user_display_name: this.props.currentUser.displayName,
+        				user_id: this.props.currentUser.uid,
+        				for_class:this.state.forClass,
+        				for_expo:this.state.forExpo,
+        				for_space:this.state.forSpace,
+        				classnum: '',
+        				classdept: '',
+        				editor_html:this.state.editorHTML
+        			},
+        			img_data:{
+        				fileID: this.state.fileUniqueId,
+                fileID2: this.state.fileUniqueId2,
+                fileID3: this.state.fileUniqueId3
+        			}
+        		};
 
 
-		axios.post('/api/add', newPost)
-            .then(res => console.log(res.data));
+        		axios.post('/api/add', newPost)
+                    .then(res =>{ 
+                        console.log(res.data);
+                        window.location.replace("/project/"+res.data.project_id);
+                    });
 
-        // axios.post('http://localhost:4000/capstoneprototype/save', this.state.fileUniqueId)
-        //     .then(res => console.log(res.data));
+                // axios.post('http://localhost:4000/capstoneprototype/save', this.state.fileUniqueId)
+                //     .then(res => console.log(res.data));
+
+        }
+
+        else{
+            this.setState({validForm:false});
+        }
 
 	}
 
@@ -634,6 +647,8 @@ export default class Write extends Component {
                 	</div>
 
               </div>
+
+              {!this.state.validForm && <div className = "form-error">Please fill out required fields.</div>}
 
                 	<button className = 'btn form-save' type = 'submit'>Save</button>
                 	<button className = 'btn form-post' type = 'submit'>Save and Post</button>

@@ -912,3 +912,15 @@ label.required:after {
     display: block;
     cursor: pointer;
 }
+
+.form-error {
+    color: tomato;
+    background: #ff634736;
+    padding: 15px;
+    grid-column: 1/3;
+    height: fit-content;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
