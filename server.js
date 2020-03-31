@@ -16,6 +16,7 @@ let Tag = require('./tag.model.js');
 let AdditionalImg = require('./additionalimg.model.js');
 let Profileimg = require('./profileimg.model.js');
 let User = require('./user.model.js');
+let Comment = require('./Comment.model.js');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -117,6 +118,34 @@ app.get('/api/userposts/:user_id', function(req, res) {
             res.json(posts);
         }
     });
+});
+
+app.get('/api/comments/:project_id', function(req, res) {
+    let project_ID = req.params.project_id;
+    Comment.find({'project_id':project_ID}).exec(function(err, comment) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(projectID);
+            // console.log(imgs);
+            res.send(comment);
+        }
+    });
+});
+
+app.post('/api/comments', function(req, res) {
+    let comment = new Comment;
+    comment.user_id = req.body.user_id;
+    comment.project_id = req.body.project_id;
+    comment.textcontent = req.body.textcontent;
+    comment.save()
+        .then( comment =>{
+            res.status(200).send("successfully added new comment");
+            console.log(comment);
+        })
+        .catch (err => {
+            res.status(400).send(err); 
+        })
 });
 
 app.get('/api/search/:searchvalue', function(req, res) {

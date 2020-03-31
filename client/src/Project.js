@@ -5,6 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import Tag from './Tag.js';
 import UserLink from './UserLink.js';
 
+import Comments from './Comments.js';
+
+
 import axios from 'axios';
 
 import { Link } from 'react-router-dom';
@@ -184,6 +187,7 @@ export default class Project extends Component {
                                 </div>
                             </div>
                         }
+                        <Comments project_id = {this.state.projectDetails._id} current_user = {this.state.currentUserId} />
                     </div>
                     <div className = "project-body">
                         <div class = "img-gallery">

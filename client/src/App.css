@@ -992,3 +992,23 @@ a.nav-link  .center-link.logo{
     -webkit-transition: .25s ease;
     transition: .25s ease;
 }
+
+.comment-section {
+    margin-top: 50px;
+    border: solid 2px #212529;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.comment-section .search-bar input {
+    border: 0;
+    background: #f2f2f2;
+    padding: 5px;
+    border-radius: 20px;
+}
+
+.comments-container>div {
+    border-top: solid 1px #f1f1f1;
+    padding: 5px;
+    padding-top: 10px;
+}
