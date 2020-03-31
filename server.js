@@ -16,7 +16,7 @@ let Tag = require('./tag.model.js');
 let AdditionalImg = require('./additionalimg.model.js');
 let Profileimg = require('./profileimg.model.js');
 let User = require('./user.model.js');
-let Comment = require('./Comment.model.js');
+let Comment = require('./comment.model.js');
 
 app.use(cors());
 app.use(bodyParser.json());
