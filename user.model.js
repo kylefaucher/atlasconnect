@@ -19,6 +19,9 @@ let User = new Schema({
     },
     featured_project: {
         type: String
+    },
+    faculty: {
+        type: Boolean
     }
 });
 

@@ -27,6 +27,8 @@ const db = process.env.DBKEY || require('./config/keys.js').mongoURI;
 
 // console.log(db);
 
+const faculty_emails = require('./faculty_emails.js').emails;
+
 mongoose.connect(db, { useNewUrlParser: true });
 const connection = mongoose.connection;
 
@@ -232,8 +234,14 @@ app.post('/api/user', function(req,res) {
             }
             else{
                 let newUser = new User;
+                let faculty_status = false;
+                //check if email is in faculty list
+                if (faculty_emails.indexOf(req.body.user_email) >= 0){
+                    faculty_status = true;
+                }
                 newUser.display_name = req.body.user_display_name;
                 newUser.email = req.body.user_email;
+                newUser.faculty = faculty_status;
                 newUser.user_id = req.body.user_id;
                 newUser.save()
                     .then(user => {
@@ -385,6 +393,20 @@ app.post('/api/add', function(req, res) {
         .catch(err => {
             // res.status(400).send('adding new post failed');
         });
+});
+
+app.put('/api/project', function(req,res) {
+    Posts.updateOne({_id: req.body.project_id}, {
+        featured: req.body.featured
+    }).exec()
+        .then(function(response){
+            res.status(200).send(response);
+            console.log("successfully updated feature status");
+        })
+        .catch(function(error){
+            res.status(400).send(error);
+            console.log(error);
+        })
 });
 
 //temp storage

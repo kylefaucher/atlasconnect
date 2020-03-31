@@ -29,14 +29,16 @@ export default class Project extends Component {
             imageURL2:'',
             imageURL3:'',
             largeImageURL:'',
-            projectDate:''
+            projectDate:'',
+            currentUserId: this.props.currentUser,
+            currentUser:''
         };
 
         this.enlargeImage = this.enlargeImage.bind(this);
+        this.featureToggle = this.featureToggle.bind(this);
 	}
 
     componentDidMount(){
-        console.log(this.props.match.params);
         axios.get('/api/project/' + this.props.match.params.projectId)
             .then(response => {
                 this.setState({ projectDetails: response.data[0]});
@@ -73,6 +75,7 @@ export default class Project extends Component {
                     let imageUrl = urlCreator.createObjectURL( blob );
                     this.setState({imageURL2:imageUrl});
                     this.setState({loading:false});
+
                 }
 
                 if (response.data[1]){
@@ -89,10 +92,60 @@ export default class Project extends Component {
                 console.log('there was error');
                 console.log(error);
             });
+
+            axios.get('/api/user/' + this.state.currentUserId)
+            .then(response => {
+                this.setState({ currentUser: response.data});
+                 })
+                .catch(error => {
+                    console.log(error);
+                 });
     }
 
     enlargeImage(imgURL){
         this.setState({largeImageURL:imgURL});
+
+    }
+
+    componentDidUpdate(prevProps) {
+      if (this.props.currentUser !== prevProps.currentUser) {
+        this.setState({
+            currentUserId:this.props.currentUser
+        }, () => {
+            axios.get('/api/user/' + this.state.currentUserId)
+            .then(response => {
+                this.setState({ currentUser: response.data});
+                 })
+                .catch(error => {
+                    console.log(error);
+                 });
+            
+        });
+      }
+    }
+
+    featureToggle(){
+        let requestJSON = {
+            project_id: this.state.projectDetails._id,
+            featured: !this.state.projectDetails.featured
+        }
+        axios.put('/api/project/', requestJSON)
+            .then(response => {
+                console.log(response);
+                //update project data
+                    axios.get('/api/project/' + this.props.match.params.projectId)
+                        .then(response => {
+                            this.setState({ projectDetails: response.data[0]});
+                            this.setState({ projectDate: new Date(response.data[0].time)})
+                            console.log(response.data);
+                        })
+                        .catch(function (error){
+                            console.log(error);
+                    });
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     render() {
@@ -116,6 +169,21 @@ export default class Project extends Component {
                                 return <Tag key={item} tag_id = {item} />;
                         })}
                         </div>
+                        {this.state.currentUser.length>0 &&
+                            <div>
+                                <div>
+                                {this.state.currentUser[0].faculty && this.state.projectDetails.featured && 
+                                    <button className = "unfeature-project-button" onClick = {this.featureToggle}> Unfeature </button>
+                                }
+                                </div>
+
+                                <div>
+                                {this.state.currentUser[0].faculty && !this.state.projectDetails.featured && 
+                                    <button className = "feature-project-button" onClick = {this.featureToggle}> Feature </button>
+                                }
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div className = "project-body">
                         <div class = "img-gallery">

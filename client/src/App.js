@@ -50,6 +50,7 @@ class App extends Component{
         console.log(user);
         thisObject.setState({isLoggedIn:true});
         thisObject.setState({currentUser:firebase.auth().currentUser});
+        thisObject.setState({currentUserId:firebase.auth().currentUser.uid});
         thisObject.setState({lastSignIn: user.metadata.lastSignInTime});
 
         let userJSON = {
@@ -175,7 +176,7 @@ class App extends Component{
             <Route path="/profile" 
                    render={(props)=> <SelfProfile updateCurrentTab = {this.updateCurrentTab} isLoggedIn = {this.state.isLoggedIn} currentUser = {this.state.currentUser} />}
             />
-            <Route path="/project/:projectId" component={Project} />
+            <Route path="/project/:projectId" render={(props) => (<Project {...props} currentUser={this.state.currentUserId} /> ) } />
             <Route path="/user/:userId" component={Profile} />
 
           </div>

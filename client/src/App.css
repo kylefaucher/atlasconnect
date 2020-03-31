@@ -924,3 +924,33 @@ label.required:after {
     text-align: center;
     font-weight: 600;
 }
+
+button.unfeature-project-button, button.feature-project-button {
+    -webkit-appearance: none;
+    border-radius: 50px;
+    border: solid 2px;
+    padding: 10px;
+    margin-top: 30px;
+    font-weight: 700;
+    border-color: #212529;
+    color: #212529;
+    transition: 0.25s ease;
+    background: white;
+}
+
+button.unfeature-project-button:focus, button.feature-project-button:focus{
+  outline: none;
+}
+
+button.unfeature-project-button:hover, button.feature-project-button:hover {
+    -webkit-appearance: none;
+    border-radius: 50px;
+    border: solid 2px;
+    padding: 10px;
+    margin-top: 30px;
+    font-weight: 700;
+    border-color: #212529;
+    color: white;
+    transition: 0.25s ease;
+    background: #212529;
+}
