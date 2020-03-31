@@ -120,16 +120,30 @@ app.get('/api/userposts/:user_id', function(req, res) {
 });
 
 app.get('/api/search/:searchvalue', function(req, res) {
-    let searchvalue = req.params.searchvalue;
-    Posts.find({'tags.tag_id': searchvalue}).exec(function(err,posts){
-        if (err){
-            console.log(err);
-        }
-        else{
+    let input = req.params.searchvalue;
+    let responseJSON = {"posts": '', "users": ''};
+    let regex = new RegExp(input, 'i');
+    Posts.find({'tags': regex}).exec()
+        .then( function(posts) {
+            console.log(posts);
+            responseJSON.posts = posts;
+
+            User.find({'display_name': regex}).exec()
+                .then(function(users){
+                    responseJSON.users = users;
+                    res.send(responseJSON)
+                })
+                .catch( function(err){
+                    console.log(err);
+                    res.status(400);
+                })
+
+        })
+        .catch( function(err) {
             // console.log(posts);
-            res.json(posts);
-        }
-    });
+            console.log(err);
+            // res.json(posts);
+        })
 });
 
 app.get('/api/project/:projectId', function(req, res) {

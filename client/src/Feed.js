@@ -84,7 +84,8 @@ export default class Feed extends Component {
         if (this.state.searchValue.length){
         axios.get('/api/search/'+this.state.searchValue)
             .then(response => {
-                this.setState({ messages: response.data });
+                this.setState({ messages: response.data.posts });
+                this.setState({ people: response.data.users });
                 console.log(response.data);
             })
             .catch(function (error){
@@ -127,25 +128,36 @@ export default class Feed extends Component {
                 { this.state.activeCategory == 'Search' && 
                     <div className = "form-group search-bar">
                         <div className = "searchIcon"> <FontAwesomeIcon icon={faSearch} /> </div>
-                        <input onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" placeholder = "search" className="form-control" />
-                        <button onClick = {this.search} className = "btn btn-primary form-control" type = "search"> Search </button>
+                        <input id = "search-bar" onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" placeholder = "search" />
+                        <button onClick = {this.search} className = "btn form-control" type = "search"> Search </button>
                     </div>
                 }
 
                 {this.state.people.length > 0 && 
+                    <span>
+                    {this.state.activeCategory == 'Search' &&
+                    <h3 className = "search-title"> People ({this.state.people.length})</h3>
+                    }
                     <div className = 'peopleGrid'>
                          {this.state.people.map(item => {
                             return <UserCard key={item.user_id} uid = {item.user_id} />;
                          })}
                     </div>
+                    </span>
                 }
 
-                {this.state.messages.length > 0 && 
+                {this.state.messages.length > 0 &&
+                    <span>
+                    {this.state.activeCategory == 'Search' && 
+                    <h3 className = "search-title" > Projects ({this.state.messages.length})</h3>
+                    }
                     <div className = 'postsGrid'>
                     	 {this.state.messages.map(item => {
                     	 	return <Post key={item._id} postJSON = {item} />;
                     	 })}
                     </div>
+                    </span>
+                       
                 }
 
                 </div> 

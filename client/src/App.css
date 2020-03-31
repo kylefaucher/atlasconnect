@@ -210,7 +210,7 @@ a.nav-link.active .center-link:hover{
   font-size: 1.25em;
   padding-right: 15px;
   background: #f2f2f2;
-  border-radius: 10px 0 0 10px;
+  border-radius: 20px 0 0 20px;
 }
 
 .searchIcon svg{
@@ -223,7 +223,7 @@ a.nav-link.active .center-link:hover{
   border: 0;
   background: #f2f2f2;
   padding: 5px;
-  border-radius: 0;
+  border-radius: 0 20px 20px 0;
 }
 
 .search-bar input:focus, .search-bar input:active{
@@ -234,8 +234,6 @@ a.nav-link.active .center-link:hover{
 }
 
 .search-bar button, .search-bar button:active, .search-bar button:focus{
-  background: #212529 !important;
-  border: 0 !important;
   border-radius: 0 5px 5px 0;
   outline: none;
   box-shadow: none;
@@ -953,4 +951,37 @@ button.unfeature-project-button:hover, button.feature-project-button:hover {
     color: white;
     transition: 0.25s ease;
     background: #212529;
+}
+
+.search-title {
+    font-weight: 700;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+#search-bar:focus{
+  border: 0;
+  outline: 0;
+}
+
+.search-bar button, .search-bar button:active, .search-bar button:focus {
+    background: white !important;
+    color: #212529 !important;
+    border: solid 2px  #212529;
+    /* border-radius: 0 5px 5px 0; */
+    border-radius: 500px;
+    outline: none;
+    box-shadow: none;
+    font-weight: 700;
+}
+
+.search-bar button:hover {
+    background: #212529 !important;
+    color: white !important;
+    /* border-radius: 0 5px 5px 0; */
+    border-radius: 500px;
+    outline: none;
+    box-shadow: none;
+    font-weight: 700;
+    box-shadow: 0 !important;
 }
