@@ -66,7 +66,7 @@ export default class TagSearch extends Component {
             	<div className = "form-tags form-group-one-line">
             		<label className= "required"> Tags </label>
             		<div style = {{'display':'flex', 'position':'relative', 'zIndex':'500'}}>
-            			<input value = {this.state.cur_tag_input} autocomplete = "off" placeholder = 'Add Tags' type = "text" onChange = {this.onTagInputChange} name = 'tag_input' className = 'form-control'/>
+            			<input value = {this.state.cur_tag_input} autocomplete = "off" placeholder = 'atls3100, vr, arduino' type = "text" onChange = {this.onTagInputChange} name = 'tag_input' className = 'form-control'/>
             			<button className = 'btn add-tag-button' type = 'button' onClick = {this.sendTag}> + </button>
             		</div>
                     {this.state.tag_suggestions.length>0 &&

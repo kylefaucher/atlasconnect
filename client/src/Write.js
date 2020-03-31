@@ -382,8 +382,8 @@ export default class Write extends Component {
         				for_class:this.state.forClass,
         				for_expo:this.state.forExpo,
         				for_space:this.state.forSpace,
-        				classnum: '',
-        				classdept: '',
+        				classnum: this.state.classnum,
+        				classdept: this.state.classdept,
         				editor_html:this.state.editorHTML
         			},
         			img_data:{
@@ -614,7 +614,7 @@ export default class Write extends Component {
 
               </div>
 
-              <div class = "form-class" >
+              <div style = {{'display':'none'}} class = "form-class" >
                 <div class = "form-group-one-line form-flex">
                       <input id = "forclass" type = "checkbox" name = 'forClass' checked = {this.state.forClass} onChange = {this.onForClassChange} />
                       <label for = "forclass"> This project was for a class </label>
@@ -630,7 +630,7 @@ export default class Write extends Component {
                     }
               </div>
 
-              <div className = 'form-checkboxes'>
+              <div style = {{'display':'none'}} className = 'form-checkboxes'>
 	                <div class = "form-forexpo form-group-one-line form-flex">
                 		<input id = "forexpo" type = "checkbox" name = 'forExpo' checked = {this.state.forExpo} onChange = {this.onForExpoChange} />
                 		<label for = "forexpo"> Submit this project for Atlas Expo consideration </label>
@@ -650,8 +650,8 @@ export default class Write extends Component {
 
               {!this.state.validForm && <div className = "form-error">Please fill out required fields.</div>}
 
-                	<button className = 'btn form-save' type = 'submit'>Save</button>
-                	<button className = 'btn form-post' type = 'submit'>Save and Post</button>
+                	<button style = {{'visibility':'hidden'}} className = 'btn form-save' type = 'submit'>Save</button>
+                	<button className = 'btn form-post' type = 'submit'>Post</button>
                 </form>
                 </div>
             </div> : 
