@@ -576,7 +576,7 @@ export default class Write extends Component {
                       </div>
                   </div>
 
-                  <div className = 'form-tag-container'>
+                  
 
                 	<TagSearch onTagAdd = {this.onTagAdd} />
 
@@ -585,7 +585,7 @@ export default class Write extends Component {
 	                	 		return <Tag key={item} tag_id = {item} removable = {true} onTagDelete = {this.onTagDelete} />;
 	                	})}
                 	</div>
-                  </div>
+                  
                 	
 
 			        <div class = "form-description form-group-one-line">

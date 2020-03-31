@@ -170,16 +170,29 @@ app.get('/api/user/:userid', function(req,res) {
 });
 
 app.post('/api/tag', function(req, res) {
-    let tag = new Tag;
-    tag.tag_id = req.body.tag_id;
-    tag.tag_color = req.body.tag_color;
-    tag.save()
-        .then( tag =>{
-            res.status(200).send("successfully added new tag");
-            console.log(tag);
+    //check if tag is already in database to avoid duplicates
+    Tag.find({'tag_id':req.body.tag_id}).exec()
+        .then (function (tag){
+            if (tag.length){
+                console.log('tag already exists, not adding to db');
+                res.status(200).send('tag already exists, not adding to db');
+            }
+            else{
+                let tag = new Tag;
+                tag.tag_id = req.body.tag_id;
+                tag.tag_color = req.body.tag_color;
+                tag.save()
+                    .then( tag =>{
+                        res.status(200).send("successfully added new tag");
+                        console.log(tag);
+                    })
+                    .catch (err => {
+                        res.status(400).send(err); 
+                    })
+            }
         })
-        .catch (err => {
-            res.status(400).send(err); 
+        .catch(function (error){
+            console.log(error);
         })
 });
 
@@ -192,6 +205,20 @@ app.get('/api/tag/:tagid', function(req, res) {
         }
         else{
             res.status(200).json(tag);
+        }
+    });
+});
+
+app.get('/api/tag/search/:input', function(req, res) {
+    let input = req.params.input;
+    let regex = new RegExp(input, 'i');
+    Tag.find({'tag_id': regex}).limit(5).exec(function(err,tags){
+        if (err){
+            console.log(err);
+            res.status(400);
+        }
+        else{
+            res.status(200).json(tags);
         }
     });
 });

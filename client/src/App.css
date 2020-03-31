@@ -488,11 +488,13 @@ form label{
   margin-bottom: 20px;
 }
 
-.add-tag-button{
-  background: #212529 !important;
-  border-radius: 100px !important;
-  color: white !important;
-  margin-left: 10px;
+.add-tag-button {
+    background: white;
+    border-radius: 100px!important;
+    color: #ced4da!important;
+    margin-left: 10px;
+    border: solid 2px #ced4da;
+    font-weight: 600;
 }
 
 .form-control:focus {
@@ -871,8 +873,10 @@ label.required:after {
 .form-tags-list {
     border: solid 2px #f1f1f1;
     padding: 15px;
-    border-radius: 500px;
+    border-radius: 20px;
     height: fit-content;
+    margin-top: 50px;
+    padding-top: 10px;
 }
 
 .tag-delete {
@@ -887,5 +891,24 @@ label.required:after {
     text-align: center;
     /* padding: 3px; */
     margin: 3px;
+    cursor: pointer;
+}
+
+.tag-search-suggestions {
+    border: 1px solid #ced4da;
+    padding: 0 10px 10px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    border-top: 0;
+    border-radius: 0 0 20px 20px;
+    position: relative;
+    top: -20px;
+    z-index: 0;
+    padding-top: 20px;
+}
+
+.tag-search-suggestions>span {
+    display: block;
     cursor: pointer;
 }
