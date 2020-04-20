@@ -1107,6 +1107,12 @@ a.nav-link  .center-link.logo{
     font-size: inherit !important;
 }
 
+.project-body-writeup a span {
+    font-family: Poppins!important;
+    color: dodgerblue !important;
+    font-size: inherit!important;
+}
+
 @media screen and (max-width: 777px){
   .logo img{
     width: 4em !important
