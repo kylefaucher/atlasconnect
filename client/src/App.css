@@ -1166,5 +1166,11 @@ a.nav-link  .center-link.logo{
   .search-bar {
     grid-row-gap: 20px;
   }
+  .comment-section .comment-bar input {
+    width: 120px;
+  }
+  .comment-bar {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
