@@ -200,6 +200,34 @@ app.get('/api/project/:projectId', function(req, res) {
     });
 });
 
+app.delete('/api/project', function(req, res) {
+   let projectId = req.body.projectID;
+   Posts.findOneAndDelete({ '_id': projectId }).exec()
+    .then(function(result){
+        console.log(result);
+        Img.findOneAndDelete({"project_id": projectId}).exec()
+        .then(function(result){
+            console.log(result);
+            console.log("successfully deleted main image")
+        })
+        .catch(function(err){
+            console.log(err)
+        });
+        AdditionalImg.deleteMany({"project_id": projectId}).exec()
+        .then(function(result){
+            console.log(result);
+            console.log("successfully deleted additional image")
+        })
+        .catch(function(err){
+            console.log(err)
+        });
+        res.status(200).send("successfully deleted project and associated images");
+    })
+    .catch(function(err){
+        res.status(400).send(err);
+    });
+});
+
 // app.get('/api/project/:projectid', function(req, res) {
 //     let projectid = req.params.projectid;
 //     Posts.find({'_id': projectid}).exec(function(err,posts){

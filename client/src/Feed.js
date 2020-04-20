@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import Post from './Post.js';
 import UserCard from './UserCard.js';
+import Tag from './Tag.js';
 
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -22,7 +23,9 @@ export default class Feed extends Component {
             currentOpenProject: '',
             searchValue: '',
             loading: true,
-            activeCategory: 'Featured'
+            activeCategory: 'Featured',
+            tag_suggestions: ''
+
         };
 
         this.search = this.search.bind(this);
@@ -30,6 +33,8 @@ export default class Feed extends Component {
         this.displayDefaultFeed = this.displayDefaultFeed.bind(this);
         this.displayPeopleFeed = this.displayPeopleFeed.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
+        this.sendExistingTag = this.sendExistingTag.bind(this);
+
 	}
 
     displayDefaultFeed(){
@@ -78,6 +83,14 @@ export default class Feed extends Component {
 
     handleSearchChange(e){
         this.setState({searchValue:e.target.value});
+        axios.get('/api/tag/search/' + e.target.value)
+        .then( response => {
+                this.setState({tag_suggestions:response.data});
+                console.log(response);
+            })
+            .catch ( err => {
+                console.log(err);
+            })
     }
 
     search(){
@@ -95,6 +108,7 @@ export default class Feed extends Component {
         else{
             this.displayAllFeed();
         }
+        this.setState({tag_suggestions:''});
     }
 
     handleCategoryChange(e){
@@ -114,6 +128,13 @@ export default class Feed extends Component {
         }
     }
 
+    sendExistingTag(tagid, tagcolor){
+        this.setState({searchValue:tagid},() => {
+            this.search();
+        });
+        this.setState({tag_suggestions:''});
+    }
+
     render() {
         return (
             <div className = 'content-container'>
@@ -126,10 +147,20 @@ export default class Feed extends Component {
                     <div className = {"feed-nav-underline feed-nav-underline-" + this.state.activeCategory}> </div> 
                     </div>
                 { this.state.activeCategory == 'Search' && 
+                    <div>
                     <div className = "form-group search-bar">
                         <div className = "searchIcon"> <FontAwesomeIcon icon={faSearch} /> </div>
-                        <input id = "search-bar" onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" placeholder = "search" />
+                        <input id = "search-bar" onChange = {this.handleSearchChange}  value = {this.state.searchValue} type = "text" autocomplete = "off" placeholder = "search people or tags" />
                         <button onClick = {this.search} className = "btn form-control" type = "search"> Search </button>
+                    </div>
+                    {this.state.tag_suggestions.length>0 &&
+                        <div style = {{"width":"100%"}} className = "tag-search-suggestions">
+                            
+                                {this.state.tag_suggestions.map(item => {
+                                    return <Tag key={item.tag_id} tag_id = {item.tag_id} sendExistingTag = {this.sendExistingTag} />;
+                                })}
+                        </div>
+                    }
                     </div>
                 }
 

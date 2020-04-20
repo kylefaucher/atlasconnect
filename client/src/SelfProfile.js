@@ -108,7 +108,7 @@ export default class SelfProfile extends Component {
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onChooseFeatured = this.onChooseFeatured.bind(this);
         this.handleInit = this.handleInit.bind(this);
-
+        this.deleteProject = this.deleteProject.bind(this);
 	}
 
     updateProfile(){
@@ -225,6 +225,27 @@ export default class SelfProfile extends Component {
         console.log("FilePond instance has initialised", this.pond);
     }
 
+    deleteProject(projectID){
+        if (projectID == this.state.public_profile.featured_project){
+            console.log("deleting featured project");
+            let profile_edit_copy = this.state.public_profile;
+            profile_edit_copy.featured_project = '';
+            this.setState({public_profile:profile_edit_copy}, () => {
+                console.log("removing featured project from profile");
+                console.log(profile_edit_copy);
+                this.saveProfileChanges();
+            });
+        }
+        axios.delete('/api/project/', { data: {'projectID': projectID}})
+            .then(response => {
+                console.log(response)
+                this.updateProfile();
+            })
+            .catch( err => {
+                console.log(err);
+            });
+    }
+
     render() {
         return (
             <div>
@@ -308,7 +329,7 @@ export default class SelfProfile extends Component {
                     {this.state.edit ? 
 
                         (this.state.messages.map(item => {
-                            return <div onClick={() => this.onChooseFeatured(item._id)} className = {item._id == this.state.public_profile.featured_project ? "featured-wrapper featured" : "featured-wrapper"} > {item._id == this.state.public_profile.featured_project ? <FontAwesomeIcon icon={solidStar} /> : <FontAwesomeIcon icon={outlineStar} />}<Post key={item._id} postJSON = {item} /> </div>;
+                            return <div className = {item._id == this.state.public_profile.featured_project ? "featured-wrapper featured" : "featured-wrapper"} > <span class = "project-edit-options"> {item._id == this.state.public_profile.featured_project ? <FontAwesomeIcon onClick={() => this.onChooseFeatured(item._id)} icon={solidStar} /> : <FontAwesomeIcon onClick={() => this.onChooseFeatured(item._id)} icon={outlineStar} />} <span onClick={() => this.deleteProject(item._id)} class = "delete-project"> × </span> </span> <Post key={item._id} postJSON = {item} /> </div>;
                          }))
 
                         : 
