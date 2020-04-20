@@ -1101,6 +1101,12 @@ a.nav-link  .center-link.logo{
     padding-top: 5px;
 }
 
+.project-body-writeup span {
+    font-family: "Poppins" !important;
+    color: #212529 !important;
+    font-size: inherit !important;
+}
+
 @media screen and (max-width: 777px){
   .logo img{
     width: 4em !important
