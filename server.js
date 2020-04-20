@@ -148,6 +148,18 @@ app.post('/api/comments', function(req, res) {
         })
 });
 
+app.delete('/api/comments', function(req, res) {
+    console.log(req);
+    Comment.findOneAndDelete({ '_id': req.body.commentID }).exec()
+        .then(function(result){
+            console.log(result);
+            res.status(200).send("successfully deleted comment");
+        })
+        .catch(function(err){
+            res.status(400).send(err);
+        })
+});
+
 app.get('/api/search/:searchvalue', function(req, res) {
     let input = req.params.searchvalue;
     let responseJSON = {"posts": '', "users": ''};

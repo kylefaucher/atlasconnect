@@ -664,6 +664,7 @@ a.nav-link {
 }
 
 button.profile-cancel {
+    background: white;
     padding: 10px;
     margin: 5px;
     font-weight: 800;
@@ -680,6 +681,7 @@ button.profile-cancel:hover{
 }
 
 button.profile-save {
+    background: white;
     padding: 10px;
     margin: 5px;
     font-weight: 800;
@@ -798,6 +800,7 @@ button.profile-save:hover{
 }
 
 button.form-save {
+      background: white;
     padding: 10px;
     margin: 5px;
     font-weight: 800;
@@ -814,6 +817,7 @@ button.form-save:hover{
 }
 
 button.form-post {
+      background: white;
     padding: 10px;
     margin: 5px;
     font-weight: 800;
@@ -924,6 +928,7 @@ label.required:after {
 }
 
 button.unfeature-project-button, button.feature-project-button {
+  
     -webkit-appearance: none;
     border-radius: 50px;
     border: solid 2px;
@@ -995,20 +1000,130 @@ a.nav-link  .center-link.logo{
 
 .comment-section {
     margin-top: 50px;
-    border: solid 2px #212529;
+    /*border: solid 2px #212529;*/
     padding: 5px;
     border-radius: 10px;
 }
 
-.comment-section .search-bar input {
+.comment-section .comment-bar input {
     border: 0;
     background: #f2f2f2;
     padding: 5px;
     border-radius: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.comment-section p{
+  margin-bottom: 0;
 }
 
 .comments-container>div {
     border-top: solid 1px #f1f1f1;
-    padding: 5px;
-    padding-top: 10px;
+    padding: 10px;
 }
+
+.comment-bar {
+    display: grid;
+    grid-template-columns: 12fr 1fr;
+    grid-column-gap: 10px;
+}
+
+.comment-bar button, .comment-bar button:active, .comment-bar button:focus {
+    background: white !important;
+    color: #212529 !important;
+    border: solid 2px  #212529;
+    /* border-radius: 0 5px 5px 0; */
+    border-radius: 500px;
+    outline: none;
+    box-shadow: none;
+    font-weight: 700;
+}
+
+.comment-bar button:hover {
+    background: #212529 !important;
+    color: white !important;
+    /* border-radius: 0 5px 5px 0; */
+    border-radius: 500px;
+    outline: none;
+    box-shadow: none;
+    font-weight: 700;
+    box-shadow: 0 !important;
+}
+
+.comment-bar input:focus{
+  border: 0;
+  outline: 0;
+}
+
+.delete-comment {
+    margin-top: 5px;
+    color: tomato;
+    font-weight: 600;
+    height: 26px;
+    width: 26px;
+    border: 2px solid tomato;
+    background: #fff;
+    border-radius: 50px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.delete-comment:hover{
+  background: tomato;
+  color: white;
+  transition: 0.25s ease;
+}
+
+@media screen and (max-width: 777px){
+  .logo img{
+    width: 4em !important
+  }
+  .nav-link .center-link {
+    padding: 10px;
+  }
+  .nav-spacer {
+    width: 20px;
+  }
+  .content-container {
+    padding: 30px;
+  }
+  .feed-nav {
+    margin-bottom: 10px;
+    transform: scale(.9);
+    position: relative;
+    left: -15px;
+  }
+  .postsGrid {
+    grid-template-columns: 1fr;
+  }
+  .main-nav {
+    transform: scale(.9);
+    position: relative;
+    top: 3.5px;
+    left: -24px;
+  }
+  .peopleGrid {
+    grid-template-columns: 1fr;
+  }
+  .searchIcon {
+    padding-left: 15px;
+  }
+  .project-grid-container {
+    grid-template-columns: 1fr;
+  }
+  .profile-container {
+    grid-template-columns: 1fr;
+  }
+  .profile-posts-container {
+    grid-template-columns: 1fr;
+  }
+  .user-profile-info {
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  .profile-image{
+    margin: auto;
+  }
+}
+
